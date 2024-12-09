@@ -64,6 +64,15 @@ public abstract class StorableMap<K extends Serializable, T extends Serializable
     };
 
     /**
+     * Check if the map contains a key
+     * @param k - the key
+     * @return true if contains, else otherwise.
+     */
+    public boolean containsKey(K k) {
+        return this.instances.containsKey(k);
+    };
+
+    /**
      * Add an entry to the map and request storage.
      * @param k - the entry key
      * @param t - the entry value

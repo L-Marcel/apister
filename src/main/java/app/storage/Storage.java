@@ -127,6 +127,7 @@ public class Storage extends Thread {
                     if(object == null) {
                         FileOutputStream out = new FileOutputStream("data/" + name + ".dat");
                         object = new ObjectOutputStream(out);
+                        this.streams.put(name, object);
                     };
                     
                     // Store the data and remove the task
@@ -163,7 +164,7 @@ public class Storage extends Thread {
         for(String name : this.streams.keySet()) {
             try {
                 ObjectOutputStream object = this.streams.get(name);
-                object.close();
+                if (object != null) object.close();
             } catch (Exception e) {
                 Log.print("Storage", "Can't close stream of " + name + ".");
                 Log.print("Error", e.getMessage());
@@ -178,7 +179,7 @@ public class Storage extends Thread {
     /**
      * Finish the thread safely.
      */
-    public static void finish() {
+    public void finish() {
         try {
             if(Storage.instance != null) {
                 Log.print("Storage", "Finishing...");
