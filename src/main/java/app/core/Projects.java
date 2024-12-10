@@ -1,14 +1,12 @@
 package app.core;
 
-import app.storage.Storable;
+import app.storage.StorableList;
 
-public class Projects extends Storable<Node> {
+public class Projects extends StorableList<String> {
     private static Projects instance = null;
 
     private Projects() {
-        super("projects", new Node("root"));
-        // [TODO] Adicione arquivo evento recursivo que
-        // chama quando necessário o método de armazenamento.
+        super("projects");
     };
 
     public static Projects getInstance() {
