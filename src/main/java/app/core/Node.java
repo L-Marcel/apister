@@ -14,20 +14,24 @@ public class Node extends TreeItem<String> implements Externalizable {
 
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
-        // [TODO] Serialize nodes. 
-        // [TIP] Need to store others node!
-        // [CAUTION] This funcion is already called recursively!
+        // [TODO] Serialização de um nó.
+
+        // [TIP] Você precisará armazenar outros nós, talvez, se preferir
+        // usando writeObject. Acontece que a lista de filhos não 
+        // implementa Serializable, mas talvez seja convertível para
+        // uma LinkedList. Ainda assim esse método aqui é necessário.
     };
 
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        // [TODO] Deserialize nodes. 
-        // [TIP] Need to store others node!
-        // [CAUTION] This funcion is already called recursively!
+        // [TODO] Deserialização de um nó.
+        
+        // [TIP] Você precisará obter outros nós, talvez, se preferir
+        // usando readObject.
     };
 
     public boolean childExists(String name) {
-        // [TODO] Check if any children of this node have this name.
+        // [TODO] Verifica se tem algum filho com o nome buscado.
         return false;
     };
 };

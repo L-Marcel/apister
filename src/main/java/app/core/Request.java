@@ -21,10 +21,11 @@ public class Request extends Node {
         Instant requetedAt = Instant.now();
         HashMap<String, String> headers = new HashMap<String, String>();
 
-        // [TODO] Fetch a HTTP request using HttpClient, 
-        // HttpRequest and HttpResponse<String>
-        // [TIP] HttpResponse<String> is an interface and for some reason its implementation 
-        // is private.
+        // [TODO] Faça uma requisição HTTP usando HttpRequest, HttpClient
+        // e HttpResponse<String>.
+
+        // [TIP] HttpResponse<String> é uma interface, por isso o Response
+        // herda ela. Alias, você não vai querer ter que implementá-la.
 
         return new Response(
             requetedAt, 
@@ -37,16 +38,18 @@ public class Request extends Node {
 
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
-        // [TODO] Serialize requests. 
-        // [TIP] Requests are leafs!
-        // [TIP] You can use super here.
+        // [TODO] Serialização de requisições.
+
+        // [TIP] Requisições são folhas!
+        // [TIP] Você pode usar super aqui.
     };
 
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        // [TODO] Deserialize requests. 
-        // [TIP] Requests are leafs!
-        // [TIP] You can use super here.
+        // [TODO] Deserialização de requisições. 
+
+        // [TIP] Requisições são folhas!
+        // [TIP] Você pode usar super aqui.
     };
 
     public RequestType getType() {
