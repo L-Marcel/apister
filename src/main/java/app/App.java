@@ -25,17 +25,27 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         scene = new Scene(load("primary"), 640, 480);
+        loadCss("primary");
         stage.setScene(scene);
         stage.show();
     };
 
-    static void setRoot(String fxml) throws IOException {
-        Log.print("Navigating to " + fxml);
-        scene.setRoot(load(fxml));
+    public static void setRoot(String page) throws IOException {
+        Log.print("Navigating to " + page);
+        scene.setRoot(load(page));
+        loadCss(page);
     };
 
-    private static Parent load(String fxml) throws IOException {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+    private static void loadCss(String page) {
+        scene.getStylesheets().clear();
+        scene.getStylesheets().addAll(
+            App.class.getResource("global.css").toString(),
+            App.class.getResource(page + ".css").toString()
+        );
+    };
+
+    private static Parent load(String page) throws IOException {
+        FXMLLoader loader = new FXMLLoader(App.class.getResource(page + ".fxml"));
         return loader.load();
     };
 };

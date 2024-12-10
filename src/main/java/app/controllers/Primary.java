@@ -1,9 +1,10 @@
-package app;
+package app.controllers;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import app.App;
 import app.example.Words;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,7 +14,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
-public class PrimaryController implements Initializable {
+public class Primary implements Initializable {
     @FXML private ListView<String> wordList;
     @FXML private TextField worldField;
 
