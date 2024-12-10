@@ -10,7 +10,7 @@ public class Request extends Node {
     private RequestType type = RequestType.GET;
     private String url;
     private String body;
-    private HashMap<String, String> header;
+    private HashMap<String, String> headers;
     private Response lastResponse;
 
     public Request(String name) {
@@ -19,10 +19,20 @@ public class Request extends Node {
 
     public Response request() {
         Instant requetedAt = Instant.now();
+        HashMap<String, String> headers = new HashMap<String, String>();
 
-        // [TODO] Fetch a HTTP request using HttpClient and HttpRequest
+        // [TODO] Fetch a HTTP request using HttpClient, 
+        // HttpRequest and HttpResponse<String>
+        // [TIP] HttpResponse<String> is an interface and for some reason its implementation 
+        // is private.
 
-        return new Response(requetedAt, null);
+        return new Response(
+            requetedAt, 
+            this.url, 
+            "", 
+            StatusCode.OK,
+            headers
+        );
     };
 
     @Override
@@ -63,12 +73,12 @@ public class Request extends Node {
         this.body = body;
     };
 
-    public HashMap<String, String> getHeader() {
-        return header;
+    public HashMap<String, String> getHeaders() {
+        return headers;
     };
 
-    public void setHeader(HashMap<String, String> header) {
-        this.header = header;
+    public void setHeaders(HashMap<String, String> headers) {
+        this.headers = headers;
     };
 
     public Response getLastResponse() {

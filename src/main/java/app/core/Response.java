@@ -1,25 +1,62 @@
 package app.core;
 
-import java.net.http.HttpResponse;
+import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashMap;
 
-public class Response {
-    private HttpResponse<String> data; 
+public class Response implements Serializable {
+    private String message;
+    private String url;
+    private StatusCode statusCode;
+    private HashMap<String, String> headers;
     private Instant requestedAt;
     private Instant receivedAt;
     
-    public Response(Instant requestedAt, HttpResponse<String> data) {
-        this.data = data;
+    public Response(
+        Instant requestedAt,
+        String url, 
+        String message,
+        StatusCode statusCode,
+        HashMap<String, String> headers
+    ) {
         this.requestedAt = requestedAt;
+        this.url = url;
+        this.message = message;
+        this.statusCode = statusCode;
+        this.headers = headers;
         this.receivedAt = Instant.now();
     };
 
-    public HttpResponse<String> getData() {
-        return data;
+    public String getMessage() {
+        return message;
     };
 
-    public void setData(HttpResponse<String> data) {
-        this.data = data;
+    public void setMessage(String message) {
+        this.message = message;
+    };
+
+    public String getUrl() {
+        return url;
+    };
+
+    public void setUrl(String url) {
+        this.url = url;
+    };
+
+    public StatusCode getStatusCode() {
+        return statusCode;
+    };
+
+    public void setStatusCode(StatusCode statusCode) {
+        this.statusCode = statusCode;
+    };
+
+    public HashMap<String, String> getHeaders() {
+        return headers;
+    };
+
+    public void setHeaders(HashMap<String, String> headers) {
+        this.headers = headers;
     };
 
     public Instant getRequestedAt() {
