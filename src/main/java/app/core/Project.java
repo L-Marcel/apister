@@ -3,7 +3,7 @@ package app.core;
 import app.storage.Storable;
 
 public class Project extends Storable<Node> {
-    private Project(String name) {
+    public Project(String name) {
         // [NOTE] No futuro precisaremos pensar sobre a validação do nome,
         // mas, por enquanto, ignore essa mensagem. Isso é apenas um lembrete.
 
