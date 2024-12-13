@@ -57,4 +57,4 @@ public enum StatusCode {
     public int getValue() {
         return value;
     }
-};
+}
