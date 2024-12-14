@@ -1,15 +1,15 @@
-.button {
+Button {
     -fx-border-width: 0px;
     -fx-background-color: #c0c0c0;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
 }
 
-.button:hover  {
+Button:hover  {
     -fx-background-color: #a0a0a0;
 }
 
-.button:focused {
+Button:focused {
     -fx-border-width: 2px;
     -fx-border-color: #000000;
 }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<DialogPane expanded="true" minHeight="180.0" minWidth="400.0" prefHeight="180.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <header>
+      <AnchorPane minHeight="50.0" prefHeight="50.0">
+         <children>
+            <HBox alignment="CENTER" layoutX="150.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label text="Adicionando novo projeto">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </children></AnchorPane>
+   </header>
+   <content>
+      <AnchorPane>
+         <children>
+            <VBox alignment="CENTER" layoutX="135.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <TextField fx:id="textField" maxWidth="300.0" onInputMethodTextChanged="#clearError" promptText="Nome do projeto">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </TextField>
+                  <Region minHeight="10.0" prefHeight="10.0" prefWidth="200.0" />
+                  <Label fx:id="errorLabel" text="Adicionando novo projeto" textFill="RED" visible="false" />
+                  <Region minHeight="10.0" prefHeight="10.0" prefWidth="200.0" />
+                  <HBox alignment="CENTER" minHeight="40.0" prefHeight="40.0" prefWidth="200.0">
+                     <children>
+                        <Button defaultButton="true" focusTraversable="false" minWidth="100.0" mnemonicParsing="false" onAction="#confirm" text="Confirmar" />
+                        <Region prefHeight="20.0" prefWidth="20.0" />
+                        <Button cancelButton="true" minWidth="100.0" mnemonicParsing="false" onAction="#close" text="Cancelar" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children></AnchorPane>
+   </content>
+   <buttonTypes>
+      <ButtonType fx:constant="FINISH" />
+      <ButtonType fx:constant="CANCEL" />
+   </buttonTypes>
+</DialogPane>
