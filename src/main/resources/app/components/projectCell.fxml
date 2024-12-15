@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="70.0" maxWidth="1.7976931348623157E308" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="400.0" styleClass="project-cell-pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER_LEFT" layoutX="190.0" layoutY="150.0" prefHeight="80.0" prefWidth="413.0" styleClass="project-cell-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="200.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="nameLabel" styleClass="project-name" text="Name">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="pathLabel" styleClass="project-path" text="Path" textFill="#5b5b5b">
+                     <font>
+                        <Font name="System Italic" size="13.0" />
+                     </font>
+                  </Label>
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <padding>
+                  <Insets left="24.0" />
+               </padding>
+            </VBox>
+            <Button minWidth="60.0" mnemonicParsing="false" prefWidth="60.0" text="Abrir">
+               <HBox.margin>
+                  <Insets left="24.0" />
+               </HBox.margin>
+            </Button>
+            <Button minWidth="85.0" mnemonicParsing="false" onAction="#remove" prefWidth="85.0" text="Remover">
+               <HBox.margin>
+                  <Insets left="12.0" right="24.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

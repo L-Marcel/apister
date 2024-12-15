@@ -22,7 +22,6 @@ public class Storage extends Thread {
     private Semaphore semaphore = new Semaphore(0);
     private static Storage instance;
     private boolean running = false;
-    private ConcurrentHashMap<String, ObjectOutputStream> streams = new ConcurrentHashMap<String, ObjectOutputStream>();
     private ConcurrentHashMap<String, Integer> tasks = new ConcurrentHashMap<String, Integer>();
     private ConcurrentHashMap<String, Serializable> map = new ConcurrentHashMap<String, Serializable>(); 
 
@@ -122,17 +121,14 @@ public class Storage extends Thread {
                     // Get task data
                     currentTaskName = name;
                     Serializable storable = this.map.get(name);
-                    ObjectOutputStream object = this.streams.get(name);
-
-                    if(object == null) {
-                        FileOutputStream out = new FileOutputStream("data/" + name + ".dat");
-                        object = new ObjectOutputStream(out);
-                        this.streams.put(name, object);
-                    };
+                    FileOutputStream file = new FileOutputStream("data/" + name + ".dat", false);
+                    ObjectOutputStream object = new ObjectOutputStream(file);
                     
                     // Store the data and remove the task
                     object.writeObject(storable);
                     object.flush();
+                    object.close();
+                    file.close();
                     this.map.remove(name);
                     this.tasks.put(name, 0);
                     if (storable instanceof List<?>) {
@@ -156,17 +152,6 @@ public class Storage extends Thread {
             } catch (Exception e) {
                 this.tasks.put(currentTaskName, 0);
                 Log.print("Storage", "Tasks from " + currentTaskName + " failed.");
-                Log.print("Error", e.getMessage());
-            };
-        };
-
-        // Close all streams
-        for(String name : this.streams.keySet()) {
-            try {
-                ObjectOutputStream object = this.streams.get(name);
-                if (object != null) object.close();
-            } catch (Exception e) {
-                Log.print("Storage", "Can't close stream of " + name + ".");
                 Log.print("Error", e.getMessage());
             };
         };

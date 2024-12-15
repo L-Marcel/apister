@@ -82,19 +82,6 @@ public abstract class StorableList<T extends Serializable> implements Serializab
     };
 
     /**
-     * Remove an instance from the list by index and request storage.
-     * @param t - the instance
-     */
-    public void removeByIndex(int index) {
-        try {
-            instances.remove(index);
-            this.store();
-        } catch (Exception e) {
-            Log.print("Error", "Can't remove from " + name + " by the index " + index + "!");
-        };
-    };
-
-    /**
      * Replace an instance in the list and request storage.
      * Useful when we want to change the type of the instantiated object.
      * @param old - the instance to be replaced

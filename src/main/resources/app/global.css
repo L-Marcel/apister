@@ -1,15 +1,75 @@
-.button {
+TextField {
     -fx-border-width: 0px;
-    -fx-background-color: #c0c0c0;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
+    border-width: 0px;
+    -fx-border-color: #00000000;
+    border-color: #00000000;
+    -fx-background-color: #24292F;
+    background-color: #24292F;
+    -fx-border-radius: 12px;
+    border-radius: 12px;
+    -fx-background-radius: 14px;
+    color: #E2E2E2;
+    -fx-text-fill: #E2E2E2;
+    -fx-prompt-text-fill: #929292;
 }
 
-.button:hover  {
-    -fx-background-color: #a0a0a0;
+TextField:hover {
+    cursor: text;
+    -fx-cursor: text;
 }
 
-.button:focused {
+TextField:focused {
+    -fx-border-radius: 12px;
+    border-radius: 12px;
+    -fx-background-radius: 14px;
     -fx-border-width: 2px;
-    -fx-border-color: #000000;
+    border-width: 2px;
+    -fx-border-color: #E9531D;
+    border-color: #E9531D;
+}
+
+Button {
+    -fx-border-width: 0px;
+    border-width: 0px;
+    -fx-border-color: #00000000;
+    border-color: #00000000;
+    -fx-background-color: #24292F;
+    background-color: #24292F;
+    -fx-border-radius: 12px;
+    border-radius: 12px;
+    -fx-background-radius: 14px;
+    color: #E2E2E2;
+    -fx-text-fill: #E2E2E2;
+}
+
+Button:hover  {
+    -fx-background-color: #1F2329;
+    background-color: #1F2329;
+    cursor: hand;
+    -fx-cursor: hand;
+}
+
+Button:focused {
+    -fx-border-radius: 12px;
+    border-radius: 12px;
+    -fx-background-radius: 14px;
+    -fx-border-width: 2px;
+    border-width: 2px;
+    -fx-border-color: #E9531D;
+    border-color: #E9531D;
+}
+
+.fill-button {
+    -fx-background-color: #EF5B25;
+    background-color: #EF5B25;
+}
+
+.fill-button:hover {
+    -fx-background-color: #E24911;
+    background-color: #E24911;
+}
+
+.fill-button:focused {
+    -fx-border-color: #E2E2E2;
+    border-color: #E2E2E2;
 }

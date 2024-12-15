@@ -23,6 +23,7 @@ public enum StatusCode {
     GATEWAY_TIMEOUT(504), HTTP_VERSION_NOT_SUPPORTED(505), VARIANT_ALSO_NEGOTIATES(506),
     INSUFFICIENT_STORAGE(507), LOOP_DETECTED(508), NOT_EXTENDED(510),
     NETWORK_AUTHENTICATION_REQUIRED(511);
+  
     private final int value;
     private static Map<Integer, StatusCode> map = new HashMap<Integer, StatusCode>();
     static {

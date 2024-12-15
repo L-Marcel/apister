@@ -9,4 +9,10 @@ module app {
 
     opens app.controllers to javafx.fxml;
     exports app.controllers;
+
+    opens app.controllers.components to javafx.fxml;
+    exports app.controllers.components;
+
+    opens app.layout to javafx.fxml;
+    exports app.layout;
 }
