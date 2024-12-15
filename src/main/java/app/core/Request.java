@@ -70,15 +70,16 @@ public class Request extends Node {
         out.writeUTF(type.name());
         out.writeUTF(url);
         out.writeUTF(body);
-        
-        // lastResponse pode ser null?? Caso sim, depois mudo essa parte.
-        out.writeObject(lastResponse);
         out.writeInt(headers.size());
 
         for (String key : headers.keySet()) {
             out.writeUTF(key);
             out.writeUTF(headers.get(key));
         }
+
+        boolean value = (lastResponse != null) ? true : false;
+        out.writeBoolean(value);
+        if(value) out.writeObject(lastResponse);
     };
 
     @Override
@@ -87,7 +88,6 @@ public class Request extends Node {
         type = RequestType.valueOf(in.readUTF());
         url = in.readUTF();
         body = in.readUTF();
-        lastResponse = (Response) in.readObject();
         
         int size = in.readInt();
         for (int i = 0; i < size; i++) {
@@ -95,6 +95,9 @@ public class Request extends Node {
             String value = in.readUTF();
             headers.put(key, value);
         }
+        
+        boolean hasLastResponse = in.readBoolean();
+        if(hasLastResponse) lastResponse = (Response) in.readObject();
     };
 
     public RequestType getType() {
