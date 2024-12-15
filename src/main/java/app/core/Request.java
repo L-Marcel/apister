@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 public class Request extends Node {
     private RequestType type = RequestType.GET;
-    private String url;
+    private String url = "";
     private String body = "";
     private HashMap<String, String> headers;
     private Response lastResponse;
@@ -21,19 +21,17 @@ public class Request extends Node {
         super(name);
     };
 
-    // Fiquei em dúvida se eu tratava as exceptions aqui na função, ou deixo pra a função que chamar ela.
-    // Acabei deixando a responsabilidade pra função que chama, mas posso mudar.
     public Response request() throws IOException, InterruptedException {
         Instant requestedAt = Instant.now();
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest.Builder requestBuilder = HttpRequest
-                .newBuilder()
-                .uri(URI.create(this.url));
+            .newBuilder()
+            .uri(URI.create(this.url));
 
-        if (this.headers != null) {
+        if(this.headers != null) {
             this.headers.forEach(requestBuilder::header);
-        }
+        };
 
         switch (this.type) {
             case GET:
@@ -50,18 +48,20 @@ public class Request extends Node {
                 break;
             default:
                 break;
-        }
+        };
 
         HttpRequest request = requestBuilder.build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        return new Response(
+        this.lastResponse = new Response(
             requestedAt, 
             this.url, 
             response.body(), 
             StatusCode.fromCode(response.statusCode()),
             this.headers
         );
+
+        return this.lastResponse;
     };
 
     @Override
@@ -72,10 +72,10 @@ public class Request extends Node {
         out.writeUTF(body);
         out.writeInt(headers.size());
 
-        for (String key : headers.keySet()) {
+        for(String key : headers.keySet()) {
             out.writeUTF(key);
             out.writeUTF(headers.get(key));
-        }
+        };
 
         boolean value = (lastResponse != null) ? true : false;
         out.writeBoolean(value);
@@ -85,16 +85,16 @@ public class Request extends Node {
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         setValue(in.readUTF());
-        type = RequestType.valueOf(in.readUTF());
+        this.type = RequestType.valueOf(in.readUTF());
         url = in.readUTF();
         body = in.readUTF();
         
         int size = in.readInt();
-        for (int i = 0; i < size; i++) {
+        for(int i = 0; i < size; i++) {
             String key = in.readUTF();
             String value = in.readUTF();
             headers.put(key, value);
-        }
+        };
         
         boolean hasLastResponse = in.readBoolean();
         if(hasLastResponse) lastResponse = (Response) in.readObject();

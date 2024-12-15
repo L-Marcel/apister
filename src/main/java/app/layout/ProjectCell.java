@@ -16,7 +16,7 @@ public class ProjectCell extends ListCell<String> {
         this.setPadding(new Insets(0));
         this.getStyleClass().clear();
 
-        if (empty || project == null) {
+        if(empty || project == null) {
             this.setText(null);
             this.setGraphic(null);
             this.getStyleClass().add("project-cell");
@@ -36,6 +36,7 @@ public class ProjectCell extends ListCell<String> {
             } catch (IOException e) {
                 this.setGraphic(null);
                 this.getStyleClass().add("project-cell");
+                e.printStackTrace();
             };
         };
     };

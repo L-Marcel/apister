@@ -32,7 +32,7 @@
                   <Insets left="24.0" />
                </padding>
             </VBox>
-            <Button minWidth="60.0" mnemonicParsing="false" prefWidth="60.0" text="Abrir">
+            <Button minWidth="60.0" mnemonicParsing="false" onAction="#open" prefWidth="60.0" text="Abrir">
                <HBox.margin>
                   <Insets left="24.0" />
                </HBox.margin>

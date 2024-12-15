@@ -5,6 +5,7 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.util.ResourceBundle;
 
+import app.App;
 import app.core.Projects;
 import app.layout.ProjectCell;
 import javafx.fxml.FXML;
@@ -30,11 +31,20 @@ public class ProjectCellController implements Initializable {
 	};
 
     @FXML
+    public void open() {
+        try {
+            String name = this.cell.getItem();
+            App.setRoot("project", new ProjectController(name));
+        } catch (Exception e) {
+            e.printStackTrace();
+        };
+    };
+
+    @FXML
     public void remove() {
         try {
             Projects projects = Projects.getInstance();
-            int index = this.cell.getIndex();
-            String name = projects.get().get(index);
+            String name = this.cell.getItem();
             File file = new File("data/project_" + name + ".dat");
             if(file.delete()) projects.remove(name);
         } catch (Exception e) {

@@ -39,8 +39,8 @@ public class ProjectsController implements Initializable {
                 new Project(name);
                 Projects.getInstance().add(name);
             };
-        } catch (IOException exception) {
-            exception.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         };
     };
 };

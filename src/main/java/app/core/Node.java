@@ -19,27 +19,28 @@ public class Node extends TreeItem<String> implements Externalizable {
         List<TreeItem<String>> children = getChildren();
         out.writeInt(children.size());
 
-        for (TreeItem<String> child : children) {
+        for(TreeItem<String> child : children) {
            out.writeObject(child);
-        }
+        };
     };
 
     @SuppressWarnings("unchecked")
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        setValue(in.readUTF());
+        this.setValue(in.readUTF());
         int size = in.readInt();
 
-        for (int i = 0; i < size; i++) {
+        for(int i = 0; i < size; i++) {
             TreeItem<String> child = (TreeItem<String>) in.readObject();
-            getChildren().add(child);
-        }
+            this.getChildren().add(child);
+        };
     };
 
     public boolean childExists(String name) {
-        for (TreeItem<String> child : getChildren()) {
+        for(TreeItem<String> child : this.getChildren()) {
             if(child.getValue().equals(name)) return true;
-        }
+        };
+        
         return false;
     };
 };

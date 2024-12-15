@@ -1,6 +1,5 @@
 package app.core;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import app.errors.InvalidInput;
@@ -15,7 +14,7 @@ public class Projects extends StorableList<String> {
     };
 
     public static Projects getInstance() {
-        if (Projects.instance == null) Projects.instance = new Projects();
+        if(Projects.instance == null) Projects.instance = new Projects();
         return Projects.instance;
     };
  

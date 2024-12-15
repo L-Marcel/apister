@@ -131,19 +131,19 @@ public class Storage extends Thread {
                     file.close();
                     this.map.remove(name);
                     this.tasks.put(name, 0);
-                    if (storable instanceof List<?>) {
+                    if(storable instanceof List<?>) {
                         List<?> list = (List<?>) storable;
                         Log.print("Storage", "Task finished, " + list.size() + " " + name + " were stored in a list.");
-                    } else if (storable instanceof Map<?, ?>) {
+                    } else if(storable instanceof Map<?, ?>) {
                         Map<?, ?> map = (Map<?, ?>) storable;
                         Log.print("Storage", "Task finished, " + map.size() + " " + name + " were stored on a map.");
-                    } else if (storable instanceof Set<?>) {
+                    } else if(storable instanceof Set<?>) {
                         Set<?> set = (Set<?>) storable;
                         Log.print("Storage", "Task finished, " + set.size() + " " + name + " were stored in a set.");
-                    } else if (storable instanceof Queue<?>) {
+                    } else if(storable instanceof Queue<?>) {
                         Queue<?> queue = (Queue<?>) storable;
                         Log.print("Storage", "Task finished, " + queue.size() + " " + name + " were stored in a queue.");
-                    } else if (name.endsWith("s")) {
+                    } else if(name.endsWith("s")) {
                         Log.print("Storage", "Task finished, " + name + " were stored.");
                     } else {
                         Log.print("Storage", "Task finished, " + name + " was stored.");
