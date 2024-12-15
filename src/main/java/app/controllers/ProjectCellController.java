@@ -3,7 +3,6 @@ package app.controllers;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 import app.core.Projects;
@@ -25,21 +24,21 @@ public class ProjectCellController implements Initializable {
     @Override
 	public void initialize(URL url, ResourceBundle resource) {
         String name = this.cell.getItem();
-		nameLabel.setText(name);
+		this.nameLabel.setText(name);
         Path path = Path.of("data/projects_" + name + ".dat");
-        pathLabel.setText(path.toAbsolutePath().toString());
+        this.pathLabel.setText(path.toAbsolutePath().toString());
 	};
 
     @FXML
     public void remove() {
         try {
             Projects projects = Projects.getInstance();
-            int index = cell.getIndex();
+            int index = this.cell.getIndex();
             String name = projects.get().get(index);
             File file = new File("data/project_" + name + ".dat");
-            if(file.delete()) {
-                projects.get().remove(index);
-            };
-        } catch (Exception e) {};
+            if(file.delete()) projects.remove(name);
+        } catch (Exception e) {
+            e.printStackTrace();
+        };
     };
 };

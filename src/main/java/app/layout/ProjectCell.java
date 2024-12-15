@@ -13,23 +13,29 @@ public class ProjectCell extends ListCell<String> {
     protected void updateItem(String project, boolean empty) {
         super.updateItem(project, empty);
 
-        setPadding(new Insets(0));
-        getStyleClass().add("project-cell");
-        if(getIndex() % 2 == 1) {
-            getStyleClass().add("project-cell-alt");
-        };
+        this.setPadding(new Insets(0));
+        this.getStyleClass().clear();
 
         if (empty || project == null) {
-            setText(null);
-            setGraphic(null);
+            this.setText(null);
+            this.setGraphic(null);
+            this.getStyleClass().add("project-cell");
         } else {
-            setText(null);
+            this.setText(null);
             try {
                 ProjectCellController projectCellController = new ProjectCellController(this);
-                Parent cell = App.load("projectCell", projectCellController);
-                setGraphic(cell);
+                Parent cell = App.load("components/projectCell", projectCellController);
+
+                this.setGraphic(cell);
+
+                if(this.getIndex() % 2 == 1) {
+                    this.getStyleClass().add("project-cell-alt");
+                } else {
+                    this.getStyleClass().add("project-cell-main");
+                };
             } catch (IOException e) {
-                setGraphic(null);
+                this.setGraphic(null);
+                this.getStyleClass().add("project-cell");
             };
         };
     };

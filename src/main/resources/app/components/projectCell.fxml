@@ -34,7 +34,7 @@
             </VBox>
             <Button minWidth="80.0" mnemonicParsing="false" onAction="#remove" prefWidth="80.0" text="Remove">
                <HBox.margin>
-                  <Insets right="24.0" />
+                  <Insets left="24.0" right="24.0" />
                </HBox.margin>
             </Button>
          </children>
