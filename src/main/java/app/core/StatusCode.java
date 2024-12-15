@@ -8,5 +8,21 @@ package app.core;
 // inteiro do enum.
 
 public enum StatusCode {
-    OK
+    OK(200);
+    
+    private final int code;
+
+    StatusCode(int code) {
+        this.code = code;
+    }
+
+    // Criei esses metodos só para testar o request.
+    public static StatusCode fromCode(int code) {
+        for (StatusCode status : values()) {
+            if (status.code == code) {
+                return status;
+            }
+        }
+        throw new IllegalArgumentException("Código de status não suportado: " + code);
+    }
 };

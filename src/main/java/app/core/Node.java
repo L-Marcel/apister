@@ -4,6 +4,7 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.util.List;
 
 import javafx.scene.control.TreeItem;
 
@@ -14,24 +15,31 @@ public class Node extends TreeItem<String> implements Externalizable {
 
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
-        // [TODO] Serialização de um nó.
+        out.writeUTF(getValue());
+        List<TreeItem<String>> children = getChildren();
+        out.writeInt(children.size());
 
-        // [TIP] Você precisará armazenar outros nós, talvez, se preferir
-        // usando writeObject. Acontece que a lista de filhos não 
-        // implementa Serializable, mas talvez seja convertível para
-        // uma LinkedList. Ainda assim esse método aqui é necessário.
+        for (TreeItem<String> child : children) {
+           out.writeObject(child);
+        }
     };
 
+    @SuppressWarnings("unchecked")
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        // [TODO] Deserialização de um nó.
-        
-        // [TIP] Você precisará obter outros nós, talvez, se preferir
-        // usando readObject.
+        setValue(in.readUTF());
+        int size = in.readInt();
+
+        for (int i = 0; i < size; i++) {
+            TreeItem<String> child = (TreeItem<String>) in.readObject();
+            getChildren().add(child);
+        }
     };
 
     public boolean childExists(String name) {
-        // [TODO] Verifica se tem algum filho com o nome buscado.
+        for (TreeItem<String> child : getChildren()) {
+            if(child.getValue().equals(name)) return true;
+        }
         return false;
     };
 };
