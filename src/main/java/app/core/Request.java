@@ -3,13 +3,17 @@ package app.core;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.Instant;
 import java.util.HashMap;
 
 public class Request extends Node {
     private RequestType type = RequestType.GET;
     private String url;
-    private String body;
+    private String body = "";
     private HashMap<String, String> headers;
     private Response lastResponse;
 
@@ -17,39 +21,80 @@ public class Request extends Node {
         super(name);
     };
 
-    public Response request() {
-        Instant requetedAt = Instant.now();
-        HashMap<String, String> headers = new HashMap<String, String>();
+    // Fiquei em dúvida se eu tratava as exceptions aqui na função, ou deixo pra a função que chamar ela.
+    // Acabei deixando a responsabilidade pra função que chama, mas posso mudar.
+    public Response request() throws IOException, InterruptedException {
+        Instant requestedAt = Instant.now();
+        HttpClient client = HttpClient.newHttpClient();
 
-        // [TODO] Faça uma requisição HTTP usando HttpRequest, HttpClient
-        // e HttpResponse<String>.
+        HttpRequest.Builder requestBuilder = HttpRequest
+                .newBuilder()
+                .uri(URI.create(this.url));
 
-        // [TIP] HttpResponse<String> é uma interface, por isso o Response
-        // herda ela. Alias, você não vai querer ter que implementá-la.
+        if (this.headers != null) {
+            this.headers.forEach(requestBuilder::header);
+        }
+
+        switch (this.type) {
+            case GET:
+                requestBuilder.GET();
+                break;
+            case POST:
+                requestBuilder.POST(HttpRequest.BodyPublishers.ofString(this.body));
+                break;
+            case PUT:
+                requestBuilder.PUT(HttpRequest.BodyPublishers.ofString(this.body));
+                break;
+            case DELETE:
+                requestBuilder.DELETE();
+                break;
+            default:
+                break;
+        }
+
+        HttpRequest request = requestBuilder.build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         return new Response(
-            requetedAt, 
+            requestedAt, 
             this.url, 
-            "", 
-            StatusCode.OK,
-            headers
+            response.body(), 
+            StatusCode.fromCode(response.statusCode()),
+            this.headers
         );
     };
 
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
-        // [TODO] Serialização de requisições.
+        out.writeUTF(getValue());
+        out.writeUTF(type.name());
+        out.writeUTF(url);
+        out.writeUTF(body);
+        
+        // lastResponse pode ser null?? Caso sim, depois mudo essa parte.
+        out.writeObject(lastResponse);
+        out.writeInt(headers.size());
 
-        // [TIP] Requisições são folhas!
-        // [TIP] Você pode usar super aqui.
+        for (String key : headers.keySet()) {
+            out.writeUTF(key);
+            out.writeUTF(headers.get(key));
+        }
     };
 
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        // [TODO] Deserialização de requisições. 
-
-        // [TIP] Requisições são folhas!
-        // [TIP] Você pode usar super aqui.
+        setValue(in.readUTF());
+        type = RequestType.valueOf(in.readUTF());
+        url = in.readUTF();
+        body = in.readUTF();
+        lastResponse = (Response) in.readObject();
+        
+        int size = in.readInt();
+        for (int i = 0; i < size; i++) {
+            String key = in.readUTF();
+            String value = in.readUTF();
+            headers.put(key, value);
+        }
     };
 
     public RequestType getType() {
