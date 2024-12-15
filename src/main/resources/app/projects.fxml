@@ -10,12 +10,12 @@
    <children>
       <VBox minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ToolBar prefHeight="40.0" prefWidth="200.0">
+            <ToolBar prefHeight="40.0" prefWidth="200.0" styleClass="projects-header">
               <items>
-                <Button fx:id="addButton" mnemonicParsing="false" onAction="#addProject" text="Adicionar" />
+                <Button fx:id="addButton" mnemonicParsing="false" onAction="#addProject" text="Adicionar" textFill="WHITE" />
               </items>
             </ToolBar>
-            <ListView fx:id="listView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+            <ListView fx:id="listView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="projects-list" VBox.vgrow="ALWAYS" />
          </children>
       </VBox>
    </children>

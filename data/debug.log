@@ -1,5 +1,17 @@
-[14/12/2024 - 17:33:58]:[Storage] Starting...
-[14/12/2024 - 17:33:58]:[Storage] Started.
-[14/12/2024 - 17:33:58]:[Storable] Loadded 1 projects.
-[14/12/2024 - 17:34:30]:[Storage] Finishing...
-[14/12/2024 - 17:34:30]:[Storage] Finished.
+[14/12/2024 - 21:05:13]:[Storage] Starting...
+[14/12/2024 - 21:05:13]:[Storage] Started.
+[14/12/2024 - 21:05:13]:[Storable] Creating projects database.
+[14/12/2024 - 21:05:18]:[Storable] Creating: project_abc.
+[14/12/2024 - 21:05:18]:[Storage] Tasks were requested.
+[14/12/2024 - 21:05:19]:[Storage] Task finished, project_abc was stored.
+[14/12/2024 - 21:05:20]:[Storage] Task finished, 1 projects were stored in a list.
+[14/12/2024 - 21:05:24]:[Storable] Creating: project_abcd.
+[14/12/2024 - 21:05:24]:[Storage] Tasks were requested.
+[14/12/2024 - 21:05:25]:[Storage] Task finished, project_abcd was stored.
+[14/12/2024 - 21:05:26]:[Storage] Task finished, 2 projects were stored in a list.
+[14/12/2024 - 21:05:44]:[Storable] Failed on load project_abcd.
+[14/12/2024 - 21:05:44]:[Error] app.core.Node; no valid constructor
+[14/12/2024 - 21:05:44]:[Storable] Creating project_abcd database.
+[14/12/2024 - 21:05:44]:[Storage] Tasks were requested.
+[14/12/2024 - 21:05:45]:[Storage] Task finished, project_abcd was stored.
+[14/12/2024 - 21:05:46]:[Storage] Task finished, 3 projects were stored in a list.

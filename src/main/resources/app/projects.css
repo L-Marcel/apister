@@ -1,0 +1,45 @@
+.projects-header {
+    background-color: #171a1f;
+    -fx-background-color: #171a1f;
+}
+
+.projects-list {
+    background-color: #24292F;
+    -fx-background-color: #24292F;
+}
+
+.project-cell {
+    background-color: #24292F;
+    -fx-background-color: #24292F;
+}
+
+.project-cell-alt {
+    background-color: #282E35;
+    -fx-background-color: #282E35;
+}
+
+.project-cell-pane {
+    background-color: #00000000;
+    -fx-background-color: #00000000;
+}
+
+.project-alt {
+    background-color: #24292F;
+    -fx-background-color: #24292F;
+}
+
+.project-name {
+    font-weight: 600;
+    -fx-font-weight: 600;
+    font-size: 18px;
+    -fx-font-size: 18px;
+    font-family: 'Oswald';
+    -fx-font-family: 'Oswald';
+}
+
+.project-path {
+    font-size: 13px;
+    -fx-font-size: 13px;
+    font-family: 'Quattrocento';
+    -fx-font-family: 'Quattrocento';
+}

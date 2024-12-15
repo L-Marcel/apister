@@ -1,15 +1,28 @@
 Button {
-    -fx-border-width: 0px;
-    -fx-background-color: #c0c0c0;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
+    -fx-border-width: 2px;
+    border-width: 2px;
+    -fx-border-color: #00000000;
+    border-color: #00000000;
+    -fx-background-color: #24292F;
+    background-color: #24292F;
+    -fx-border-radius: 12px;
+    border-radius: 12px;
+    -fx-background-radius: 12px;
+    color: #E2E2E2;
+    -fx-text-fill: #E2E2E2;
 }
 
 Button:hover  {
-    -fx-background-color: #a0a0a0;
+    -fx-background-color: #EF5B25;
+    background-color: #EF5B25;
 }
 
 Button:focused {
+    -fx-border-radius: 12px;
+    border-radius: 12px;
+    -fx-background-radius: 12px;
     -fx-border-width: 2px;
-    -fx-border-color: #000000;
+    border-width: 2px;
+    -fx-border-color: #E9531D;
+    border-color: #E9531D;
 }
