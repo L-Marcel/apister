@@ -1,12 +1,5 @@
 package app.core;
 
-// [TODO] Complete esse enum;
-// [TODO] Crie o construtor;
-// [TODO] Crie um método estático que recebe um valor
-// inteiro e retorna o seu respectivo enum;
-// [TODO] Crie um método que retorna o valor 
-// inteiro do enum.
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,10 +22,7 @@ public enum StatusCode {
     INTERNAL_SERVER_ERROR(500), NOT_IMPLEMENTED(501), BAD_GATEWAY(502), SERVICE_UNAVAILALE(503),
     GATEWAY_TIMEOUT(504), HTTP_VERSION_NOT_SUPPORTED(505), VARIANT_ALSO_NEGOTIATES(506),
     INSUFFICIENT_STORAGE(507), LOOP_DETECTED(508), NOT_EXTENDED(510),
-    NETWORK_AUTHENTICATION_REQUIRED(511),
-    //Não oficial do spring abaixo caso seja necessário
-    //METHOD_FALIURE(420),
-    ;
+    NETWORK_AUTHENTICATION_REQUIRED(511);
     private final int value;
     private static Map<Integer, StatusCode> map = new HashMap<Integer, StatusCode>();
     static {
@@ -49,7 +39,7 @@ public enum StatusCode {
     public StatusCode getEnum(int value) {
         StatusCode status = map.get(value);
         if (status == null) {
-            throw new IllegalArgumentException("No StatusCode with value " + value);
+            status = StatusCode.BAD_REQUEST;
         }
         return status;
     }
