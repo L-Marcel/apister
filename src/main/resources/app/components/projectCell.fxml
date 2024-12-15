@@ -32,9 +32,14 @@
                   <Insets left="24.0" />
                </padding>
             </VBox>
-            <Button minWidth="80.0" mnemonicParsing="false" onAction="#remove" prefWidth="80.0" text="Remove">
+            <Button minWidth="60.0" mnemonicParsing="false" prefWidth="60.0" text="Abrir">
                <HBox.margin>
-                  <Insets left="24.0" right="24.0" />
+                  <Insets left="24.0" />
+               </HBox.margin>
+            </Button>
+            <Button minWidth="85.0" mnemonicParsing="false" onAction="#remove" prefWidth="85.0" text="Remover">
+               <HBox.margin>
+                  <Insets left="12.0" right="24.0" />
                </HBox.margin>
             </Button>
          </children>
