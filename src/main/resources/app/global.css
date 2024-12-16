@@ -1,4 +1,4 @@
-TextField {
+.text-field {
     -fx-border-width: 0px;
     border-width: 0px;
     -fx-border-color: #00000000;
@@ -13,12 +13,12 @@ TextField {
     -fx-prompt-text-fill: #929292;
 }
 
-TextField:hover {
+.text-field:hover {
     cursor: text;
     -fx-cursor: text;
 }
 
-TextField:focused {
+.text-field:focused {
     -fx-border-radius: 12px;
     border-radius: 12px;
     -fx-background-radius: 14px;
@@ -28,7 +28,7 @@ TextField:focused {
     border-color: #E9531D;
 }
 
-Button {
+.button {
     -fx-border-width: 0px;
     border-width: 0px;
     -fx-border-color: #00000000;
@@ -42,14 +42,14 @@ Button {
     -fx-text-fill: #E2E2E2;
 }
 
-Button:hover  {
+.button:hover  {
     -fx-background-color: #1F2329;
     background-color: #1F2329;
     cursor: hand;
     -fx-cursor: hand;
 }
 
-Button:focused {
+.button:focused {
     -fx-border-radius: 12px;
     border-radius: 12px;
     -fx-background-radius: 14px;
@@ -72,4 +72,9 @@ Button:focused {
 .fill-button:focused {
     -fx-border-color: #E2E2E2;
     border-color: #E2E2E2;
+}
+
+.focus-indicator {
+    -fx-border-color: transparent;
+    border-color: transparent;
 }

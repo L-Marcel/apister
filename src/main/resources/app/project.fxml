@@ -16,78 +16,97 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="project-page" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <SplitPane dividerPositions="0.3" minHeight="400.0" minWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SplitPane dividerPositions="0.3" focusTraversable="false" minHeight="400.0" minWidth="600.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="project-first-content">
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <HBox prefHeight="25.0" prefWidth="200.0" spacing="10.0">
+                        <HBox alignment="CENTER_LEFT" minHeight="60.0" styleClass="project-first-header">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#back" text="Voltar" />
+                              <Button mnemonicParsing="false" onAction="#back" text="Voltar">
+                                 <HBox.margin>
+                                    <Insets left="14.0" right="14.0" />
+                                 </HBox.margin></Button>
                            </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
                         </HBox>
-                        <TreeView fx:id="treeView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+                        <TreeView fx:id="treeView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="project-tree" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets right="-1.0" />
+                           </VBox.margin></TreeView>
                      </children>
                   </VBox>
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="project-second-content">
                <children>
-                  <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <HBox prefHeight="25.0" prefWidth="200.0" spacing="10.0">
+                  <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0">
                            <children>
-                              <ChoiceBox fx:id="projectRequestTypeBox" prefWidth="80.0" />
-                              <TextField fx:id="projectURLInputBox" prefWidth="290.0" promptText="Digite o URL aqui..." />
-                           </children>
-                           <VBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </VBox.margin>
-                        </HBox>
-                        <TabPane prefHeight="203.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-                          <tabs>
-                            <Tab text="Cabeçalho">
-                                 <content>
-                                    <TextArea fx:id="projectRequestHeaderInputBox" />
-                                 </content>
-                              </Tab>
-                            <Tab text="Corpo">
-                                 <content>
-                                    <TextArea fx:id="projectRequestBodyInputBox" />
-                                 </content>
-                              </Tab>
-                          </tabs>
-                        </TabPane>
-                        <TitledPane animated="false" text="Resposta">
-                          <content>
-                            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="100.0">
+                              <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <SplitPane dividerPositions="0.29797979797979796" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                      <items>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="100.0">
-                                             <children>
-                                                <TextFlow fx:id="projectRequestResponseBox1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
-                                             </children>
-                                          </AnchorPane>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="100.0">
-                                             <children>
-                                                <TextFlow fx:id="projectRequestResponseBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
-                                             </children>
-                                          </AnchorPane>
-                                      </items>
-                                    </SplitPane>
+                                    <HBox alignment="CENTER_LEFT" minHeight="60.0" styleClass="project-second-header">
+                                       <children>
+                                          <ChoiceBox fx:id="projectRequestTypeBox" prefWidth="80.0">
+                                             <HBox.margin>
+                                                <Insets left="14.0" />
+                                             </HBox.margin>
+                                          </ChoiceBox>
+                                          <TextField fx:id="projectURLInputBox" prefWidth="290.0" promptText="Digite o URL aqui...">
+                                             <HBox.margin>
+                                                <Insets left="14.0" right="14.0" />
+                                             </HBox.margin>
+                                          </TextField>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <TabPane focusTraversable="false" styleClass="project-tabs" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                                      <tabs>
+                                        <Tab styleClass="project-tabs-header" text="Cabeçalho" />
+                                        <Tab styleClass="project-tabs-body" text="Corpo">
+                                             <content>
+                                                <TextArea fx:id="projectRequestBodyInputBox" />
+                                             </content>
+                                          </Tab>
+                                      </tabs>
+                                    </TabPane>
                                  </children>
-                              </AnchorPane>
-                          </content>
-                        </TitledPane>
-                     </children>
-                  </VBox>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane>
+                           <children>
+                              <TitledPane animated="false" styleClass="project-footer" text="Resposta" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <content>
+                                  <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                       <children>
+                                          <SplitPane dividerPositions="0.29797979797979796" layoutX="18.4" prefWidth="395.0" AnchorPane.bottomAnchor="-12.0" AnchorPane.leftAnchor="-12.0" AnchorPane.rightAnchor="-12.0" AnchorPane.topAnchor="-12.0">
+                                            <items>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="62.0" prefWidth="122.0">
+                                                   <children>
+                                                      <TextFlow fx:id="projectRequestResponseBox1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                   </children>
+                                                </AnchorPane>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="100.0">
+                                                   <children>
+                                                      <TextFlow fx:id="projectRequestResponseBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                   </children>
+                                                </AnchorPane>
+                                            </items>
+                                          </SplitPane>
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </TitledPane>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
                   <VBox alignment="CENTER" style="-fx-background-color: red;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <Label text="Crie ou selecione alguma requisiçar para começarmos!" />

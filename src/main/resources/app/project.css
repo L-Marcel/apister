@@ -1,0 +1,63 @@
+.project-main-div, .project-page {
+    -fx-background-insets: 0px;
+}
+
+.project-first-header, .project-second-header {
+    background-color: #171a1f;
+    -fx-background-color: #171a1f;
+}
+
+.project-tree {
+    background-color: #2E343B;
+    -fx-background-color: #2E343B;
+    -fx-background-insets: 0px;
+}
+
+.split-pane:horizontal > .split-pane-divider {
+    -fx-padding: 0px 2px;
+    padding: 0px 2px;
+    -fx-background-color: #31373f;
+    background-color: #31373f;
+}
+
+.split-pane:vertical > .split-pane-divider {
+    -fx-padding: 0px 2px;
+    padding: 0px 2px;
+    -fx-background-color: #31373f;
+    background-color: #31373f;
+}
+
+.tab-header-area {
+    -fx-background-insets: 0, 0 0 0 0;
+    -fx-padding: 0.0em 0.166667em 0.0em 0.0em;
+    padding: 0.0em 0.166667em 0.0em 0.0em;
+}
+
+.tab-header-background {
+    background-color: #171a1f;
+    -fx-background-color: #171a1f;
+}
+
+.tab-label {
+    color: #E2E2E2;
+    -fx-text-fill: #E2E2E2;
+}
+
+.tab {
+    background-color: #24292F;
+    -fx-background-color: #24292F;
+}
+
+.tab:focus {
+
+}
+
+.tab:hover {
+    cursor: hand;
+    -fx-cursor: hand;
+}
+
+.tab:selected {
+    background-color: #2E343B;
+    -fx-background-color: #2E343B;
+}
