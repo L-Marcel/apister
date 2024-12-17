@@ -9,6 +9,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.List;
 
 public class Request extends Node {
     private RequestType type = RequestType.GET;
@@ -19,6 +20,7 @@ public class Request extends Node {
 
     public Request(String name) {
         super(name);
+        headers = new HashMap<String, String>();
     };
 
     public Response request() throws IOException, InterruptedException {
@@ -58,7 +60,7 @@ public class Request extends Node {
             this.url, 
             response.body(), 
             StatusCode.fromCode(response.statusCode()),
-            this.headers
+            new HashMap<String, List<String>>(response.headers().map())
         );
 
         return this.lastResponse;

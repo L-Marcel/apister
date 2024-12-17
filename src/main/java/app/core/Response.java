@@ -3,12 +3,13 @@ package app.core;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.List;
 
 public class Response implements Serializable {
     private String message;
     private String url;
     private StatusCode statusCode;
-    private HashMap<String, String> headers;
+    private HashMap<String, List<String>> headers;
     private Instant requestedAt;
     private Instant receivedAt;
     
@@ -17,7 +18,7 @@ public class Response implements Serializable {
         String url, 
         String message,
         StatusCode statusCode,
-        HashMap<String, String> headers
+        HashMap<String, List<String>> headers
     ) {
         this.requestedAt = requestedAt;
         this.url = url;
@@ -51,11 +52,11 @@ public class Response implements Serializable {
         this.statusCode = statusCode;
     };
 
-    public HashMap<String, String> getHeaders() {
+    public HashMap<String, List<String>> getHeaders() {
         return headers;
     };
 
-    public void setHeaders(HashMap<String, String> headers) {
+    public void setHeaders(HashMap<String, List<String>> headers) {
         this.headers = headers;
     };
 

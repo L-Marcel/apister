@@ -1,4 +1,4 @@
-package app.controllers;
+package app.controllers.components;
 
 import java.io.File;
 import java.net.URL;
@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.ResourceBundle;
 
 import app.App;
+import app.controllers.ProjectController;
 import app.core.Projects;
 import app.layout.ProjectCell;
 import javafx.fxml.FXML;

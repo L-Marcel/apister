@@ -5,9 +5,9 @@
     border-color: #00000000;
     -fx-background-color: #24292F;
     background-color: #24292F;
-    -fx-border-radius: 12px;
-    border-radius: 12px;
-    -fx-background-radius: 14px;
+    -fx-border-radius: 4px;
+    border-radius: 4px;
+    -fx-background-radius: 6px;
     color: #E2E2E2;
     -fx-text-fill: #E2E2E2;
     -fx-prompt-text-fill: #929292;
@@ -19,9 +19,9 @@
 }
 
 .text-field:focused {
-    -fx-border-radius: 12px;
-    border-radius: 12px;
-    -fx-background-radius: 14px;
+    -fx-border-radius: 4px;
+    border-radius: 4px;
+    -fx-background-radius: 6px;
     -fx-border-width: 2px;
     border-width: 2px;
     -fx-border-color: #E9531D;
@@ -35,9 +35,9 @@
     border-color: #00000000;
     -fx-background-color: #24292F;
     background-color: #24292F;
-    -fx-border-radius: 12px;
-    border-radius: 12px;
-    -fx-background-radius: 14px;
+    -fx-border-radius: 4px;
+    border-radius: 4px;
+    -fx-background-radius: 6px;
     color: #E2E2E2;
     -fx-text-fill: #E2E2E2;
 }
@@ -50,9 +50,9 @@
 }
 
 .button:focused {
-    -fx-border-radius: 12px;
-    border-radius: 12px;
-    -fx-background-radius: 14px;
+    -fx-border-radius: 4px;
+    border-radius: 4px;
+    -fx-background-radius: 6px;
     -fx-border-width: 2px;
     border-width: 2px;
     -fx-border-color: #E9531D;
