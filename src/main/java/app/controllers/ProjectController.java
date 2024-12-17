@@ -8,6 +8,10 @@ import app.App;
 import app.core.Node;
 import app.core.Project;
 import app.core.Request;
+import app.layout.TableCellTextField;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableStringValue;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -41,13 +45,8 @@ public class ProjectController implements Initializable {
             else responseAnchorPane.setMaxHeight(0);
         });
 
-        this.keysTableColumn.setCellFactory(cell -> {
-            return new TableCell<Map.Entry<String, String>, String>();
-        });
-
-        this.valuesTableColumn.setCellFactory(cell -> {
-            return new TableCell<Map.Entry<String, String>, String>();
-        });
+        this.keysTableColumn.setCellFactory(cell -> new TableCellTextField());
+        this.valuesTableColumn.setCellFactory(cell -> new TableCellTextField());
 
         Request req = new Request("abc");
         req.getHeaders().put("Authorization", "Bearer");
@@ -63,6 +62,8 @@ public class ProjectController implements Initializable {
                     request.getHeaders().entrySet()
                 )
             );
+
+            System.out.println(this.headerTableView.getItems().size());
         };
     };
 
