@@ -9,15 +9,9 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.TableCell;
 
-public class TableCellTextField extends TableCell<Map.Entry<String, String>, String> {
-
-
-    public TableCellTextField() {
-        
-    };
-
+public class TableCellTextField extends TableCell<Map.Entry<String, String>, Integer> {
     @Override
-    public void updateItem(String value, boolean empty) {
+    public void updateItem(Integer value, boolean empty) {
         super.updateItem(value, empty);
 
         this.setPadding(new Insets(0));
@@ -35,7 +29,6 @@ public class TableCellTextField extends TableCell<Map.Entry<String, String>, Str
                 Parent cell = App.load("components/tableCellTextField", cellController);
 
                 this.setGraphic(cell);
-
                 if(this.getIndex() % 2 == 1) {
                     this.getStyleClass().add("table-cell-alt");
                 } else {
