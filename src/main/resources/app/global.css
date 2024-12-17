@@ -78,3 +78,27 @@
     -fx-border-color: transparent;
     border-color: transparent;
 }
+
+.scroll-bar {
+    -fx-background-color: #24292F;
+    background-color: #24292F;
+}
+
+.scroll-bar > .thumb {
+    background-color: #2E343B;
+    -fx-background-color: #2E343B;
+}
+
+.scroll-bar:vertical > .increment-button {
+    -fx-padding: 6px 4px 4px 4px;
+    padding: 6px 4px 4px 4px;
+    -fx-background-color: #24292F;
+    background-color: #24292F;
+}
+
+.scroll-bar:vertical > .decrement-button {
+    -fx-padding: 4px 4px 6px 4px;
+    padding: 4px 4px 6px 4px;
+    -fx-background-color: #24292F;
+    background-color: #24292F;
+}

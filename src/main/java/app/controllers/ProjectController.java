@@ -18,6 +18,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 
 public class ProjectController implements Initializable {
     private Project project;
@@ -37,9 +38,11 @@ public class ProjectController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resource) {
         this.treeView.setRoot(this.project.get());
+
         this.responseTitledPane.expandedProperty().addListener((event, old, current) -> {
             if (current) responseAnchorPane.setMaxHeight(AnchorPane.USE_COMPUTED_SIZE);
             else responseAnchorPane.setMaxHeight(0);
+            headerTableView.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         });
 
         // [TIP] A célula vai receber como valor o índice da parzinho de strings.
@@ -56,6 +59,9 @@ public class ProjectController implements Initializable {
         
         Request req = new Request("abc");
         req.getHeaders().put("Authorization", "Bearer");
+        req.getHeaders().put("Authorizatio1", "Bearer");
+        req.getHeaders().put("Authorizatio2", "Bearer");
+        req.getHeaders().put("Authorizatio3", "Bearer");
         this.select(req);
     };
 
