@@ -13,18 +13,19 @@
     -fx-background-insets: 0px;
 }
 
+.split-pane-divider {
+    -fx-background-color: #31373f;
+    background-color: #31373f;
+}
+
 .split-pane:horizontal > .split-pane-divider {
     -fx-padding: 0px 2px;
     padding: 0px 2px;
-    -fx-background-color: #31373f;
-    background-color: #31373f;
 }
 
 .split-pane:vertical > .split-pane-divider {
     -fx-padding: 0px 2px;
     padding: 0px 2px;
-    -fx-background-color: #31373f;
-    background-color: #31373f;
 }
 
 .tab-header-area {
@@ -48,16 +49,46 @@
     -fx-background-color: #24292F;
 }
 
-.tab:focus {
-
+.tab:selected {
+    background-color: #2E343B;
+    -fx-background-color: #2E343B;
 }
 
 .tab:hover {
     cursor: hand;
     -fx-cursor: hand;
+    background-color: #333A42;
+    -fx-background-color: #333A42;
 }
 
-.tab:selected {
-    background-color: #2E343B;
-    -fx-background-color: #2E343B;
+.titled-pane {
+    color: #E2E2E2;
+    -fx-text-fill: #E2E2E2;
+}
+
+.titled-pane > .title {   
+    -fx-border-radius: 0;
+    border-radius: 0;
+    -fx-background-radius: 0;
+    background-color: #171a1f;
+    -fx-background-color: #171a1f;
+    color: #E2E2E2;
+    -fx-text-fill: #E2E2E2;
+}
+
+.arrow-button {
+    background-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.arrow-button:focused {
+    -fx-border-width: 0;
+    border-width: 0;
+}
+
+.arrow-button > .arrow {
+    background-color: #E2E2E2;
+    -fx-background-color: #E2E2E2;
+    -fx-effect: null;
+    -fx-background-insets: 0;
 }

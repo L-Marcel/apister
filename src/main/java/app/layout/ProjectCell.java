@@ -3,7 +3,7 @@ package app.layout;
 import java.io.IOException;
 
 import app.App;
-import app.controllers.ProjectCellController;
+import app.controllers.components.ProjectCellController;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.ListCell;
