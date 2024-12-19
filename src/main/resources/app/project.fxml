@@ -7,6 +7,8 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
@@ -26,7 +28,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" minHeight="60.0" styleClass="project-first-header">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#back" text="Voltar">
+                              <Button mnemonicParsing="false" onAction="#back" prefWidth="70.0" text="Voltar">
                                  <HBox.margin>
                                     <Insets left="14.0" right="14.0" />
                                  </HBox.margin></Button>
@@ -42,9 +44,9 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="project-second-content">
                <children>
-                  <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0">
+                  <SplitPane dividerPositions="0.5" orientation="VERTICAL" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0">
                     <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0">
+                      <AnchorPane minHeight="0.0">
                            <children>
                               <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
@@ -65,27 +67,41 @@
                                           <Insets />
                                        </VBox.margin>
                                     </HBox>
-                                    <TabPane focusTraversable="false" styleClass="project-tabs" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                                    <TabPane focusTraversable="false" minWidth="415.0" styleClass="project-tabs" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                                       <tabs>
-                                        <Tab styleClass="project-tabs-header" text="Cabeçalho" />
+                                        <Tab styleClass="project-tabs-header" text="Cabeçalho">
+                                             <content>
+                                                <TableView fx:id="headerTableView" cacheShape="false" fixedCellSize="50.0" prefHeight="200.0">
+                                                  <columns>
+                                                    <TableColumn fx:id="keysTableColumn" editable="false" minWidth="210.0" prefWidth="-1.0" text="Chave" />
+                                                    <TableColumn fx:id="valuesTableColumn" editable="false" minWidth="210.0" prefWidth="-1.0" text="Valor" />
+                                                  </columns>
+                                                   <columnResizePolicy>
+                                                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                   </columnResizePolicy>
+                                                </TableView>
+                                             </content></Tab>
                                         <Tab styleClass="project-tabs-body" text="Corpo">
                                              <content>
-                                                <TextArea fx:id="projectRequestBodyInputBox" />
+                                                <TextArea fx:id="projectRequestBodyInputBox" text="{}" />
                                              </content>
                                           </Tab>
                                       </tabs>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
                                     </TabPane>
                                  </children>
                               </VBox>
                            </children>
                         </AnchorPane>
-                      <AnchorPane>
+                      <AnchorPane fx:id="responseAnchorPane">
                            <children>
-                              <TitledPane animated="false" styleClass="project-footer" text="Resposta" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <TitledPane fx:id="responseTitledPane" animated="false" styleClass="project-footer" text="Resposta" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <content>
                                   <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                        <children>
-                                          <SplitPane dividerPositions="0.29797979797979796" layoutX="18.4" prefWidth="395.0" AnchorPane.bottomAnchor="-12.0" AnchorPane.leftAnchor="-12.0" AnchorPane.rightAnchor="-12.0" AnchorPane.topAnchor="-12.0">
+                                          <SplitPane dividerPositions="0.29797979797979796" layoutX="18.4" minHeight="150.0" AnchorPane.bottomAnchor="-12.0" AnchorPane.leftAnchor="-12.0" AnchorPane.rightAnchor="-12.0" AnchorPane.topAnchor="-12.0">
                                             <items>
                                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="62.0" prefWidth="122.0">
                                                    <children>

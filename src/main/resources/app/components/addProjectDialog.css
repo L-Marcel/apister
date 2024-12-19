@@ -10,10 +10,6 @@
     -fx-text-fill: #E2E2E2;
 }
 
-.dialog-input {
-
-}
-
 .dialog-error {
     font-size: 13px;
     -fx-font-size: 13px;
