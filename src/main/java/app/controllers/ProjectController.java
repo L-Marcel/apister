@@ -40,6 +40,7 @@ public class ProjectController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resource) {
         this.treeView.setRoot(this.project.get());
+        this.treeView.setShowRoot(false);
         this.responseTitledPane.expandedProperty().addListener((event, old, current) -> {
             if (current) responseAnchorPane.setMaxHeight(AnchorPane.USE_COMPUTED_SIZE);
             else responseAnchorPane.setMaxHeight(0);
