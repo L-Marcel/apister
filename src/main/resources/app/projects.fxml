@@ -13,7 +13,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" minHeight="60.0" styleClass="projects-header">
                <children>
-                <Button fx:id="addButton" minWidth="80.0" mnemonicParsing="false" onAction="#addProject" prefWidth="80.0" styleClass="fill-button" text="Adicionar">
+                <Button fx:id="addButton" mnemonicParsing="false" onAction="#addProject" prefWidth="90.0" styleClass="fill-button" text="Adicionar">
                      <HBox.margin>
                         <Insets left="14.0" />
                      </HBox.margin>

@@ -41,9 +41,11 @@ public class ProjectController implements Initializable {
     public void initialize(URL url, ResourceBundle resource) {
         this.treeView.setRoot(this.project.get());
         this.treeView.setShowRoot(false);
+
         this.responseTitledPane.expandedProperty().addListener((event, old, current) -> {
             if (current) responseAnchorPane.setMaxHeight(AnchorPane.USE_COMPUTED_SIZE);
             else responseAnchorPane.setMaxHeight(0);
+            headerTableView.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         });
 
         this.headerTableView.setEditable(true);
