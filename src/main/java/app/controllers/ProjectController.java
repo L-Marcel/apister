@@ -1,32 +1,34 @@
 package app.controllers;
 
 import java.net.URL;
-import java.util.Map;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 
 import app.App;
 import app.core.Node;
 import app.core.Project;
 import app.core.Request;
-import app.layout.TableCellTextField;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.TreeView;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
+import javafx.util.Pair;
 
 public class ProjectController implements Initializable {
     private Project project;
     private Request request;
+    private ObservableList<Pair<String, String>> headersList;
 
-    @FXML private TableView<Map.Entry<String, String>> headerTableView;
-    @FXML private TableColumn<Map.Entry<String, String>, Integer> keysTableColumn;
-    @FXML private TableColumn<Map.Entry<String, String>, Integer> valuesTableColumn;
+    @FXML private TableView<Pair<String, String>> headerTableView;
+    @FXML private TableColumn<Pair<String, String>, String> keysTableColumn;
+    @FXML private TableColumn<Pair<String, String>, String> valuesTableColumn;
     @FXML private AnchorPane responseAnchorPane;
     @FXML private TitledPane responseTitledPane;
     @FXML private TreeView<String> treeView;
@@ -38,6 +40,7 @@ public class ProjectController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resource) {
         this.treeView.setRoot(this.project.get());
+        this.treeView.setShowRoot(false);
 
         this.responseTitledPane.expandedProperty().addListener((event, old, current) -> {
             if (current) responseAnchorPane.setMaxHeight(AnchorPane.USE_COMPUTED_SIZE);
@@ -45,44 +48,67 @@ public class ProjectController implements Initializable {
             headerTableView.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         });
 
-        // [TIP] A célula vai receber como valor o índice da parzinho de strings.
-        // Se passar o valor da chave, por exemplo, vai ficar atualizando 
-        // direto ao digitar. Vamos precisar armazena o Header em um List<Pair<String, String>>.
-        // Digo, não vejo outra alternativa, fique a vontade para tenta/pensar.
+        this.headerTableView.setEditable(true);
+        this.headersList = FXCollections.observableArrayList();
+        this.headerTableView.setItems(headersList);
 
-        this.keysTableColumn.setCellFactory(cell -> new TableCellTextField());
-        this.keysTableColumn.setCellValueFactory(cell -> new SimpleIntegerProperty(0).asObject());
-        this.valuesTableColumn.setCellFactory(cell -> new TableCellTextField());
-        this.valuesTableColumn.setCellValueFactory(cell -> new SimpleIntegerProperty(0).asObject());
+        this.keysTableColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getKey()));
+        this.keysTableColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        this.keysTableColumn.setOnEditCommit(event -> {
+            Pair<String, String> oldPair = event.getRowValue();
+            Pair<String, String> newPair = new Pair<>(event.getNewValue(), oldPair.getValue());
+            headersList.set(event.getTablePosition().getRow(), newPair);
+            addNewRow();
+        });
+
+        this.valuesTableColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getValue()));
+        this.valuesTableColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        this.valuesTableColumn.setOnEditCommit(event -> {
+            Pair<String, String> oldPair = event.getRowValue();
+            Pair<String, String> newPair = new Pair<>(oldPair.getKey(), event.getNewValue());
+            headersList.set(event.getTablePosition().getRow(), newPair);
+            addNewRow();
+        });
+
+        this.headerTableView.sortPolicyProperty().set(table -> {
+            FXCollections.sort(headersList, (pair1, pair2) -> {
+                boolean isPair1Empty = pair1.getKey().isEmpty() && pair1.getValue().isEmpty();
+                boolean isPair2Empty = pair2.getKey().isEmpty() && pair2.getValue().isEmpty();
+
+                if (isPair1Empty && !isPair2Empty) return 1;
+                if (!isPair1Empty && isPair2Empty) return -1;
+
+                Comparator<Pair<String, String>> comparator = table.getComparator();
+                return comparator == null ? 0 : comparator.compare(pair1, pair2);
+            });
+            return true;
+        });
+
 
         // [TIP] Parte estática para testes
-        
         Request req = new Request("abc");
-        req.getHeaders().put("Authorization", "Bearer");
-        req.getHeaders().put("Authorizatio1", "Bearer");
-        req.getHeaders().put("Authorizatio2", "Bearer");
-        req.getHeaders().put("Authorizatio3", "Bearer");
         this.select(req);
     };
 
     public void select(Node node) {
         if(node instanceof Request) {
             this.request = (Request) node;
-            
-            // [TIP] Isso aqui vai ter que mudar.
-            // Observação: criar um objeto observável e alterar ele
-            // não chama evento no observável, mas, aparentemente,
-            // alterar no observável chama o evento e altera
-            // na instância do original. É que os observáveis são
-            // supostamente Wrappers, e nada mais.
-
-            this.headerTableView.setItems(
-                FXCollections.observableArrayList(
-                    request.getHeaders().entrySet()
-                )
+            headersList.clear();
+            this.request.getHeaders().forEach((key, value) -> 
+                headersList.add(new Pair<>(key, value))
             );
+            this.headersList.add(new Pair<>("",""));
         };
     };
+
+    private void addNewRow() {
+        if (this.headersList.size() > 0 && 
+            !this.headersList.get(this.headersList.size() - 1).getKey().isEmpty() && 
+            !this.headersList.get(this.headersList.size() - 1).getValue().isEmpty()
+            ) {
+            this.headersList.add(new Pair<>("", ""));
+        }
+    }
 
     @FXML 
     public void back() {
