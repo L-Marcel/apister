@@ -13,12 +13,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.util.Pair;
 
 public class ProjectController implements Initializable {
@@ -26,6 +30,9 @@ public class ProjectController implements Initializable {
     private Request request;
     private ObservableList<Pair<String, String>> headersList;
 
+    @FXML private TextArea responseHeaderTextArea;
+    @FXML private TextArea responseBodyTextArea;
+    @FXML private AnchorPane rightAnchorPane;
     @FXML private TableView<Pair<String, String>> headerTableView;
     @FXML private TableColumn<Pair<String, String>, String> keysTableColumn;
     @FXML private TableColumn<Pair<String, String>, String> valuesTableColumn;
@@ -42,13 +49,18 @@ public class ProjectController implements Initializable {
         this.treeView.setRoot(this.project.get());
         this.treeView.setShowRoot(false);
 
+        this.rightAnchorPane.widthProperty().addListener((observable, old, current) -> {
+            double half = current.doubleValue() / 2.0d;
+            this.keysTableColumn.setPrefWidth(half + 0.5);
+            this.valuesTableColumn.setPrefWidth(half + 0.5);
+        });
+
         this.responseTitledPane.expandedProperty().addListener((event, old, current) -> {
             if (current) responseAnchorPane.setMaxHeight(AnchorPane.USE_COMPUTED_SIZE);
             else responseAnchorPane.setMaxHeight(0);
             headerTableView.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         });
 
-        this.headerTableView.setEditable(true);
         this.headersList = FXCollections.observableArrayList();
         this.headerTableView.setItems(headersList);
 

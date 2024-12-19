@@ -96,6 +96,8 @@
 .column-header-background .label {
     color: #E2E2E2;
     -fx-text-fill: #E2E2E2;
+    -fx-font-weight: normal;
+    font-weight: normal;
 }
 
 .column-header {
@@ -114,27 +116,35 @@
     border-width: 0px 1px 1px 1px;
     -fx-border-color: #24292F;
     border-color: #24292F;
+    -fx-alignment: CENTER;
+    -fx-padding: 0px 8px;
+    padding: 0px 8px;
 }
 
-.table-cell-pane {
+.text-area {
+    background-color: #333A42;
+    -fx-background-color: #333A42;
+    -fx-padding: 5px 0px 0px 0px;
+    padding: 5px 0px 0px 0px;
+    -fx-background-radius: 0px;
+    -fx-border-radius: 0px;
+    border-radius: 0px;
+    color: #E2E2E2;
+    -fx-text-fill: #E2E2E2;
+    -fx-font-weight: normal;
+    font-weight: normal;
+}
+
+.text-area .content {
+    -fx-background-radius: 0px;
+    -fx-border-radius: 0px;
+    border-radius: 0px;
     background-color: #171a1f;
     -fx-background-color: #171a1f;
-    -fx-border-width: 0px 1px 1px 1px;
-    border-width: 0px 1px 1px 1px;
-    -fx-border-color: #24292F;
-    border-color: #24292F;
+    -fx-font-weight: normal;
+    font-weight: normal;
 }
 
-.table-view .scroll-bar:horizontal * {
-    -fx-min-width: 0px;
-    min-width: 0px;
-    -fx-pref-width: 0px;
-    -fx-max-width: 0px;
-    max-width: 0px;
-
-    -fx-min-height: 0px;
-    min-height: 0px;
-    -fx-pref-height: 0px;
-    -fx-max-height: 0px;
-    max-height: 0px;
+.text-area > .scroll-pane {
+    -fx-padding: 0;
 }
