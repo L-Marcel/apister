@@ -102,3 +102,29 @@
     -fx-background-color: #24292F;
     background-color: #24292F;
 }
+
+.context-menu {
+    background-color: #24292F;
+    -fx-background-color: #24292F;
+    -fx-border-width: 0px;
+    border-width: 0px;
+    -fx-border-color: #00000000;
+    border-color: #00000000;
+    -fx-border-radius: 4px;
+    border-radius: 4px;
+    -fx-background-radius: 6px;
+    color: #E2E2E2;
+    -fx-text-fill: #E2E2E2;
+}
+
+.menu-item > .label {
+    color: #E2E2E2;
+    -fx-text-fill: #E2E2E2;
+}
+
+.menu-item:focused {
+    background-color: #2E343B;
+    -fx-background-color: #2E343B;
+    cursor: hand;
+    -fx-cursor: hand;
+}

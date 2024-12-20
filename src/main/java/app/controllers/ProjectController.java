@@ -8,13 +8,13 @@ import app.App;
 import app.core.Node;
 import app.core.Project;
 import app.core.Request;
+import app.core.RequestType;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -30,6 +30,7 @@ public class ProjectController implements Initializable {
     private Request request;
     private ObservableList<Pair<String, String>> headersList;
 
+    @FXML private ChoiceBox<RequestType> requestTypeChoiceBox;
     @FXML private TextArea responseHeaderTextArea;
     @FXML private TextArea responseBodyTextArea;
     @FXML private AnchorPane rightAnchorPane;
@@ -46,6 +47,9 @@ public class ProjectController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resource) {
+        this.requestTypeChoiceBox.getItems().addAll(RequestType.values());
+        this.requestTypeChoiceBox.getSelectionModel().select(0);
+
         this.treeView.setRoot(this.project.get());
         this.treeView.setShowRoot(false);
 
