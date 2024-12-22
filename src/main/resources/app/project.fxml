@@ -19,7 +19,7 @@
 
 <AnchorPane styleClass="project-page" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <SplitPane dividerPositions="0.3" focusTraversable="false" minHeight="400.0" minWidth="600.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0">
+      <SplitPane fx:id="mainSplitPane" dividerPositions="0.3" focusTraversable="false" minHeight="400.0" minWidth="600.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0">
         <items>
           <AnchorPane minWidth="0.0" styleClass="project-first-content" SplitPane.resizableWithParent="false">
                <children>
@@ -43,7 +43,7 @@
             </AnchorPane>
           <AnchorPane fx:id="rightAnchorPane" minWidth="0.0" styleClass="project-second-content" SplitPane.resizableWithParent="false">
                <children>
-                  <SplitPane dividerPositions="0.5" orientation="VERTICAL" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0">
+                  <SplitPane fx:id="secondSplitPane" dividerPositions="0.5" orientation="VERTICAL" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0">
                     <items>
                       <AnchorPane minWidth="0.0" SplitPane.resizableWithParent="false">
                            <children>
@@ -73,7 +73,7 @@
                                     </HBox>
                                     <TabPane focusTraversable="false" minHeight="0.0" minWidth="0.0" styleClass="project-tabs" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                                       <tabs>
-                                        <Tab styleClass="project-tabs-header" text="Cabeçalho">
+                                        <Tab text="Cabeçalho">
                                              <content>
                                                 <TableView fx:id="headerTableView" editable="true" fixedCellSize="50.0" prefHeight="200.0">
                                                   <columns>
@@ -82,7 +82,7 @@
                                                   </columns>
                                                 </TableView>
                                              </content></Tab>
-                                        <Tab styleClass="project-tabs-body" text="Corpo">
+                                        <Tab text="Corpo">
                                              <content>
                                                 <TextArea fx:id="projectRequestBodyInputBox" text="{}" wrapText="true" />
                                              </content>
@@ -98,20 +98,20 @@
                         </AnchorPane>
                       <AnchorPane fx:id="responseAnchorPane" SplitPane.resizableWithParent="false">
                            <children>
-                              <TitledPane fx:id="responseTitledPane" animated="false" cacheShape="false" minWidth="0.0" styleClass="project-footer" text="Resposta" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <TitledPane fx:id="responseTitledPane" animated="false" minWidth="0.0" styleClass="project-footer" text="Resposta" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <content>
                                   <AnchorPane>
                                        <children>
-                                          <SplitPane dividerPositions="0.5" layoutX="18.4" minHeight="60.0" AnchorPane.bottomAnchor="-12.0" AnchorPane.leftAnchor="-12.0" AnchorPane.rightAnchor="-12.0" AnchorPane.topAnchor="-12.0">
+                                          <SplitPane fx:id="thirdSplitPane" dividerPositions="0.5" layoutX="18.4" minHeight="60.0" AnchorPane.bottomAnchor="-12.0" AnchorPane.leftAnchor="-12.0" AnchorPane.rightAnchor="-12.0" AnchorPane.topAnchor="-12.0">
                                             <items>
-                                              <AnchorPane cacheHint="QUALITY" cacheShape="false" minHeight="0.0" minWidth="0.0" SplitPane.resizableWithParent="false">
+                                              <AnchorPane cacheHint="QUALITY" minHeight="0.0" minWidth="0.0" SplitPane.resizableWithParent="false">
                                                    <children>
-                                                      <TextArea fx:id="responseHeaderTextArea" cacheHint="QUALITY" cacheShape="false" editable="false" prefWidth="218.0" text="HTTP/1.1 200 OK&#10;Date: Thu, 19 Dec 2024 12:00:00 GMT&#10;Server: Apache/2.4.41 (Ubuntu)&#10;Content-Type: application/json&#10;Content-Length: 348&#10;Connection: keep-alive&#10;Cache-Control: max-age=3600&#10;ETag: &quot;123456789abcdef&quot;&#10;Last-Modified: Wed, 18 Dec 2024 10:30:00 GMT" wrapText="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0" />
+                                                      <TextArea fx:id="responseHeaderTextArea" editable="false" text="HTTP/1.1 200 OK&#10;Date: Thu, 19 Dec 2024 12:00:00 GMT&#10;Server: Apache/2.4.41 (Ubuntu)&#10;Content-Type: application/json&#10;Content-Length: 348&#10;Connection: keep-alive&#10;Cache-Control: max-age=3600&#10;ETag: &quot;123456789abcdef&quot;&#10;Last-Modified: Wed, 18 Dec 2024 10:30:00 GMT" wrapText="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0" />
                                                    </children>
                                                 </AnchorPane>
-                                              <AnchorPane cacheHint="QUALITY" cacheShape="false" minHeight="0.0" minWidth="0.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
+                                              <AnchorPane cacheHint="QUALITY" minHeight="0.0" minWidth="0.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
                                                    <children>
-                                                      <TextArea fx:id="responseHeaderTextArea1" cacheHint="QUALITY" cacheShape="false" editable="false" text="{&#10;  &quot;status&quot;: &quot;success&quot;&#10;}" wrapText="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0" />
+                                                      <TextArea fx:id="responseHeaderTextArea1" editable="false" text="{&#10;  &quot;status&quot;: &quot;success&quot;&#10;}" wrapText="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0" />
                                                    </children>
                                                 </AnchorPane>
                                             </items>
@@ -124,9 +124,12 @@
                         </AnchorPane>
                     </items>
                   </SplitPane>
-                  <VBox alignment="CENTER" style="-fx-background-color: red;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox alignment="CENTER" styleClass="blank-box" visible="false" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0">
                      <children>
-                        <Label text="Crie ou selecione alguma requisiçar para começarmos!" />
+                        <Label maxHeight="60.0" minWidth="60.0" styleClass="blank-box-label" text="Crie ou selecione alguma requisiçar para começarmos!" textAlignment="CENTER" wrapText="true">
+                           <VBox.margin>
+                              <Insets left="24.0" right="24.0" />
+                           </VBox.margin></Label>
                      </children>
                   </VBox>
                </children>

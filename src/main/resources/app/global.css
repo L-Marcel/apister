@@ -16,6 +16,8 @@
 .text-field:hover {
     cursor: text;
     -fx-cursor: text;
+    -fx-background-color: #1F2329;
+    background-color: #1F2329;
 }
 
 .text-field:focused {
@@ -99,6 +101,25 @@
 .scroll-bar:vertical > .decrement-button {
     -fx-padding: 4px 4px 6px 4px;
     padding: 4px 4px 6px 4px;
+    -fx-background-color: #24292F;
+    background-color: #24292F;
+}
+
+.scroll-bar:horizontal > .increment-button {
+    -fx-padding: 4px 6px 4px 4px;
+    padding: 4px 6px 4px 4px;
+    -fx-background-color: #24292F;
+    background-color: #24292F;
+}
+
+.scroll-bar:horizontal > .decrement-button {
+    -fx-padding: 4px 4px 4px 6px;
+    padding: 4px 4px 4px 6px;
+    -fx-background-color: #24292F;
+    background-color: #24292F;
+}
+
+.corner {
     -fx-background-color: #24292F;
     background-color: #24292F;
 }

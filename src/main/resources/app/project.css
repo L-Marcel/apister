@@ -13,9 +13,14 @@
     -fx-background-insets: 0px;
 }
 
-.split-pane-divider {
+.split-pane > .split-pane-divider {
     -fx-background-color: #31373f;
     background-color: #31373f;
+}
+
+.split-pane > .split-pane-divider:pressed {
+    -fx-background-color: #E24911;
+    background-color: #E24911;
 }
 
 .split-pane:horizontal > .split-pane-divider {
@@ -93,11 +98,21 @@
     -fx-background-insets: 0px;
 }
 
+.column-header-background {
+    background-color: #2E343B;
+    -fx-background-color: #2E343B;
+}
+
 .column-header-background .label {
     color: #E2E2E2;
     -fx-text-fill: #E2E2E2;
     -fx-font-weight: normal;
     font-weight: normal;
+}
+
+.filler {
+    background-color: transparent;
+    -fx-background-color: transparent;
 }
 
 .column-header {
@@ -133,6 +148,7 @@
     -fx-text-fill: #E2E2E2;
     -fx-font-weight: normal;
     font-weight: normal;
+    -fx-effect: none;
 }
 
 .text-area .content {
@@ -200,4 +216,19 @@
 .choice-box:focused .arrow {
     background-color: #EF5B25;
     -fx-background-color: #EF5B25;
+}
+
+.blank-box {
+    -fx-background-radius: 0px;
+    -fx-border-radius: 0px;
+    border-radius: 0px;
+    background-color: #171a1f;
+    -fx-background-color: #171a1f;
+}
+
+.blank-box-label {
+    -fx-font-weight: normal;
+    font-weight: normal;
+    color: #E2E2E2;
+    -fx-text-fill: #E2E2E2;
 }
