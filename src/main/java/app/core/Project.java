@@ -11,6 +11,12 @@ public class Project extends Storable<Node> {
         this.store();
     };
 
+    public Project(String name, Node node) {
+        super(name, node);
+        this.configNode(this.get());
+        this.store();
+    };
+
     private void configNode(Node node) {
         node.valueProperty().addListener((event) -> {
             this.store();

@@ -1,10 +1,14 @@
 package app.controllers;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import app.controllers.components.AddDialogProjectController;
+import app.core.Node;
 import app.core.Project;
 import app.core.Projects;
 import app.layout.Dialog;
@@ -13,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.stage.FileChooser;
 
 public class ProjectsController implements Initializable {
     @FXML private Button addButton;
@@ -43,4 +48,27 @@ public class ProjectsController implements Initializable {
             e.printStackTrace();
         };
     };
+
+    @FXML
+    public void importProject() {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Importe um projeto");
+            File file = fileChooser.showOpenDialog(null);
+            if (file == null) {
+                return;
+            }
+            FileInputStream fileIn = new FileInputStream(file);
+            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+            String name = objectIn.readUTF();
+            Node node = (Node) objectIn.readObject();
+            Project project = new Project(name,node);
+            Projects.getInstance().add(name);
+            if (node == null) { return;}
+            objectIn.close();
+            fileIn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 };
