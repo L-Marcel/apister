@@ -71,11 +71,11 @@
                                           <Insets />
                                        </VBox.margin>
                                     </HBox>
-                                    <TabPane focusTraversable="false" minHeight="0.0" minWidth="0.0" styleClass="project-tabs" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                                    <TabPane fx:id="tabPane" focusTraversable="false" minHeight="0.0" minWidth="0.0" styleClass="project-tabs" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                                       <tabs>
                                         <Tab text="Cabeçalho">
                                              <content>
-                                                <TableView fx:id="headerTableView" editable="true" fixedCellSize="50.0" prefHeight="200.0">
+                                                <TableView fx:id="headerTableView" editable="true" fixedCellSize="40.0" prefHeight="200.0">
                                                   <columns>
                                                     <TableColumn fx:id="keysTableColumn" minWidth="200.0" prefWidth="-1.0" text="Chave" />
                                                     <TableColumn fx:id="valuesTableColumn" minWidth="200.0" prefWidth="-1.0" text="Valor" />

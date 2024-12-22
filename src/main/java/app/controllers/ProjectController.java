@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -30,6 +31,7 @@ public class ProjectController implements Initializable {
     private Request request;
     private ObservableList<Pair<String, String>> headersList;
 
+    @FXML private TabPane tabPane;
     @FXML private ChoiceBox<RequestType> requestTypeChoiceBox;
     @FXML private TextArea responseHeaderTextArea;
     @FXML private TextArea responseBodyTextArea;
@@ -50,7 +52,29 @@ public class ProjectController implements Initializable {
         this.requestTypeChoiceBox.getItems().addAll(RequestType.values());
         this.requestTypeChoiceBox.getSelectionModel().select(0);
 
-        this.treeView.setRoot(this.project.get());
+        this.tabPane.heightProperty().addListener((event, old, current) -> {
+            this.headerTableView.setPrefHeight(current.doubleValue());
+            this.headerTableView.setMaxHeight(current.doubleValue());
+        });
+
+        this.tabPane.widthProperty().addListener((event, old, current) -> {
+            this.headerTableView.setPrefWidth(current.doubleValue());
+            this.headerTableView.setMaxWidth(current.doubleValue());
+        });
+
+        Node folder = new Node("tests");
+        Node another = new Node("another");
+        Node anotherOne = new Node("one");
+        another.getChildren().add(anotherOne);
+        Request req = new Request("abc");
+        folder.getChildren().add(req);
+        folder.getChildren().add(new Request("now"));
+        folder.getChildren().add(another);
+        Request p = new Request("final");
+        Node fakeRoot = new Node("root");
+        fakeRoot.getChildren().add(folder);
+        fakeRoot.getChildren().add(p);
+        this.treeView.setRoot(fakeRoot);
         this.treeView.setShowRoot(false);
 
         this.rightAnchorPane.widthProperty().addListener((observable, old, current) -> {
@@ -102,7 +126,7 @@ public class ProjectController implements Initializable {
 
 
         // [TIP] Parte estática para testes
-        Request req = new Request("abc");
+        
         this.select(req);
     };
 
