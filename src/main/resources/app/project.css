@@ -7,10 +7,46 @@
     -fx-background-color: #171a1f;
 }
 
-.project-tree {
+.tree-view, .tree-cell {
+    background-color: #24292F;
+    -fx-background-color: #24292F;
+    -fx-background-insets: 0px;
+    color: #E2E2E2;
+    -fx-text-fill: #E2E2E2;
+}
+
+.tree-cell:expanded {
     background-color: #2E343B;
     -fx-background-color: #2E343B;
+}
+
+.tree-cell:filled:hover {
+    background-color: #333A42;
+    -fx-background-color: #333A42;
+    cursor: hand;
+    -fx-cursor: hand;
+}
+
+.tree-cell .arrow {
+    background-color: #E2E2E2;
+    -fx-background-color: #E2E2E2;
+    -fx-effect: null;
     -fx-background-insets: 0px;
+}
+
+.tree-cell:filled:hover .arrow {
+    background-color: #EF5B25;
+    -fx-background-color: #EF5B25;
+}
+
+.tree-cell:selected {
+    background-color: #E24911;
+    -fx-background-color: #E24911;
+}
+
+.tree-cell:empty {
+    background-color: #24292F;
+    -fx-background-color: #24292F;
 }
 
 .split-pane > .split-pane-divider {

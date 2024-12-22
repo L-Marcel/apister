@@ -33,9 +33,9 @@
                                  </HBox.margin></Button>
                            </children>
                         </HBox>
-                        <TreeView fx:id="treeView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="project-tree" VBox.vgrow="ALWAYS">
+                        <TreeView fx:id="treeView" fixedCellSize="22.0" showRoot="false" VBox.vgrow="ALWAYS">
                            <VBox.margin>
-                              <Insets right="-1.0" />
+                              <Insets right="-1.0" top="-1.0" />
                            </VBox.margin></TreeView>
                      </children>
                   </VBox>
