@@ -13,6 +13,10 @@ public class Node extends TreeItem<String> implements Externalizable {
         super(name);
     };
 
+    public Node() {
+        super();
+    }
+
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeUTF(getValue());
