@@ -51,16 +51,16 @@ public class ProjectCellController implements Initializable {
     @FXML
     public void remove() {
         try {
-            Dialog<String> dialog = new Dialog<String>(
+            Dialog<Boolean> dialog = new Dialog<Boolean>(
                     null,
                     "components/removeProjectDialog",
                     new RemoveDialogProjectController()
             );
-            String confirm = dialog.showAndGet();
-            if (confirm == null) {
+            Boolean confirm = dialog.showAndGet();
+            if (confirm == null || !confirm) {
                 return;
             }
-            if (confirm.equals("confirm")) {
+            else {
                 Projects projects = Projects.getInstance();
                 String name = this.cell.getItem();
                 File file = new File("data/project_" + name + ".dat");
@@ -78,21 +78,18 @@ public class ProjectCellController implements Initializable {
         try {
             Projects projects = Projects.getInstance();
             String name = this.cell.getItem();
-            File file;
-            FileOutputStream fileOut;
-            ObjectOutputStream objectOutputStream;
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Exportar projeto");
             fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Dados", "*.dat"));
             fileChooser.setInitialFileName("project_" + name + ".dat");
-            file = fileChooser.showSaveDialog(null);
+            File file = fileChooser.showSaveDialog(null);
             if (file == null) {
                 return;
             }
-            fileOut = new FileOutputStream(file);
-            objectOutputStream = new ObjectOutputStream(fileOut);
+            FileOutputStream fileOut = new FileOutputStream(file);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOut);
             Project project = new Project(name);
-            objectOutputStream.writeUTF("project_" + name + ".dat");
+            objectOutputStream.writeUTF(name);
             objectOutputStream.writeObject(project.get());
             objectOutputStream.close();
             fileOut.close();

@@ -12,17 +12,17 @@ import javafx.scene.input.KeyEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class RemoveDialogProjectController extends DialogController<String> implements Initializable {
+public class RemoveDialogProjectController extends DialogController<Boolean> implements Initializable {
 
     
     @FXML
     public void confirm() {
-        this.close("confirm");
+        this.close(true);
     }
 
     @Override
     public void cancel() {
-        this.close("cancel");
+        this.close(false);
     };
 
     @Override

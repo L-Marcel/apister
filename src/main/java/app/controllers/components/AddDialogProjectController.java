@@ -29,6 +29,10 @@ public class AddDialogProjectController extends DialogController<String> impleme
         this.errorLabel.getStyleClass().add("dialog-error");
         this.textField.requestFocus();
     };
+
+    public void setTextField (String text) {
+        this.textField.setText(text);
+    }
     
     @FXML
     public void confirm() {
