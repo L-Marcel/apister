@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 
-public class JsonHighlighter extends Highlighter {
-    public JsonHighlighter(
+public class HeaderHighlighter extends Highlighter {
+    public HeaderHighlighter(
         TextFlow textFlow,
         TextArea textArea,
         ScrollPane scrollPane
@@ -21,7 +21,7 @@ public class JsonHighlighter extends Highlighter {
     @Override
     protected Text[] computeTexts(String line) {
         ArrayList<String> keys = new ArrayList<String>(this.PATTERNS.keySet());
-        return this.computeTexts(line, keys, 1);
+        return this.computeTexts(line, keys, 0);
     };
 
     private Text[] computeTexts(String line, ArrayList<String> keys, int index) {

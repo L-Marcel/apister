@@ -311,19 +311,25 @@
 }
 
 .token-string {
-    color: #fa875d;
-    -fx-fill: #fa875d;
-    fill: #fa875d;
-}
-
-.token-boolean {
     color: #fad55d;
     -fx-fill: #fad55d;
     fill: #fad55d;
 }
 
-.token-number {
+.token-boolean {
     color: #5dfae0;
     -fx-fill: #5dfae0;
     fill: #5dfae0;
+}
+
+.token-number {
+    color: #5de8fa;
+    -fx-fill: #5de8fa;
+    fill: #5de8fa;
+}
+
+.token-key {
+    color: #fa875d;
+    -fx-fill: #fa875d;
+    fill: #fa875d;
 }

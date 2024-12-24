@@ -89,7 +89,7 @@
                                              <content>
                                                 <StackPane prefHeight="150.0" prefWidth="200.0">
                                                    <children>
-                                                      <TextArea fx:id="bodyTextArea" prefHeight="200.0" prefWidth="200.0">
+                                                      <TextArea fx:id="bodyTextArea">
                                                          <padding>
                                                             <Insets top="4.0" />
                                                          </padding>
@@ -132,12 +132,50 @@
                                             <items>
                                               <AnchorPane cacheHint="QUALITY" minHeight="0.0" minWidth="0.0" SplitPane.resizableWithParent="false">
                                                    <children>
-                                                      <TextArea fx:id="responseHeaderTextArea" editable="false" text="HTTP/1.1 200 OK&#10;Date: Thu, 19 Dec 2024 12:00:00 GMT&#10;Server: Apache/2.4.41 (Ubuntu)&#10;Content-Type: application/json&#10;Content-Length: 348&#10;Connection: keep-alive&#10;Cache-Control: max-age=3600&#10;ETag: &quot;123456789abcdef&quot;&#10;Last-Modified: Wed, 18 Dec 2024 10:30:00 GMT" wrapText="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0" />
+                                                      <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                         <children>
+                                                            <TextArea fx:id="responseHeaderTextArea" editable="false" />
+                                                            <ScrollPane fx:id="responseHeaderTextFlowScrollPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mouseTransparent="true" styleClass="text-flow-scroll-pane">
+                                                               <content>
+                                                                  <TextFlow fx:id="responseHeaderTextFlow" mouseTransparent="true">
+                                                                     <padding>
+                                                                        <Insets bottom="4.0" left="8.0" right="8.0" top="4.0" />
+                                                                     </padding>
+                                                                  </TextFlow>
+                                                               </content>
+                                                               <StackPane.margin>
+                                                                  <Insets top="-1.0" />
+                                                               </StackPane.margin>
+                                                               <padding>
+                                                                  <Insets top="1.0" />
+                                                               </padding>
+                                                            </ScrollPane>
+                                                         </children>
+                                                      </StackPane>
                                                    </children>
                                                 </AnchorPane>
                                               <AnchorPane fx:id="responseBodyAnchorPane" cacheHint="QUALITY" minHeight="0.0" minWidth="0.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
                                                    <children>
-                                                      <TextArea editable="false" text="{&#10;  &quot;status&quot;: &quot;success&quot;,&#10;  &quot;code&quot;: 200&#10;}" wrapText="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0" />
+                                                      <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                         <children>
+                                                            <TextArea fx:id="responseBodyTextArea" editable="false" />
+                                                            <ScrollPane fx:id="responseBodyTextFlowScrollPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mouseTransparent="true" styleClass="text-flow-scroll-pane">
+                                                               <content>
+                                                                  <TextFlow fx:id="responseBodyTextFlow" mouseTransparent="true">
+                                                                     <padding>
+                                                                        <Insets bottom="4.0" left="8.0" right="8.0" top="4.0" />
+                                                                     </padding>
+                                                                  </TextFlow>
+                                                               </content>
+                                                               <StackPane.margin>
+                                                                  <Insets top="-1.0" />
+                                                               </StackPane.margin>
+                                                               <padding>
+                                                                  <Insets top="1.0" />
+                                                               </padding>
+                                                            </ScrollPane>
+                                                         </children>
+                                                      </StackPane>
                                                    </children>
                                                 </AnchorPane>
                                             </items>
