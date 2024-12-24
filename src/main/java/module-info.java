@@ -1,8 +1,9 @@
 module app {
-    requires javafx.controls;
+    requires transitive javafx.controls;
     requires javafx.fxml;
     requires transitive javafx.graphics;
     requires java.net.http;
+    requires javafx.base;
 
     opens app to javafx.fxml;
     exports app;

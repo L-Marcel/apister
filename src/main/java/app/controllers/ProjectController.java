@@ -9,12 +9,14 @@ import app.core.Node;
 import app.core.Project;
 import app.core.Request;
 import app.core.RequestType;
+import app.layout.JsonHighlighter;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -24,17 +26,23 @@ import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
+import javafx.scene.text.TextFlow;
 import javafx.util.Pair;
 
 public class ProjectController implements Initializable {
     private Project project;
     private Request request;
+    private JsonHighlighter bodyJsonHighlighter;
     private ObservableList<Pair<String, String>> headersList;
 
+    @FXML private ScrollPane bodyTextFlowScrollPane;
+    @FXML private TextArea bodyTextArea;
+    @FXML private TextFlow bodyTextFlow;
+
+    @FXML private AnchorPane responseBodyAnchorPane;
+    @FXML private TextArea responseHeaderTextArea;
     @FXML private TabPane tabPane;
     @FXML private ChoiceBox<RequestType> requestTypeChoiceBox;
-    @FXML private TextArea responseHeaderTextArea;
-    @FXML private TextArea responseBodyTextArea;
     @FXML private AnchorPane rightAnchorPane;
     @FXML private TableView<Pair<String, String>> headerTableView;
     @FXML private TableColumn<Pair<String, String>, String> keysTableColumn;
@@ -49,6 +57,14 @@ public class ProjectController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resource) {
+        this.bodyJsonHighlighter = new JsonHighlighter(this.bodyTextFlow, this.bodyTextArea, this.bodyTextFlowScrollPane);
+        this.bodyJsonHighlighter.setText("{\r\n" +
+            "\t\"dsadas\": \"efdasdas\",\r\n" +
+            "\t\"fdsfds\": true,\r\n" +
+            "\t\"dsadas\": 45644 \r\n" +
+            "}"
+        );
+
         this.requestTypeChoiceBox.getItems().addAll(RequestType.values());
         this.requestTypeChoiceBox.getSelectionModel().select(0);
 

@@ -177,19 +177,49 @@
     -fx-effect: none;
 }
 
-.text-area {
-    background-color: #333A42;
-    -fx-background-color: #333A42;
-    -fx-padding: 5px 0px 0px 0px;
-    padding: 5px 0px 0px 0px;
+.text-flow-scroll-pane, .text-flow-scroll-pane .viewport {
     -fx-background-radius: 0px;
     -fx-border-radius: 0px;
     border-radius: 0px;
-    color: #E2E2E2;
-    -fx-text-fill: #E2E2E2;
+    -fx-background-color: #00000000;
+    background-color: #00000000;
+}
+
+.text-flow {
+    -fx-background-radius: 0px;
+    -fx-border-radius: 0px;
+    border-radius: 0px;
+    -fx-background-color: #00000000;
+    background-color: #00000000;
     -fx-font-weight: normal;
     font-weight: normal;
     -fx-effect: none;
+}
+
+.text-flow > * {
+    color: #E2E2E2;
+    -fx-text-fill: #E2E2E2;
+    -fx-line-spacing: 0px;
+}
+
+.text-area {
+    background-color: #333A42;
+    -fx-background-color: #333A42;
+    -fx-background-radius: 0px;
+    -fx-border-radius: 0px;
+    border-radius: 0px;
+    -fx-text-fill: transparent;
+    -fx-highlight-text-fill: transparent;
+    -fx-font-weight: normal;
+    font-weight: normal;
+    -fx-effect: none;
+}
+
+.text-area .text {
+    -fx-line-spacing: 0px;
+    color: transparent;
+    -fx-fill: transparent;
+    fill: transparent;
 }
 
 .text-area .content {
@@ -272,4 +302,28 @@
     font-weight: normal;
     color: #E2E2E2;
     -fx-text-fill: #E2E2E2;
+}
+
+.token-none {
+    color: #E2E2E2;
+    -fx-fill: #E2E2E2;
+    fill: #E2E2E2;
+}
+
+.token-string {
+    color: #fa875d;
+    -fx-fill: #fa875d;
+    fill: #fa875d;
+}
+
+.token-boolean {
+    color: #fad55d;
+    -fx-fill: #fad55d;
+    fill: #fad55d;
+}
+
+.token-number {
+    color: #5dfae0;
+    -fx-fill: #5dfae0;
+    fill: #5dfae0;
 }
