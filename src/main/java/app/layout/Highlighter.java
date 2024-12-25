@@ -1,7 +1,9 @@
 package app.layout;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javafx.scene.control.ScrollPane;
@@ -10,15 +12,13 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 public abstract class Highlighter {
-    protected final Pattern KEY_REG = Pattern.compile("^([\\w-]+)(?:)", Pattern.MULTILINE);
-    protected final Pattern STRING_REG = Pattern.compile("(\\\"([^\\\"]*)\\\"|\\'.\\'|\\'\\')");
-    protected final Pattern BOOLEAN_REG = Pattern.compile("(true|false)");
-    protected final Pattern NUMBER_REG = Pattern.compile("(\\d)");
+    static final Pattern HEADER_KEY_REG = Pattern.compile("^([\\w-]+)(?:)", Pattern.MULTILINE);
+    static final Pattern STRING_REG = Pattern.compile("(\\\"([^\\\"]*)\\\"|\\'.\\'|\\'\\')");
+    static final Pattern JSON_KEY_REG = Pattern.compile("(\\\"([^\\\"]*)\\\"(?=[ \t]*:))", Pattern.MULTILINE);
+    static final Pattern BOOLEAN_REG = Pattern.compile("(true|false)");
+    static final Pattern NUMBER_REG = Pattern.compile("(\\d)");
 
-    protected final LinkedHashMap<String, Pattern> PATTERNS = new LinkedHashMap<String, Pattern>(
-        Map.of("key", KEY_REG, "string", STRING_REG, "boolean", BOOLEAN_REG, "number", NUMBER_REG)
-    );
-
+    protected LinkedHashMap<String, Pattern> patterns;
     protected ScrollPane scrollPane;
     protected TextFlow textFlow;
     protected TextArea textArea;
@@ -28,6 +28,7 @@ public abstract class Highlighter {
         TextArea textArea,
         ScrollPane scrollPane
     ) {
+        this.patterns = initPatterns();
         this.textArea = textArea;
         this.textFlow = textFlow;
         this.scrollPane = scrollPane;
@@ -73,5 +74,42 @@ public abstract class Highlighter {
         this.textFlow.getChildren().addAll(this.computeTexts(content));
     };
 
+    protected abstract LinkedHashMap<String, Pattern> initPatterns();
     protected abstract Text[] computeTexts(String line);
+    
+    protected Text[] defaultComputeTexts(String line) {
+        ArrayList<String> keys = new ArrayList<String>(this.patterns.keySet());
+        return this.defaultComputeTexts(line, keys, 0);
+    };
+    
+    protected Text[] defaultComputeTexts(String line, ArrayList<String> keys, int index) {
+        LinkedList<Text> texts = new LinkedList<Text>();
+        if(line.isEmpty()) return texts.toArray(Text[]::new);
+        else if(index >= keys.size()) {
+            Text text = new Text(line);
+            text.getStyleClass().add("token-none");
+            texts.add(text);
+            return texts.toArray(Text[]::new);
+        };
+
+        String key = keys.get(index);
+        Matcher matcher = this.patterns.get(key).matcher(line);
+        if(matcher.find()) {
+            String before = line.substring(0, matcher.start());
+            for(Text beforeText : this.defaultComputeTexts(before, keys, index)) texts.add(beforeText);
+
+            String match = matcher.group();
+
+            Text text = new Text(match);
+            text.getStyleClass().add("token-" + key);
+            texts.add(text);
+
+            String after = line.substring(matcher.end());
+            for(Text afterText : this.defaultComputeTexts(after, keys, index)) texts.add(afterText);
+        } else {
+            for(Text text : this.defaultComputeTexts(line, keys, index + 1)) texts.add(text);
+        };
+
+        return texts.toArray(Text[]::new);
+    };
 };
