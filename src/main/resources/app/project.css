@@ -70,7 +70,7 @@
 }
 
 .tab-header-area {
-    -fx-background-insets: 0, 0 0 0 0px;
+    -fx-background-insets: 0px;
     -fx-padding: 0.0em 0.166667em 0.0em 0.0em;
     padding: 0.0em 0.166667em 0.0em 0.0em;
 }
@@ -187,6 +187,10 @@
 
 .text-flow {
     -fx-background-radius: 0px;
+    -fx-font-family: monospace;
+    font-family: monospace;
+    -fx-tab-size: 2;
+    tab-size: 2;
     -fx-border-radius: 0px;
     border-radius: 0px;
     -fx-background-color: #00000000;
@@ -196,10 +200,18 @@
     -fx-effect: none;
 }
 
-.text-flow > * {
-    color: #E2E2E2;
-    -fx-text-fill: #E2E2E2;
-    -fx-line-spacing: 0px;
+.text-flow > *, .code-text {
+    -fx-font-family: monospace;
+    font-family: monospace;
+    -fx-tab-size: 2;
+    tab-size: 2;
+    color: #d1dd2e50;
+    -fx-text-fill: #d1dd2e50;
+}
+
+.top-bar {
+    background-color: #333A42;
+    -fx-background-color: #333A42;
 }
 
 .text-area {
@@ -208,18 +220,27 @@
     -fx-background-radius: 0px;
     -fx-border-radius: 0px;
     border-radius: 0px;
-    -fx-text-fill: transparent;
-    -fx-highlight-text-fill: transparent;
+    -fx-text-fill: #dd2e2e50;
+    -fx-highlight-text-fill: #dd2e2e50;
+    -fx-font-family: monospace;
+    font-family: monospace;
+    -fx-tab-size: 2;
+    tab-size: 2;
     -fx-font-weight: normal;
     font-weight: normal;
     -fx-effect: none;
+    -fx-line-spacing: 0px;
 }
 
 .text-area .text {
     -fx-line-spacing: 0px;
-    color: transparent;
-    -fx-fill: transparent;
-    fill: transparent;
+    -fx-font-family: monospace;
+    font-family: monospace;
+    -fx-tab-size: 2;
+    tab-size: 2;
+    color: #dd2e2e50;
+    -fx-fill: #dd2e2e50;
+    fill: #dd2e2e50;
 }
 
 .text-area .content {
@@ -230,6 +251,10 @@
     -fx-background-color: #171a1f;
     -fx-font-weight: normal;
     font-weight: normal;
+    -fx-font-family: monospace;
+    font-family: monospace;
+    -fx-tab-size: 2;
+    tab-size: 2;
 }
 
 .text-area > .scroll-pane {

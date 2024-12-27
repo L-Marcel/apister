@@ -18,6 +18,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
 <AnchorPane styleClass="project-page" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
@@ -87,29 +88,35 @@
                                              </content></Tab>
                                         <Tab text="Corpo">
                                              <content>
-                                                <StackPane prefHeight="150.0" prefWidth="200.0">
+                                                <StackPane alignment="TOP_LEFT" styleClass="top-bar">
                                                    <children>
                                                       <TextArea fx:id="bodyTextArea">
-                                                         <padding>
-                                                            <Insets top="4.0" />
-                                                         </padding>
+                                                         <font>
+                                                            <Font name="Monospaced Regular" size="12.0" />
+                                                         </font>
+                                                         <StackPane.margin>
+                                                            <Insets />
+                                                         </StackPane.margin>
                                                       </TextArea>
-                                                      <ScrollPane fx:id="bodyTextFlowScrollPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mouseTransparent="true" styleClass="text-flow-scroll-pane">
-                                                         <content>
-                                                            <TextFlow fx:id="bodyTextFlow" mouseTransparent="true">
-                                                               <padding>
-                                                                  <Insets bottom="4.0" left="8.0" right="8.0" top="4.0" />
-                                                               </padding>
-                                                            </TextFlow>
-                                                         </content>
+                                                      <ScrollPane fx:id="bodyTextFlowScrollPane" mouseTransparent="true" styleClass="text-flow-scroll-pane" StackPane.alignment="TOP_LEFT">
                                                          <StackPane.margin>
                                                             <Insets top="-1.0" />
                                                          </StackPane.margin>
                                                          <padding>
-                                                            <Insets top="5.0" />
+                                                            <Insets top="1.0" />
                                                          </padding>
+                                                         <content>
+                                                            <TextFlow fx:id="bodyTextFlow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true">
+                                                               <padding>
+                                                                  <Insets bottom="4.0" left="8.0" top="4.0" />
+                                                               </padding>
+                                                            </TextFlow>
+                                                         </content>
                                                       </ScrollPane>
                                                    </children>
+                                                   <padding>
+                                                      <Insets top="4.0" />
+                                                   </padding>
                                                 </StackPane>
                                              </content>
                                           </Tab>
@@ -126,20 +133,26 @@
                            <children>
                               <TitledPane fx:id="responseTitledPane" animated="false" minWidth="0.0" styleClass="project-footer" text="Resposta" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <content>
-                                  <AnchorPane>
+                                  <AnchorPane styleClass="top-bar">
                                        <children>
-                                          <SplitPane fx:id="thirdSplitPane" dividerPositions="0.5" layoutX="18.4" minHeight="60.0" AnchorPane.bottomAnchor="-12.0" AnchorPane.leftAnchor="-12.0" AnchorPane.rightAnchor="-12.0" AnchorPane.topAnchor="-12.0">
+                                          <SplitPane fx:id="thirdSplitPane" dividerPositions="0.5" layoutX="18.4" minHeight="60.0" styleClass="top-bar" AnchorPane.bottomAnchor="-12.0" AnchorPane.leftAnchor="-12.0" AnchorPane.rightAnchor="-12.0" AnchorPane.topAnchor="-12.0">
                                             <items>
-                                              <AnchorPane cacheHint="QUALITY" minHeight="0.0" minWidth="0.0" SplitPane.resizableWithParent="false">
+                                              <AnchorPane cacheHint="QUALITY" minHeight="0.0" minWidth="0.0">
                                                    <children>
-                                                      <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                      <StackPane alignment="TOP_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                          <children>
-                                                            <TextArea fx:id="responseHeaderTextArea" editable="false" />
-                                                            <ScrollPane fx:id="responseHeaderTextFlowScrollPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mouseTransparent="true" styleClass="text-flow-scroll-pane">
+                                                            <TextArea fx:id="responseHeaderTextArea" editable="false">
+                                                               <font>
+                                                                  <Font name="Monospaced Regular" size="12.0" />
+                                                               </font>
+                                                               <StackPane.margin>
+                                                                  <Insets />
+                                                               </StackPane.margin></TextArea>
+                                                            <ScrollPane fx:id="responseHeaderTextFlowScrollPane" mouseTransparent="true" styleClass="text-flow-scroll-pane" StackPane.alignment="TOP_LEFT">
                                                                <content>
-                                                                  <TextFlow fx:id="responseHeaderTextFlow" mouseTransparent="true">
+                                                                  <TextFlow fx:id="responseHeaderTextFlow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true">
                                                                      <padding>
-                                                                        <Insets bottom="4.0" left="8.0" right="8.0" top="4.0" />
+                                                                        <Insets bottom="4.0" left="8.0" top="4.0" />
                                                                      </padding>
                                                                   </TextFlow>
                                                                </content>
@@ -154,16 +167,22 @@
                                                       </StackPane>
                                                    </children>
                                                 </AnchorPane>
-                                              <AnchorPane fx:id="responseBodyAnchorPane" cacheHint="QUALITY" minHeight="0.0" minWidth="0.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
+                                              <AnchorPane fx:id="responseBodyAnchorPane" cacheHint="QUALITY" minHeight="0.0" minWidth="0.0">
                                                    <children>
-                                                      <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                      <StackPane alignment="TOP_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                          <children>
-                                                            <TextArea fx:id="responseBodyTextArea" editable="false" />
-                                                            <ScrollPane fx:id="responseBodyTextFlowScrollPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mouseTransparent="true" styleClass="text-flow-scroll-pane">
+                                                            <TextArea fx:id="responseBodyTextArea" editable="false">
+                                                               <font>
+                                                                  <Font name="Monospaced Regular" size="12.0" />
+                                                               </font>
+                                                               <StackPane.margin>
+                                                                  <Insets />
+                                                               </StackPane.margin></TextArea>
+                                                            <ScrollPane fx:id="responseBodyTextFlowScrollPane" mouseTransparent="true" styleClass="text-flow-scroll-pane" StackPane.alignment="TOP_LEFT">
                                                                <content>
-                                                                  <TextFlow fx:id="responseBodyTextFlow" mouseTransparent="true">
+                                                                  <TextFlow fx:id="responseBodyTextFlow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true">
                                                                      <padding>
-                                                                        <Insets bottom="4.0" left="8.0" right="8.0" top="4.0" />
+                                                                        <Insets bottom="4.0" left="8.0" top="4.0" />
                                                                      </padding>
                                                                   </TextFlow>
                                                                </content>
@@ -179,6 +198,12 @@
                                                    </children>
                                                 </AnchorPane>
                                             </items>
+                                             <opaqueInsets>
+                                                <Insets />
+                                             </opaqueInsets>
+                                             <padding>
+                                                <Insets top="6.0" />
+                                             </padding>
                                           </SplitPane>
                                        </children>
                                     </AnchorPane>

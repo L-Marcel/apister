@@ -19,6 +19,7 @@ public abstract class Highlighter {
     static final Pattern NUMBER_REG = Pattern.compile("(\\d)");
 
     protected LinkedHashMap<String, Pattern> patterns;
+    protected CustomTextAreaSkin skin;
     protected ScrollPane scrollPane;
     protected TextFlow textFlow;
     protected TextArea textArea;
@@ -32,41 +33,88 @@ public abstract class Highlighter {
         this.textArea = textArea;
         this.textFlow = textFlow;
         this.scrollPane = scrollPane;
-        this.computeTextFlow(this.textArea.getText());
-        this.textArea.setSkin(new CustomTextAreaSkin(this.textArea));
-        this.textFlow.widthProperty().addListener((event, old, current) -> this.computeWidth());
-        this.textFlow.heightProperty().addListener((event, old, current) -> this.computeHeight());
-        this.textArea.scrollLeftProperty().addListener((event, old, current) -> this.computeWidth(current.doubleValue()));
-        this.textArea.scrollTopProperty().addListener((event, old, current) -> this.computeHeight(current.doubleValue()));
-        this.textFlow.setLineSpacing(1.05078125d);
+        this.skin = new CustomTextAreaSkin(this.textArea);
+        this.textArea.setSkin(this.skin);
+        this.textFlow.setTabSize(2);
+       
+        this.skin.getContent().layoutBoundsProperty().addListener((event, old, current) -> {
+            this.computeHeight(current.getHeight());
+            this.computeWidth(current.getWidth());
+        });
+
+        this.scrollPane.hvalueProperty().addListener((event, old, current) -> this.computeHorizontalScroll(current.doubleValue(), this.textArea.getScrollLeft()));
+        this.textArea.scrollLeftProperty().addListener((event, old, current) -> this.computeHorizontalScroll(this.scrollPane.getHvalue(), current.doubleValue()));
+        this.scrollPane.vvalueProperty().addListener((event, old, current) -> this.computeVerticalScroll(current.doubleValue(), this.textArea.getScrollTop()));
+        this.textArea.scrollTopProperty().addListener((event, old, current) -> this.computeVerticalScroll(this.scrollPane.getVvalue(), current.doubleValue()));
+       
         this.textArea.textProperty().addListener((event, old, current) -> this.computeTextFlow(current));
+        this.computeTextFlow(this.textArea.getText());
     };
 
-     public void setText(String text) {
+    protected abstract LinkedHashMap<String, Pattern> initPatterns();
+    protected abstract Text[] computeTexts(String line);
+
+    public void setText(String text) {
         this.textArea.setText(text);
     };
 
-    private void computeWidth(double scrollLeft) {
-        boolean verticalScrollIsVisible = scrollPane.getContent().getBoundsInLocal().getHeight() > scrollPane.getViewportBounds().getHeight();
-        double diff = Math.max(1, this.textFlow.getWidth() - this.textArea.getWidth() - 2d);
-        if(verticalScrollIsVisible) diff += 16d;
-        this.scrollPane.setHvalue(scrollLeft / diff);
-        //System.out.println(scrollLeft + ":" + (scrollLeft / diff) + " : " + verticalScrollIsVisible + " : " + diff + " : " + this.textFlow.getWidth() + " : " + this.textArea.getWidth());
+    private void computeHeight(double height) {
+        if(height != this.textFlow.getHeight()) {
+            this.textFlow.setPrefHeight(height);
+            if(height <= this.textArea.getHeight()) this.computeLineSpacing(height, false);
+            else this.computeLineSpacing(height);
+        };
     };
 
-    private void computeWidth() {
-        computeWidth(this.textArea.getScrollLeft());
+    private void computeWidth(double width) {
+        if(width != this.textFlow.getWidth()) this.textFlow.setPrefWidth(width);
     };
 
-    private void computeHeight(double scrollTop) {
-        boolean horizontalScrollIsVisible = scrollPane.getContent().getBoundsInLocal().getWidth() > scrollPane.getViewportBounds().getWidth();
-        double diff = Math.max(1, this.textFlow.getHeight() - this.textArea.getHeight() - 2d);
-        if(horizontalScrollIsVisible) diff += 20d;
-        this.scrollPane.setVvalue(scrollTop / diff);
+    private void computeLineSpacing(double height) {
+        computeLineSpacing(height, this.isVerticalScrollVisible());
     };
 
-    private void computeHeight() {
-        computeHeight(this.textArea.getScrollTop());
+    private void computeLineSpacing(double height, boolean dynamic) {
+        if(dynamic) {
+            int lines = 1 + this.textArea.getText().length() - this.textArea.getText().replaceAll("\n", "").length();
+            double targetLineHeight = (height - 8d) / lines;
+            double diff = ((targetLineHeight - 13.59375d) * lines) / (lines - 1);
+            this.textFlow.setLineSpacing(diff);
+        } else {
+            this.textFlow.setLineSpacing(1.40404d);
+        };
+    };
+
+    private void computeVerticalScroll(double textFlowScroll, double textAreaScrollTop) {
+        double max = this.skin.getContentHeight() - this.textArea.getHeight();
+        if(isHorizontalScrollVisible()) max += 16d;
+
+        if(max > 0) {
+            double target = textAreaScrollTop / max;
+            this.scrollPane.setVvalue(target);
+        } else if(textFlowScroll != 0) {
+            this.scrollPane.setVvalue(0);
+        };
+    };
+
+    private void computeHorizontalScroll(double textFlowScroll, double textAreaScrollLeft) {
+        double max = this.skin.getContentWidth() - this.textArea.getWidth();
+        if(isVerticalScrollVisible()) max += 16d;
+
+        if(max > 0) {
+            double target = textAreaScrollLeft / max;
+            this.scrollPane.setHvalue(target);
+        } else if(textFlowScroll != 0) {
+            this.scrollPane.setHvalue(0);
+        };
+    };
+
+    private boolean isHorizontalScrollVisible() {
+        return this.skin.getTextAreaScrollPane().getContent().getBoundsInLocal().getWidth() > this.skin.getTextAreaScrollPane().getViewportBounds().getWidth();
+    };
+
+    private boolean isVerticalScrollVisible() {
+        return this.skin.getTextAreaScrollPane().getContent().getBoundsInLocal().getHeight() > this.skin.getTextAreaScrollPane().getViewportBounds().getHeight();
     };
 
     private void computeTextFlow(String content) {
@@ -74,9 +122,6 @@ public abstract class Highlighter {
         this.textFlow.getChildren().addAll(this.computeTexts(content));
     };
 
-    protected abstract LinkedHashMap<String, Pattern> initPatterns();
-    protected abstract Text[] computeTexts(String line);
-    
     protected Text[] defaultComputeTexts(String line) {
         ArrayList<String> keys = new ArrayList<String>(this.patterns.keySet());
         return this.defaultComputeTexts(line, keys, 0);
@@ -87,7 +132,7 @@ public abstract class Highlighter {
         if(line.isEmpty()) return texts.toArray(Text[]::new);
         else if(index >= keys.size()) {
             Text text = new Text(line);
-            text.getStyleClass().add("token-none");
+            text.getStyleClass().addAll("code-text", "token-none");
             texts.add(text);
             return texts.toArray(Text[]::new);
         };
@@ -101,7 +146,7 @@ public abstract class Highlighter {
             String match = matcher.group();
 
             Text text = new Text(match);
-            text.getStyleClass().add("token-" + key);
+            text.getStyleClass().addAll("code-text", "token-" + key);
             texts.add(text);
 
             String after = line.substring(matcher.end());

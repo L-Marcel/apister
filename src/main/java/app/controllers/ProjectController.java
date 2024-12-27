@@ -71,9 +71,9 @@ public class ProjectController implements Initializable {
         this.bodyJsonHighlighter = new JsonHighlighter(this.bodyTextFlow, this.bodyTextArea, this.bodyTextFlowScrollPane);
         this.bodyJsonHighlighter.setText(
             "{\n" +
-            "\t\"dsadas\": \"efdasdas\",\n" +
-            "\t\"fdsfds\": true,\n" +
-            "\t\"dsadas\": 45644 \n" +
+            "\t\"name\": \"Marcel\",\n" +
+            "\t\"student\": true,\n" +
+            "\t\"age\": 22\n" +
             "}"
         );
 
@@ -97,8 +97,6 @@ public class ProjectController implements Initializable {
             "ETag: \"123456789abcdef\"\n" +
             "Last-Modified: Wed, 18 Dec 2024 10:30:00 GMT"
         );
-
-     
 
         this.requestTypeChoiceBox.getItems().addAll(RequestType.values());
         this.requestTypeChoiceBox.getSelectionModel().select(0);
