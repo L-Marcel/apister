@@ -45,7 +45,7 @@ public class ProjectsController implements Initializable {
                 new Project(name);
                 Projects.getInstance().add(name);
             };
-        } catch (IOException e) {
+        } catch(IOException e) {
             e.printStackTrace();
         };
     };
@@ -56,38 +56,33 @@ public class ProjectsController implements Initializable {
             Projects projects = Projects.getInstance();
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Importe um projeto");
+            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Apister Project", "*.apis"));
             File file = fileChooser.showOpenDialog(null);
-            if (file == null) {
-                return;
-            }
+            if(file == null) return;
+
             FileInputStream fileIn = new FileInputStream(file);
             ObjectInputStream objectIn = new ObjectInputStream(fileIn);
             String name = objectIn.readUTF();
             Node node = (Node) objectIn.readObject();
-            if (node == null) { return;}
-            try {
-                Projects.validate(name);
-            } catch (InvalidInput e) {
-                System.err.println(e.getMessage());
-                try {
-                    Dialog<String> dialog = new Dialog<String>(
-                            "Defina um novo nome para o projeto importado",
-                            "components/addProjectDialog",
-                            new AddDialogProjectController()
-                    );
-                    name = dialog.showAndGet();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                    return;
-                }
-            }
-            Project project = new Project(name,node);
-            projects.add(name);
-            project = null; //solução gambiarra porque eu não tô conseguindo pensar numa solução pra isso agora
             objectIn.close();
             fileIn.close();
-        } catch (Exception e) {
+
+            try {
+                Projects.validate(name);
+            } catch(InvalidInput e) {
+                Dialog<String> dialog = new Dialog<String>(
+                    "Defina um novo nome para o projeto importado",
+                    "components/addProjectDialog",
+                    new AddDialogProjectController()
+                );
+
+                name = dialog.showAndGet();
+            };
+            
+            new Project(name ,node);
+            projects.add(name);
+        } catch(Exception e) {
             e.printStackTrace();
-        }
-    }
+        };
+    };
 };

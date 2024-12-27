@@ -33,7 +33,7 @@ public class ProjectCell extends ListCell<String> {
                 } else {
                     this.getStyleClass().add("project-cell-main");
                 };
-            } catch (IOException e) {
+            } catch(IOException e) {
                 this.setGraphic(null);
                 this.getStyleClass().add("project-cell");
                 e.printStackTrace();

@@ -72,8 +72,7 @@ public enum StatusCode {
 
     static {
         for(StatusCode status : StatusCode.values()) {
-            map.put(status.value,
-            status);
+            StatusCode.map.put(status.value, status);
         };
     };
 
@@ -82,15 +81,12 @@ public enum StatusCode {
     };
 
     public static StatusCode fromCode(int value) {
-        StatusCode status = map.get(value);
-        if(status == null) {
-            status = StatusCode.BAD_REQUEST;
-        };
-
+        StatusCode status = StatusCode.map.get(value);
+        if(status == null) status = StatusCode.BAD_REQUEST;
         return status;
     };
 
     public int getValue() {
-        return value;
+        return this.value;
     };
 };

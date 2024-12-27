@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -32,7 +34,7 @@
                   <Insets left="24.0" />
                </padding>
             </VBox>
-            <Button minWidth="60.0" mnemonicParsing="false" onAction="#open" prefWidth="60.0" text="Abrir">
+            <Button minWidth="50.0" mnemonicParsing="false" onAction="#open" prefWidth="50.0" text="Abrir">
                <HBox.margin>
                   <Insets left="24.0" />
                </HBox.margin>
@@ -42,10 +44,17 @@
                   <Insets left="12.0" />
                </HBox.margin>
             </Button>
-            <Button minWidth="85.0" mnemonicParsing="false" onAction="#remove" prefWidth="85.0" text="Remover">
+            <Button mnemonicParsing="false" onAction="#remove">
                <HBox.margin>
                   <Insets left="12.0" right="24.0" />
                </HBox.margin>
+               <graphic>
+                  <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/delete.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
          </children>
       </HBox>

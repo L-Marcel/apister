@@ -11,5 +11,5 @@ public class TableCellTextFieldController {
 
     public TableCellTextFieldController(TableCellTextField tableCellTextField) {
         this.tableCellTextField = tableCellTextField;
-    }
+    };
 };

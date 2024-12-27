@@ -36,19 +36,19 @@ public class App extends Application {
 
     public static void setRoot(String page) throws IOException {
         Log.print("Navigating to " + page);
-        scene.setRoot(load(page));
+        App.scene.setRoot(load(page));
         App.applyCss(page);
     };
 
     public static void setRoot(String page, Object controller) throws IOException {
         Log.print("Navigating to " + page);
-        scene.setRoot(load(page, controller));
+        App.scene.setRoot(load(page, controller));
         App.applyCss(page);
     };
 
     private static void applyCss(String page) {
-        scene.getStylesheets().clear();
-        scene.getStylesheets().addAll(
+        App.scene.getStylesheets().clear();
+        App.scene.getStylesheets().addAll(
             App.class.getResource("global.css").toExternalForm(),
             App.class.getResource(page + ".css").toExternalForm()
         );

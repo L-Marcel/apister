@@ -181,8 +181,8 @@
     -fx-background-radius: 0px;
     -fx-border-radius: 0px;
     border-radius: 0px;
-    -fx-background-color: #00000000;
-    background-color: #00000000;
+    -fx-background-color: transparent;
+    background-color: transparent;
 }
 
 .text-flow {
@@ -193,8 +193,8 @@
     tab-size: 2;
     -fx-border-radius: 0px;
     border-radius: 0px;
-    -fx-background-color: #00000000;
-    background-color: #00000000;
+    -fx-background-color: transparent;
+    background-color: transparent;
     -fx-font-weight: normal;
     font-weight: normal;
     -fx-effect: none;
@@ -220,8 +220,8 @@
     -fx-background-radius: 0px;
     -fx-border-radius: 0px;
     border-radius: 0px;
-    -fx-text-fill: #dd2e2e50;
-    -fx-highlight-text-fill: #dd2e2e50;
+    -fx-text-fill: transparent;
+    -fx-highlight-text-fill: transparent;
     -fx-font-family: monospace;
     font-family: monospace;
     -fx-tab-size: 2;
@@ -238,9 +238,9 @@
     font-family: monospace;
     -fx-tab-size: 2;
     tab-size: 2;
-    color: #dd2e2e50;
-    -fx-fill: #dd2e2e50;
-    fill: #dd2e2e50;
+    color: transparent;
+    -fx-fill: transparent;
+    fill: transparent;
 }
 
 .text-area .content {
@@ -265,8 +265,8 @@
 .choice-box {
     -fx-border-width: 0px;
     border-width: 0px;
-    -fx-border-color: #00000000;
-    border-color: #00000000;
+    -fx-border-color: transparent;
+    border-color: transparent;
     background-color: #2E343B;
     -fx-background-color: #2E343B;
     -fx-border-radius: 4px;

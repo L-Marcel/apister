@@ -31,7 +31,7 @@ public class Storage extends Thread {
         setPriority(3);
         try {
             Files.createDirectories(Paths.get("data"));
-        } catch (Exception e) {};
+        } catch(Exception e) {};
         this.start();
     };
     
@@ -85,7 +85,7 @@ public class Storage extends Thread {
                 Log.print("Storage", "Tasks were requested.");
                 this.inspect();
             };
-        } catch (Exception e) {
+        } catch(Exception e) {
             Log.print("Storage", "Task request failed.");
         };
     };
@@ -149,7 +149,7 @@ public class Storage extends Thread {
                         Log.print("Storage", "Task finished, " + name + " was stored.");
                     };
                 };
-            } catch (Exception e) {
+            } catch(Exception e) {
                 this.tasks.put(currentTaskName, 0);
                 Log.print("Storage", "Tasks from " + currentTaskName + " failed.");
                 Log.print("Error", e.getMessage());
@@ -172,7 +172,7 @@ public class Storage extends Thread {
                 Storage.instance.inspect();
                 Storage.instance.join();
             };
-        } catch (InterruptedException e) {
+        } catch(InterruptedException e) {
             Log.print("Storage", "Can't finish safely.");
             Log.print("Error", e.getMessage());
         };
@@ -186,7 +186,7 @@ public class Storage extends Thread {
         try {
             Log.print("Storage", "Starting...");
             super.start();
-        } catch (IllegalThreadStateException e) {
+        } catch(IllegalThreadStateException e) {
             Log.print("Storage", "Can't start.");
             Log.print("Error", e.getMessage());
         };

@@ -133,7 +133,7 @@ public class ProjectController implements Initializable {
         });
 
         this.responseTitledPane.expandedProperty().addListener((event, old, current) -> {
-            if (current) responseAnchorPane.setMaxHeight(AnchorPane.USE_COMPUTED_SIZE);
+            if(current) responseAnchorPane.setMaxHeight(AnchorPane.USE_COMPUTED_SIZE);
             else responseAnchorPane.setMaxHeight(0);
             headerTableView.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         });
@@ -164,8 +164,8 @@ public class ProjectController implements Initializable {
                 boolean isPair1Empty = pair1.getKey().isEmpty() && pair1.getValue().isEmpty();
                 boolean isPair2Empty = pair2.getKey().isEmpty() && pair2.getValue().isEmpty();
 
-                if (isPair1Empty && !isPair2Empty) return 1;
-                if (!isPair1Empty && isPair2Empty) return -1;
+                if(isPair1Empty && !isPair2Empty) return 1;
+                if(!isPair1Empty && isPair2Empty) return -1;
 
                 Comparator<Pair<String, String>> comparator = table.getComparator();
                 return comparator == null ? 0 : comparator.compare(pair1, pair2);
@@ -173,9 +173,6 @@ public class ProjectController implements Initializable {
             return true;
         });
 
-
-        // [TIP] Parte estática para testes
-        
         this.select(req);
     };
 
@@ -191,19 +188,20 @@ public class ProjectController implements Initializable {
     };
 
     private void addNewRow() {
-        if (this.headersList.size() > 0 && 
+        if(
+            this.headersList.size() > 0 && 
             !this.headersList.get(this.headersList.size() - 1).getKey().isEmpty() && 
             !this.headersList.get(this.headersList.size() - 1).getValue().isEmpty()
-            ) {
+        ) {
             this.headersList.add(new Pair<>("", ""));
-        }
-    }
+        };
+    };
 
     @FXML 
     public void back() {
         try {
             App.setRoot("projects");
-        } catch (Exception e) {
+        } catch(Exception e) {
             e.printStackTrace();
         };
     };

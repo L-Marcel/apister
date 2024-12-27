@@ -9,3 +9,10 @@
     color: #E2E2E2;
     -fx-text-fill: #E2E2E2;
 }
+
+.dialog-warning {
+    font-size: 13px;
+    -fx-font-size: 13px;
+    color: #FF6B6B;
+    -fx-text-fill: #FF6B6B;
+}

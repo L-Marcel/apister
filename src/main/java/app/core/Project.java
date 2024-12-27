@@ -12,7 +12,7 @@ public class Project extends Storable<Node> {
     };
 
     public Project(String name, Node node) {
-        super(name, node);
+        super("project_" + name, node);
         this.configNode(this.get());
         this.store();
     };

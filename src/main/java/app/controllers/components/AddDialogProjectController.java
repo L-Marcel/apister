@@ -6,15 +6,18 @@ import java.util.ResourceBundle;
 import app.core.Projects;
 import app.errors.InvalidInput;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-public class AddDialogProjectController extends DialogController<String> implements Initializable {
+public class AddDialogProjectController extends DialogController<String> {
     @FXML private TextField textField;
     @FXML private Label errorLabel;
+
+    public AddDialogProjectController() {
+        super(null, null);
+    };
 
     @FXML
     public void clearError() {
@@ -30,9 +33,9 @@ public class AddDialogProjectController extends DialogController<String> impleme
         this.textField.requestFocus();
     };
 
-    public void setTextField (String text) {
+    public void setTextField(String text) {
         this.textField.setText(text);
-    }
+    };
     
     @FXML
     public void confirm() {
@@ -42,8 +45,8 @@ public class AddDialogProjectController extends DialogController<String> impleme
         try {
             Projects.validate(candidate);
             this.close(candidate);
-        } catch (InvalidInput e) {
-            showError(e.getMessage());
+        } catch(InvalidInput e) {
+            this.showError(e.getMessage());
         };
     };
 
@@ -55,25 +58,27 @@ public class AddDialogProjectController extends DialogController<String> impleme
     @Override
     public void focus() {
         this.textField.requestFocus();
-    }
+    };
 
     @Override
     public void initialize(URL url, ResourceBundle resource) {
-        textField.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
+        this.textField.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
             if(event.getCode() == KeyCode.ENTER) {
                 this.confirm();
             };
         });
 
-        textField.addEventHandler(KeyEvent.KEY_TYPED, (event) -> {
+        this.textField.addEventHandler(KeyEvent.KEY_TYPED, (event) -> {
             String candidate = this.textField.getText() + event.getCharacter();
             candidate = candidate.trim();
             try {
                 Projects.validate(candidate);
                 clearError();
-            } catch (InvalidInput e) {
+            } catch(InvalidInput e) {
                 showError(e.getMessage());
             };
         });
+
+        super.initialize(url, resource);
     };
 };

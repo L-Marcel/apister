@@ -71,7 +71,7 @@ public abstract class Highlighter {
     };
 
     private void computeLineSpacing(double height) {
-        computeLineSpacing(height, this.isVerticalScrollVisible());
+        this.computeLineSpacing(height, this.isVerticalScrollVisible());
     };
 
     private void computeLineSpacing(double height, boolean dynamic) {
@@ -87,7 +87,7 @@ public abstract class Highlighter {
 
     private void computeVerticalScroll(double textFlowScroll, double textAreaScrollTop) {
         double max = this.skin.getContentHeight() - this.textArea.getHeight();
-        if(isHorizontalScrollVisible()) max += 16d;
+        if(this.isHorizontalScrollVisible()) max += 16d;
 
         if(max > 0) {
             double target = textAreaScrollTop / max;
@@ -99,7 +99,7 @@ public abstract class Highlighter {
 
     private void computeHorizontalScroll(double textFlowScroll, double textAreaScrollLeft) {
         double max = this.skin.getContentWidth() - this.textArea.getWidth();
-        if(isVerticalScrollVisible()) max += 16d;
+        if(this.isVerticalScrollVisible()) max += 16d;
 
         if(max > 0) {
             double target = textAreaScrollLeft / max;

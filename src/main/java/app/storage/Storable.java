@@ -31,10 +31,10 @@ public abstract class Storable<T extends Serializable> implements Serializable {
             this.instances = (T) object.readObject();
             Log.print("Storable", "Loaded: " + this.name + ".");
             object.close();         
-        } catch (FileNotFoundException e) {
+        } catch(FileNotFoundException e) {
             Log.print("Storable", "Creating: " + this.name + ".");
             this.instances = initial;
-        } catch (Exception e) {
+        } catch(Exception e) {
             Log.print("Storable", "Failed on load " + this.name + ".");
             Log.print("Error", e.getMessage());
             Log.print("Storable", "Creating " + this.name + " database.");
@@ -57,5 +57,4 @@ public abstract class Storable<T extends Serializable> implements Serializable {
     public T get() {
         return this.instances;
     };
-
 };

@@ -8,13 +8,11 @@ import java.nio.file.Path;
 import java.util.ResourceBundle;
 
 import app.App;
-import app.controllers.components.RemoveDialogProjectController;
 import app.core.Project;
 import app.controllers.ProjectController;
 import app.core.Projects;
 import app.layout.Dialog;
 import app.layout.ProjectCell;
-import app.storage.Storable;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -43,7 +41,7 @@ public class ProjectCellController implements Initializable {
         try {
             String name = this.cell.getItem();
             App.setRoot("project", new ProjectController(name));
-        } catch (Exception e) {
+        } catch(Exception e) {
             e.printStackTrace();
         };
     };
@@ -52,23 +50,18 @@ public class ProjectCellController implements Initializable {
     public void remove() {
         try {
             Dialog<Boolean> dialog = new Dialog<Boolean>(
-                    null,
-                    "components/removeProjectDialog",
-                    new RemoveDialogProjectController()
+                null,
+                "components/removeProjectDialog",
+                new RemoveDialogProjectController()
             );
-            Boolean confirm = dialog.showAndGet();
-            if (confirm == null || !confirm) {
-                return;
-            }
-            else {
+            
+            if(dialog.showAndGet().booleanValue()) {
                 Projects projects = Projects.getInstance();
                 String name = this.cell.getItem();
                 File file = new File("data/project_" + name + ".dat");
-                if (file.delete()) {
-                    projects.remove(name);
-                }
-            }
-        } catch (Exception e) {
+                if(file.delete()) projects.remove(name);
+            };
+        } catch(Exception e) {
             e.printStackTrace();
         };
     };
@@ -76,16 +69,13 @@ public class ProjectCellController implements Initializable {
     @FXML
     public void export() {
         try {
-            Projects projects = Projects.getInstance();
             String name = this.cell.getItem();
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Exportar projeto");
-            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Dados", "*.dat"));
-            fileChooser.setInitialFileName("project_" + name + ".dat");
+            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Apister Project", "*.apis"));
+            fileChooser.setInitialFileName(name + ".apis");
             File file = fileChooser.showSaveDialog(null);
-            if (file == null) {
-                return;
-            }
+            if(file == null) return;
             FileOutputStream fileOut = new FileOutputStream(file);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOut);
             Project project = new Project(name);
@@ -93,9 +83,8 @@ public class ProjectCellController implements Initializable {
             objectOutputStream.writeObject(project.get());
             objectOutputStream.close();
             fileOut.close();
-        }
-        catch (Exception e) {
+        } catch(Exception e) {
             e.printStackTrace();
-        }
-    }
+        };
+    };
 };

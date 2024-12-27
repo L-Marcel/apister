@@ -17,18 +17,18 @@
                   <Font name="System Bold" size="18.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="12.0" />
+                  <Insets bottom="6.0" />
                </VBox.margin>
                <padding>
                   <Insets left="2.0" />
                </padding>
             </Label>
-            <Label fx:id="errorLabel" styleClass="dialog-error" text="Lembre se: Apagar o projeto é irreversível!" textFill="RED">
+            <Label fx:id="errorLabel" styleClass="dialog-warning" text="Apagar o projeto é irreversível!">
                <VBox.margin>
                   <Insets bottom="6.0" />
                </VBox.margin>
                <padding>
-                  <Insets left="2.0" top="6.0" />
+                  <Insets left="2.0" />
                </padding>
             </Label>
             <HBox alignment="CENTER_LEFT" minHeight="40.0" prefHeight="40.0" prefWidth="200.0">
@@ -37,7 +37,7 @@
                      <HBox.margin>
                         <Insets bottom="6.0" top="6.0" />
                      </HBox.margin></Button>
-                  <Button minWidth="100.0" mnemonicParsing="false" onAction="#cancel" text="Cancelar">
+                  <Button fx:id="cancelButton" minWidth="100.0" mnemonicParsing="false" onAction="#cancel" text="Cancelar">
                      <HBox.margin>
                         <Insets bottom="6.0" left="12.0" top="6.0" />
                      </HBox.margin></Button>

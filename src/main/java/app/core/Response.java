@@ -13,6 +13,7 @@ public class Response implements Serializable {
     private Instant requestedAt;
     private Instant receivedAt;
     
+    public Response() {};
     public Response(
         Instant requestedAt,
         String url, 
@@ -29,7 +30,7 @@ public class Response implements Serializable {
     };
 
     public String getMessage() {
-        return message;
+        return this.message;
     };
 
     public void setMessage(String message) {
@@ -37,7 +38,7 @@ public class Response implements Serializable {
     };
 
     public String getUrl() {
-        return url;
+        return this.url;
     };
 
     public void setUrl(String url) {
@@ -45,7 +46,7 @@ public class Response implements Serializable {
     };
 
     public StatusCode getStatusCode() {
-        return statusCode;
+        return this.statusCode;
     };
 
     public void setStatusCode(StatusCode statusCode) {
@@ -53,7 +54,7 @@ public class Response implements Serializable {
     };
 
     public HashMap<String, List<String>> getHeaders() {
-        return headers;
+        return this.headers;
     };
 
     public void setHeaders(HashMap<String, List<String>> headers) {
@@ -61,7 +62,7 @@ public class Response implements Serializable {
     };
 
     public Instant getRequestedAt() {
-        return requestedAt;
+        return this.requestedAt;
     };
 
     public void setRequestedAt(Instant requestedAt) {
@@ -69,7 +70,7 @@ public class Response implements Serializable {
     };
 
     public Instant getReceivedAt() {
-        return receivedAt;
+        return this.receivedAt;
     };
 
     public void setReceivedAt(Instant receivedAt) {
