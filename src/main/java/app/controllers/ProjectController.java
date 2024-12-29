@@ -94,13 +94,17 @@ public class ProjectController implements Initializable {
 
         // [TIP] Parte estática para testes
         Request req = new Request("Requisição");
+        Request req2 = new Request("Requisição 2");
         Node node = new Node("Pasta");
         this.project.get().getChildren().add(req);
+        this.project.get().getChildren().add(req2);
         this.project.get().getChildren().add(node);
 
         req.getHeaders().put("Testing", "The Headers");
         req.getHeaders().put("Another", "Test");
-        this.select(req);
+
+        req2.getHeaders().put("Testing", "Select");
+        req2.getHeaders().put("AAAAA", "BBBBB");
     };
 
     public void select(Node node) {
@@ -141,6 +145,11 @@ public class ProjectController implements Initializable {
                     addFolder.setVisible(true);
                 }
                 contextMenu.show(treeView, event.getScreenX() + 30.0, event.getScreenY() + 10.0);
+            } else if (event.getButton() == MouseButton.PRIMARY) {
+                TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
+                if(selectedItem instanceof Request) {
+                    this.select((Request) selectedItem);
+                }
             }
         });
         
