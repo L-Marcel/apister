@@ -1,34 +1,33 @@
 package app.layout;
 
 import java.io.IOException;
-import java.util.Map;
 
 import app.App;
 import app.controllers.components.TableCellTextFieldController;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.TableCell;
+import javafx.util.Pair;
 
-public class TableCellTextField extends TableCell<Map.Entry<String, String>, Integer> {
+public class TableCellTextField extends TableCell<Pair<String, String>, String> {
+
     @Override
-    public void updateItem(Integer value, boolean empty) {
+    public void updateItem(String value, boolean empty) {
         super.updateItem(value, empty);
 
         this.setPadding(new Insets(0));
         this.getStyleClass().clear();
-        
+
         if(empty) {
-            this.setText(null);
             this.setGraphic(null);
             this.getStyleClass().add("table-cell");
         } else {
-            this.setText(null);
-
             try {
                 TableCellTextFieldController cellController = new TableCellTextFieldController(this);
                 Parent cell = App.load("components/tableCellTextField", cellController);
 
                 this.setGraphic(cell);
+
                 if(this.getIndex() % 2 == 1) {
                     this.getStyleClass().add("table-cell-alt");
                 } else {

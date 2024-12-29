@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="project-page" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="project-page" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <SplitPane dividerPositions="0.3" focusTraversable="false" minHeight="400.0" minWidth="600.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0">
         <items>
@@ -71,10 +71,10 @@
                                       <tabs>
                                         <Tab styleClass="project-tabs-header" text="Cabeçalho">
                                              <content>
-                                                <TableView fx:id="headerTableView" cacheShape="false" fixedCellSize="50.0" prefHeight="200.0">
+                                                <TableView fx:id="headerTableView" cacheShape="false" editable="true" fixedCellSize="50.0" prefHeight="200.0">
                                                   <columns>
-                                                    <TableColumn fx:id="keysTableColumn" editable="false" minWidth="210.0" prefWidth="-1.0" text="Chave" />
-                                                    <TableColumn fx:id="valuesTableColumn" editable="false" minWidth="210.0" prefWidth="-1.0" text="Valor" />
+                                                    <TableColumn fx:id="keysTableColumn" minWidth="210.0" prefWidth="-1.0" text="Chave" />
+                                                    <TableColumn fx:id="valuesTableColumn" minWidth="210.0" prefWidth="-1.0" text="Valor" />
                                                   </columns>
                                                    <columnResizePolicy>
                                                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

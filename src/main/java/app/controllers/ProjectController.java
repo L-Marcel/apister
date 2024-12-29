@@ -8,17 +8,23 @@ import app.App;
 import app.core.Node;
 import app.core.Project;
 import app.core.Request;
+import app.layout.TableCellTextField;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.util.Pair;
 
 public class ProjectController implements Initializable {
@@ -41,6 +47,7 @@ public class ProjectController implements Initializable {
     public void initialize(URL url, ResourceBundle resource) {
         this.treeView.setRoot(this.project.get());
         this.treeView.setShowRoot(false);
+        configContextMenu();
 
         this.responseTitledPane.expandedProperty().addListener((event, old, current) -> {
             if (current) responseAnchorPane.setMaxHeight(AnchorPane.USE_COMPUTED_SIZE);
@@ -53,8 +60,9 @@ public class ProjectController implements Initializable {
         this.headerTableView.setItems(headersList);
 
         this.keysTableColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getKey()));
-        this.keysTableColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        this.keysTableColumn.setCellFactory(column -> new TableCellTextField());
         this.keysTableColumn.setOnEditCommit(event -> {
+            System.out.println("Key");
             Pair<String, String> oldPair = event.getRowValue();
             Pair<String, String> newPair = new Pair<>(event.getNewValue(), oldPair.getValue());
             headersList.set(event.getTablePosition().getRow(), newPair);
@@ -62,8 +70,9 @@ public class ProjectController implements Initializable {
         });
 
         this.valuesTableColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getValue()));
-        this.valuesTableColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        this.valuesTableColumn.setCellFactory(column -> new TableCellTextField());
         this.valuesTableColumn.setOnEditCommit(event -> {
+            System.out.println("Value");
             Pair<String, String> oldPair = event.getRowValue();
             Pair<String, String> newPair = new Pair<>(oldPair.getKey(), event.getNewValue());
             headersList.set(event.getTablePosition().getRow(), newPair);
@@ -84,9 +93,14 @@ public class ProjectController implements Initializable {
             return true;
         });
 
-
         // [TIP] Parte estática para testes
-        Request req = new Request("abc");
+        Request req = new Request("Requisição");
+        Node node = new Node("Pasta");
+        this.project.get().getChildren().add(req);
+        this.project.get().getChildren().add(node);
+
+        req.getHeaders().put("Testing", "The Headers");
+        req.getHeaders().put("Another", "Test");
         this.select(req);
     };
 
@@ -97,15 +111,79 @@ public class ProjectController implements Initializable {
             this.request.getHeaders().forEach((key, value) -> 
                 headersList.add(new Pair<>(key, value))
             );
-            this.headersList.add(new Pair<>("",""));
+            addNewRow();
         };
     };
 
+    public void configContextMenu() {
+        ContextMenu contextMenu = new ContextMenu();
+
+        MenuItem addItem = new MenuItem("Add");
+        MenuItem deleteItem = new MenuItem("Delete");
+
+        contextMenu.getItems().addAll(addItem, deleteItem);
+
+        treeView.setOnMouseClicked(event -> {
+            if (event.getButton() ==  MouseButton.SECONDARY) {
+                TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
+
+                if (selectedItem == null) {
+                    contextMenu.hide();
+                    return;
+                }
+                if (selectedItem instanceof Request) addItem.setVisible(false);
+                else addItem.setVisible(true);
+
+                contextMenu.show(treeView, event.getScreenX() + 30.0, event.getScreenY() + 10.0);
+            }
+        });
+        
+        addItem.setOnAction(event -> {
+            TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
+            if (selectedItem instanceof Request) addNewRequest(selectedItem);
+            else if (selectedItem instanceof Node) addNewNode(selectedItem);
+        });
+
+        deleteItem.setOnAction(event -> {
+            TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
+            if (selectedItem != null && selectedItem.getParent() != null) {
+                selectedItem.getParent().getChildren().remove(selectedItem);
+            }
+        });
+
+        treeView.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (newScene != null) {
+                newScene.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+                    if (!treeView.getBoundsInParent().contains(event.getSceneX(), event.getSceneY())) {
+                        treeView.getSelectionModel().clearSelection();
+                    }
+                });
+            }
+        });
+    }
+
+    private void addNewRequest(TreeItem<String> selectedItem) {
+        if (selectedItem != null) {
+            Node newNode = new Node("request");
+            selectedItem.getChildren().add(newNode);
+            selectedItem.setExpanded(true);
+        }
+    }
+
+    private void addNewNode(TreeItem<String> selectedItem) {
+        if (selectedItem != null) {
+            Request newRequest = new Request("node");
+            selectedItem.getChildren().add(newRequest);
+            selectedItem.setExpanded(true);
+        }
+    }
+
     private void addNewRow() {
-        if (this.headersList.size() > 0 && 
-            !this.headersList.get(this.headersList.size() - 1).getKey().isEmpty() && 
-            !this.headersList.get(this.headersList.size() - 1).getValue().isEmpty()
-            ) {
+        if (!this.headersList.isEmpty()) {
+            Pair<String, String> lastPair = this.headersList.get(this.headersList.size() - 1);
+            if (lastPair.getKey().isEmpty() && lastPair.getValue().isEmpty()) {
+                return;
+            }
             this.headersList.add(new Pair<>("", ""));
         }
     }
