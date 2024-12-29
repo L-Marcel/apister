@@ -118,10 +118,11 @@ public class ProjectController implements Initializable {
     public void configContextMenu() {
         ContextMenu contextMenu = new ContextMenu();
 
-        MenuItem addItem = new MenuItem("Add");
+        MenuItem addRequest = new MenuItem("Add Request");
+        MenuItem addFolder = new MenuItem("Add Folder");
         MenuItem deleteItem = new MenuItem("Delete");
 
-        contextMenu.getItems().addAll(addItem, deleteItem);
+        contextMenu.getItems().addAll(addRequest, addFolder, deleteItem);
 
         treeView.setOnMouseClicked(event -> {
             if (event.getButton() ==  MouseButton.SECONDARY) {
@@ -131,17 +132,27 @@ public class ProjectController implements Initializable {
                     contextMenu.hide();
                     return;
                 }
-                if (selectedItem instanceof Request) addItem.setVisible(false);
-                else addItem.setVisible(true);
-
+                if (selectedItem instanceof Request) {
+                    System.out.println("Request");
+                    addRequest.setVisible(false);
+                    addFolder.setVisible(false);
+                }
+                else {
+                    addRequest.setVisible(true);
+                    addFolder.setVisible(true);
+                }
                 contextMenu.show(treeView, event.getScreenX() + 30.0, event.getScreenY() + 10.0);
             }
         });
         
-        addItem.setOnAction(event -> {
+        addRequest.setOnAction(event -> {
             TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
-            if (selectedItem instanceof Request) addNewRequest(selectedItem);
-            else if (selectedItem instanceof Node) addNewNode(selectedItem);
+            if (selectedItem instanceof Node) addNewRequest(selectedItem);
+        });
+
+        addFolder.setOnAction(event -> {
+            TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
+            if (selectedItem instanceof Node) addNewFolder(selectedItem);
         });
 
         deleteItem.setOnAction(event -> {
@@ -164,16 +175,16 @@ public class ProjectController implements Initializable {
 
     private void addNewRequest(TreeItem<String> selectedItem) {
         if (selectedItem != null) {
-            Node newNode = new Node("request");
-            selectedItem.getChildren().add(newNode);
+            Request newRequest = new Request("request");
+            selectedItem.getChildren().add(newRequest);
             selectedItem.setExpanded(true);
         }
     }
 
-    private void addNewNode(TreeItem<String> selectedItem) {
+    private void addNewFolder(TreeItem<String> selectedItem) {
         if (selectedItem != null) {
-            Request newRequest = new Request("node");
-            selectedItem.getChildren().add(newRequest);
+            Node newNode = new Node("folder");
+            selectedItem.getChildren().add(newNode);
             selectedItem.setExpanded(true);
         }
     }
