@@ -18,6 +18,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -120,9 +121,10 @@ public class ProjectController implements Initializable {
 
         MenuItem addRequest = new MenuItem("Add Request");
         MenuItem addFolder = new MenuItem("Add Folder");
+        MenuItem renameItem = new MenuItem("Rename");
         MenuItem deleteItem = new MenuItem("Delete");
 
-        contextMenu.getItems().addAll(addRequest, addFolder, deleteItem);
+        contextMenu.getItems().addAll(addRequest, addFolder, renameItem, deleteItem);
 
         treeView.setOnMouseClicked(event -> {
             if (event.getButton() ==  MouseButton.SECONDARY) {
@@ -133,7 +135,6 @@ public class ProjectController implements Initializable {
                     return;
                 }
                 if (selectedItem instanceof Request) {
-                    System.out.println("Request");
                     addRequest.setVisible(false);
                     addFolder.setVisible(false);
                 }
@@ -153,6 +154,26 @@ public class ProjectController implements Initializable {
         addFolder.setOnAction(event -> {
             TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
             if (selectedItem instanceof Node) addNewFolder(selectedItem);
+        });
+
+        renameItem.setOnAction(event -> {
+            TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                TextField textField = new TextField(selectedItem.getValue());
+                textField.setOnAction(e -> {
+                    selectedItem.setValue(textField.getText());
+                    selectedItem.setGraphic(null);// Remove o campo de texto após renomear
+                });
+                textField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+                    if (!isNowFocused) {
+                        selectedItem.setValue(textField.getText());
+                        selectedItem.setGraphic(null);
+                    }
+                });
+                selectedItem.setGraphic(textField); // Mostra o campo de texto na célula
+                textField.requestFocus(); // Coloca o foco no campo de texto
+                textField.selectAll();
+            }
         });
 
         deleteItem.setOnAction(event -> {
@@ -175,7 +196,7 @@ public class ProjectController implements Initializable {
 
     private void addNewRequest(TreeItem<String> selectedItem) {
         if (selectedItem != null) {
-            Request newRequest = new Request("request");
+            Request newRequest = new Request("New Request");
             selectedItem.getChildren().add(newRequest);
             selectedItem.setExpanded(true);
         }
@@ -183,7 +204,7 @@ public class ProjectController implements Initializable {
 
     private void addNewFolder(TreeItem<String> selectedItem) {
         if (selectedItem != null) {
-            Node newNode = new Node("folder");
+            Node newNode = new Node("New Folder");
             selectedItem.getChildren().add(newNode);
             selectedItem.setExpanded(true);
         }
