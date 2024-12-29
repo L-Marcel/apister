@@ -162,7 +162,7 @@ public class ProjectController implements Initializable {
                 TextField textField = new TextField(selectedItem.getValue());
                 textField.setOnAction(e -> {
                     selectedItem.setValue(textField.getText());
-                    selectedItem.setGraphic(null);// Remove o campo de texto após renomear
+                    selectedItem.setGraphic(null);
                 });
                 textField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
                     if (!isNowFocused) {
@@ -170,8 +170,8 @@ public class ProjectController implements Initializable {
                         selectedItem.setGraphic(null);
                     }
                 });
-                selectedItem.setGraphic(textField); // Mostra o campo de texto na célula
-                textField.requestFocus(); // Coloca o foco no campo de texto
+                selectedItem.setGraphic(textField);
+                textField.requestFocus();
                 textField.selectAll();
             }
         });
