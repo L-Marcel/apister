@@ -63,7 +63,6 @@ public class ProjectController implements Initializable {
         this.keysTableColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getKey()));
         this.keysTableColumn.setCellFactory(column -> new TableCellTextField());
         this.keysTableColumn.setOnEditCommit(event -> {
-            System.out.println("Key");
             Pair<String, String> oldPair = event.getRowValue();
             Pair<String, String> newPair = new Pair<>(event.getNewValue(), oldPair.getValue());
             headersList.set(event.getTablePosition().getRow(), newPair);
@@ -73,7 +72,6 @@ public class ProjectController implements Initializable {
         this.valuesTableColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getValue()));
         this.valuesTableColumn.setCellFactory(column -> new TableCellTextField());
         this.valuesTableColumn.setOnEditCommit(event -> {
-            System.out.println("Value");
             Pair<String, String> oldPair = event.getRowValue();
             Pair<String, String> newPair = new Pair<>(oldPair.getKey(), event.getNewValue());
             headersList.set(event.getTablePosition().getRow(), newPair);
