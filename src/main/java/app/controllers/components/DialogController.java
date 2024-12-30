@@ -5,14 +5,21 @@ import java.util.ResourceBundle;
 
 import app.layout.Dialog;
 import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 
 public abstract class DialogController<R> implements Initializable {
+    private String title;
     private Dialog<R> dialog;
     private R defaultValue;
     private R closeValue;
 
-    public DialogController(R defaultValue, R closeValue) {
+    @FXML
+    private Label titleLabel;
+
+    public DialogController(String title, R defaultValue, R closeValue) {
+        this.title = title;
         this.defaultValue = defaultValue;
         this.closeValue = closeValue;
     };
@@ -38,6 +45,7 @@ public abstract class DialogController<R> implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resource) {
+        this.titleLabel.setText(this.title);
         Platform.runLater(() -> this.focus());
     };
 };

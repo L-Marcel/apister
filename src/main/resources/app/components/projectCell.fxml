@@ -44,10 +44,19 @@
                   <Insets left="12.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#remove">
+            <Button mnemonicParsing="false" onAction="#rename">
                <HBox.margin>
-                  <Insets left="12.0" right="24.0" />
+                  <Insets left="12.0" />
                </HBox.margin>
+               <graphic>
+                  <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/pencil.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#remove">
                <graphic>
                   <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -55,6 +64,9 @@
                      </image>
                   </ImageView>
                </graphic>
+               <HBox.margin>
+                  <Insets left="12.0" right="24.0" />
+               </HBox.margin>
             </Button>
          </children>
       </HBox>
