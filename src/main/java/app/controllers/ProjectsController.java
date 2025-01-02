@@ -7,13 +7,12 @@ import java.io.ObjectInputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import app.controllers.components.AddDialogProjectController;
 import app.core.Node;
 import app.core.Project;
 import app.core.Projects;
-import app.errors.InvalidInput;
-import app.layout.Dialog;
 import app.layout.ProjectCell;
+import app.layout.TextFieldDialog;
+import app.log.Log;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -34,14 +33,16 @@ public class ProjectsController implements Initializable {
     @FXML
     public void addProject() {
         try {
-            Dialog<String> dialog = new Dialog<String>(
-                null,
-                "components/addProjectDialog",
-                new AddDialogProjectController()
+            TextFieldDialog dialog = new TextFieldDialog(
+                "Adicionando novo projeto",
+                "Nome do projeto",
+                "Nome disponível!",
+                (String candidate) -> Projects.validate(candidate)
             );
 
             String name = dialog.showAndGet();
             if(name != null) {
+                Log.print("Adding project \"" + name + "\"...");
                 new Project(name);
                 Projects.getInstance().add(name);
             };
@@ -67,20 +68,20 @@ public class ProjectsController implements Initializable {
             objectIn.close();
             fileIn.close();
 
-            try {
-                Projects.validate(name);
-            } catch(InvalidInput e) {
-                Dialog<String> dialog = new Dialog<String>(
-                    "Defina um novo nome para o projeto importado",
-                    "components/addProjectDialog",
-                    new AddDialogProjectController()
-                );
+            TextFieldDialog dialog = new TextFieldDialog(
+                "Importando projeto",
+                "Nome do projeto",
+                "Nome disponível!",
+                name,
+                (String candidate) -> Projects.validate(candidate)
+            );
 
-                name = dialog.showAndGet();
+            name = dialog.showAndGet();
+            if(name != null) {
+                Log.print("Importing project \"" + name + "\" from \"" + file.getAbsolutePath() + "\"...");
+                new Project(name ,node);
+                projects.add(name);
             };
-            
-            new Project(name ,node);
-            projects.add(name);
         } catch(Exception e) {
             e.printStackTrace();
         };
