@@ -72,22 +72,20 @@ public class ProjectController implements Initializable {
         this.headerTableView.setItems(headersList);
 
         this.keysTableColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getKey()));
-        this.keysTableColumn.setCellFactory(column -> new TableCellTextField());
-        this.keysTableColumn.setOnEditCommit(event -> {
-            Pair<String, String> oldPair = event.getRowValue();
-            Pair<String, String> newPair = new Pair<>(event.getNewValue(), oldPair.getValue());
-            headersList.set(event.getTablePosition().getRow(), newPair);
+        this.keysTableColumn.setCellFactory(column -> new TableCellTextField((index, current) -> {
+            Pair<String, String> oldPair = headersList.get(index);
+            Pair<String, String> newPair = new Pair<>(current, oldPair.getValue());
+            headersList.set(index, newPair);
             addNewRow();
-        });
+        }));
 
         this.valuesTableColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getValue()));
-        this.valuesTableColumn.setCellFactory(column -> new TableCellTextField());
-        this.valuesTableColumn.setOnEditCommit(event -> {
-            Pair<String, String> oldPair = event.getRowValue();
-            Pair<String, String> newPair = new Pair<>(oldPair.getKey(), event.getNewValue());
-            headersList.set(event.getTablePosition().getRow(), newPair);
+        this.valuesTableColumn.setCellFactory(column -> new TableCellTextField((index, current) -> {
+            Pair<String, String> oldPair = headersList.get(index);
+            Pair<String, String> newPair = new Pair<>(oldPair.getKey(), current);
+            headersList.set(index, newPair);
             addNewRow();
-        });
+        }));
 
         this.headerTableView.sortPolicyProperty().set(table -> {
             FXCollections.sort(headersList, (pair1, pair2) -> {
@@ -230,9 +228,7 @@ public class ProjectController implements Initializable {
     private void addNewRow() {
         if (!this.headersList.isEmpty()) {
             Pair<String, String> lastPair = this.headersList.get(this.headersList.size() - 1);
-            if (lastPair.getKey().isEmpty() && lastPair.getValue().isEmpty()) {
-                return;
-            }
+            if (lastPair.getKey().isEmpty() && lastPair.getValue().isEmpty()) return;
             this.headersList.add(new Pair<>("", ""));
         }
     }

@@ -19,15 +19,14 @@ public class TableCellTextFieldController implements Initializable{
 
     @FXML
     public void initialize(URL arg0, ResourceBundle arg1) {
-        textField.setOnAction(event -> commitEdit());
+        textField.setOnAction(event -> this.commitEdit());
         textField.setText(cell.getItem());
         textField.focusedProperty().addListener((obs, wasFocused, isFocused) -> {
-            if (!isFocused) commitEdit();
+            if (!isFocused && cell.getItem() != textField.getText()) this.commitEdit();
         });
     }
 
     private void commitEdit() {
-        if(!cell.isEditing()) cell.startEdit();
-        cell.commitEdit(textField.getText());
+        cell.callback.call(cell.getIndex(), textField.getText());
     }
 };

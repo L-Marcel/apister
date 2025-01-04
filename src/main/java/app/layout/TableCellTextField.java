@@ -4,12 +4,18 @@ import java.io.IOException;
 
 import app.App;
 import app.controllers.components.TableCellTextFieldController;
+import app.interfaces.TableCellTextFieldEditCallback;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.TableCell;
 import javafx.util.Pair;
 
 public class TableCellTextField extends TableCell<Pair<String, String>, String> {
+    public TableCellTextFieldEditCallback callback;
+
+    public TableCellTextField(TableCellTextFieldEditCallback callback) {
+        this.callback = callback;
+    }
 
     @Override
     public void updateItem(String value, boolean empty) {
