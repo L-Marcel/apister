@@ -22,6 +22,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -48,6 +50,15 @@ public class ProjectController implements Initializable {
     public void initialize(URL url, ResourceBundle resource) {
         this.treeView.setRoot(this.project.get());
         this.treeView.setShowRoot(false);
+        treeView.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (newScene != null) {
+                newScene.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+                    if (!treeView.getBoundsInParent().contains(event.getSceneX(), event.getSceneY())) {
+                        treeView.getSelectionModel().clearSelection();
+                    }
+                });
+            }
+        });
         configContextMenu();
 
         this.responseTitledPane.expandedProperty().addListener((event, old, current) -> {
@@ -152,6 +163,15 @@ public class ProjectController implements Initializable {
                 }
             }
         });
+
+        treeView.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
+                if(selectedItem instanceof Request){
+                    this.select((Request) selectedItem);
+                }
+            };
+        });
         
         addRequest.setOnAction(event -> {
             TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
@@ -187,16 +207,6 @@ public class ProjectController implements Initializable {
             TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
             if (selectedItem != null && selectedItem.getParent() != null) {
                 selectedItem.getParent().getChildren().remove(selectedItem);
-            }
-        });
-
-        treeView.sceneProperty().addListener((observable, oldScene, newScene) -> {
-            if (newScene != null) {
-                newScene.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-                    if (!treeView.getBoundsInParent().contains(event.getSceneX(), event.getSceneY())) {
-                        treeView.getSelectionModel().clearSelection();
-                    }
-                });
             }
         });
     }
