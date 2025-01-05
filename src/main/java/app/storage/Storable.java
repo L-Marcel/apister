@@ -1,27 +1,24 @@
 package app.storage;
 
 import java.io.Serializable;
+
+import app.interfaces.StoringCallback;
 import app.log.Log;
+import javafx.application.Platform;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.ObjectInputStream;
 
-/**
- * Abstract class for objects that represent database tables and must be stored.
- * @param <T> the type of object to be stored
- */
 public abstract class Storable<T extends Serializable> implements Serializable {
     private Storage storage = Storage.getInstance();
     private String name;
     protected T instances;
 
-    /**
-     * Constructor of the class, loads the data from the file
-     * associated with the name, if it exists.
-     * @param name - the name
-     * @param initial - the initial instance
-    */
+    private StorableLoading loading;
+    private StoringCallback requestStoringCallback;
+    private StoringCallback storedCallback;
+
     @SuppressWarnings("unchecked")
     public Storable(String name, T initial) {
         this.name = name;
@@ -42,18 +39,34 @@ public abstract class Storable<T extends Serializable> implements Serializable {
         };
     };
 
- 
-    /**
-     * Requests the storage of the instance in the file.
-    */
+    public void setOnRequestStoring(StoringCallback requestStoringCallback) {
+        this.requestStoringCallback = requestStoringCallback;
+    };
+
+    public void setOnStored(StoringCallback storedCallback) {
+        this.storedCallback = storedCallback;
+    };
+
     public void store() {
+        if(
+            this.requestStoringCallback != null && 
+            this.storedCallback != null &&
+            this.loading == null
+        ) {
+            this.requestStoringCallback.call();
+            this.loading = new StorableLoading();
+            this.loading.start(() -> {
+                Platform.runLater(() -> {
+                    this.storedCallback.call();
+                });
+
+                this.loading = null;
+            });
+        };
+
         storage.store(this.name, this.instances);
     };
 
-    /**
-     * Returns the instance.
-     * @return the intance
-     */
     public T get() {
         return this.instances;
     };

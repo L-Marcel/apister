@@ -24,8 +24,8 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         scene = new Scene(load("projects"), 640, 480);
         App.applyCss("projects");
-        stage.setMinHeight(480);
-        stage.setMinWidth(640);
+        stage.setMinHeight(600);
+        stage.setMinWidth(800);
         stage.setScene(scene);
         stage.show();
     };

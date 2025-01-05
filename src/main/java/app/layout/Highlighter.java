@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javafx.beans.property.StringProperty;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
@@ -54,8 +55,8 @@ public abstract class Highlighter {
     protected abstract LinkedHashMap<String, Pattern> initPatterns();
     protected abstract Text[] computeTexts(String line);
 
-    public void setText(String text) {
-        this.textArea.setText(text);
+    public void setText(StringProperty text) {
+        this.textArea.textProperty().bind(text);
     };
 
     private void computeHeight(double height) {

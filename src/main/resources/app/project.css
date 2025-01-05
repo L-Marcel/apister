@@ -34,19 +34,14 @@
     -fx-background-insets: 0px;
 }
 
-.tree-cell:filled:hover .arrow {
-    background-color: #EF5B25;
-    -fx-background-color: #EF5B25;
-}
-
-.tree-cell:selected {
-    background-color: #E24911;
-    -fx-background-color: #E24911;
-}
-
 .tree-cell:empty {
     background-color: #24292F;
     -fx-background-color: #24292F;
+}
+
+.tree-cell:filled:selected {
+    background-color: #E24911;
+    -fx-background-color: #E24911;
 }
 
 .split-pane > .split-pane-divider {
@@ -81,6 +76,15 @@
 }
 
 .tab-label {
+    color: #E2E2E2;
+    -fx-text-fill: #E2E2E2;
+}
+
+.progress-indicator:indeterminate {
+    -fx-progress-color: #EF5B25;
+}
+
+.loading-label {
     color: #E2E2E2;
     -fx-text-fill: #E2E2E2;
 }

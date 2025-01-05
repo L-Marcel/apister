@@ -18,19 +18,33 @@ public class Project extends Storable<Node> {
     };
 
     private void configNode(Node node) {
-        node.valueProperty().addListener((event) -> {
-            this.store();
-        });
+        if(node instanceof Request) {
+            Request request = (Request) node;
+
+            request.bodyProperty().addListener((event) -> {
+                this.store();
+            });
+
+            request.urlProperty().addListener((event) -> {
+                this.store();
+            });
+
+            request.lastResponseProperty().addListener((event) -> {
+                this.store();
+            });
+        };
 
         node.getChildren().addListener((
             ListChangeListener.Change<? extends TreeItem<String>> event
         ) -> {
-            if(event.wasAdded() || event.wasReplaced()) {
-                event.getAddedSubList().forEach((child) -> {
-                    if(child instanceof Node) {
-                        this.configNode((Node) child);
-                    };
-                });
+            while(event.next()) {
+                if(event.wasAdded() || event.wasReplaced()) {
+                    event.getAddedSubList().forEach((child) -> {
+                        if(child instanceof Node) {
+                            this.configNode((Node) child);
+                        };
+                    });
+                };
             };
 
             this.store();

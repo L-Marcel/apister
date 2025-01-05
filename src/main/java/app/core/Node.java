@@ -37,6 +37,42 @@ public class Node extends TreeItem<String> implements Externalizable {
         };
     };
 
+    private void sortNodes() {
+        this.getChildren().sort((a, b) -> {
+            return a.getValue().compareTo(b.getValue());
+        });
+    };
+
+    public void add(Node node) {
+        this.getChildren().add(node);
+        this.sortNodes();
+    };
+
+    public void remove(Node node) {
+        this.getChildren().remove(node);
+        this.sortNodes();
+    };
+
+    public void replace(Node from, Node to) {
+        this.getChildren().remove(from);
+        this.getChildren().add(to);
+        this.sortNodes();
+    };
+
+    public Node rename(String name) {
+        if(!(this.getParent() instanceof Node)) return this;
+
+        Node parent = (Node) this.getParent();
+        if(parent != null && !parent.childExists(name) && !name.isBlank()) {
+            Node node = new Node(name);
+            node.getChildren().setAll(this.getChildren());
+            parent.replace(this, node);
+            return node;
+        };
+
+        return this;
+    };
+
     public boolean childExists(String name) {
         for(TreeItem<String> child : this.getChildren()) {
             if(child.getValue().equals(name)) return true;
