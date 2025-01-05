@@ -36,10 +36,10 @@ public abstract class StorableList<T extends Serializable> implements Serializab
             this.instances = FXCollections.observableList(list);
             Log.print("Storable", "Loadded " + this.instances.size() + " " + this.name + ".");
             object.close();         
-        } catch (FileNotFoundException e) {
+        } catch(FileNotFoundException e) {
             Log.print("Storable", "Creating " + this.name + " database.");
             this.instances = FXCollections.observableList(new LinkedList<T>());
-        } catch (Exception e) {
+        } catch(Exception e) {
             Log.print("Storable", "Failed on load " + this.name + ".");
             Log.print("Error", e.getMessage());
             Log.print("Storable", "Creating " + this.name + " database.");

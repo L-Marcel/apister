@@ -9,14 +9,15 @@ import java.util.List;
 import javafx.scene.control.TreeItem;
 
 public class Node extends TreeItem<String> implements Externalizable {
+    public Node() {};
     public Node(String name) {
         super(name);
     };
 
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeUTF(getValue());
-        List<TreeItem<String>> children = getChildren();
+        out.writeUTF(this.getValue());
+        List<TreeItem<String>> children = this.getChildren();
         out.writeInt(children.size());
 
         for(TreeItem<String> child : children) {

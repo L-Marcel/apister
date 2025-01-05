@@ -31,7 +31,7 @@ public class Log extends Thread {
             file.setWritable(true);
             this.writer = new FileWriter(file);
             this.start();
-        } catch (Exception e) {};
+        } catch(Exception e) {};
     };
 
     public static Log getInstance() {
@@ -97,7 +97,7 @@ public class Log extends Thread {
                 };
 
                 this.writer.flush();
-            } catch (Exception e) {};
+            } catch(Exception e) {};
         };
     };
     //#endregion
@@ -113,7 +113,7 @@ public class Log extends Thread {
                 Log.instance.inspect();
                 Log.instance.join();
             };
-        } catch (InterruptedException e) {};
+        } catch(InterruptedException e) {};
     };
 
     /**
@@ -123,7 +123,7 @@ public class Log extends Thread {
     public void start() {
         try {
             super.start();
-        } catch (IllegalThreadStateException e) {
+        } catch(IllegalThreadStateException e) {
         };
     };
     //#endregion

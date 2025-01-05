@@ -39,7 +39,7 @@ public class TableCellTextField extends TableCell<Pair<String, String>, String> 
                 } else {
                     this.getStyleClass().add("table-cell-main");
                 };
-            } catch (IOException e) {
+            } catch(IOException e) {
                 this.setGraphic(null);
                 this.getStyleClass().add("table-cell");
                 e.printStackTrace();

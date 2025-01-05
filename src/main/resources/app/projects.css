@@ -9,8 +9,8 @@
 }
 
 .project-cell {
-    background-color: #00000000;
-    -fx-background-color: #00000000;
+    background-color: transparent;
+    -fx-background-color: transparent;
     -fx-border-width: 0px;
     border-width: 0px;
 }
@@ -26,8 +26,8 @@
 }
 
 .project-cell-pane {
-    background-color: #00000000;
-    -fx-background-color: #00000000;
+    background-color: transparent;
+    -fx-background-color: transparent;
 }
 
 .project-name {

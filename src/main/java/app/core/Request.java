@@ -18,6 +18,7 @@ public class Request extends Node {
     private HashMap<String, String> headers;
     private Response lastResponse;
 
+    public Request() {};
     public Request(String name) {
         super(name);
         headers = new HashMap<String, String>();
@@ -35,7 +36,7 @@ public class Request extends Node {
             this.headers.forEach(requestBuilder::header);
         };
 
-        switch (this.type) {
+        switch(this.type) {
             case GET:
                 requestBuilder.GET();
                 break;
@@ -68,42 +69,42 @@ public class Request extends Node {
 
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeUTF(getValue());
-        out.writeUTF(type.name());
-        out.writeUTF(url);
-        out.writeUTF(body);
-        out.writeInt(headers.size());
+        out.writeUTF(this.getValue());
+        out.writeUTF(this.type.name());
+        out.writeUTF(this.url);
+        out.writeUTF(this.body);
+        out.writeInt(this.headers.size());
 
-        for(String key : headers.keySet()) {
+        for(String key : this.headers.keySet()) {
             out.writeUTF(key);
-            out.writeUTF(headers.get(key));
+            out.writeUTF(this.headers.get(key));
         };
 
-        boolean value = (lastResponse != null) ? true : false;
+        boolean value = (this.lastResponse != null) ? true : false;
         out.writeBoolean(value);
-        if(value) out.writeObject(lastResponse);
+        if(value) out.writeObject(this.lastResponse);
     };
 
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        setValue(in.readUTF());
+        this.setValue(in.readUTF());
         this.type = RequestType.valueOf(in.readUTF());
-        url = in.readUTF();
-        body = in.readUTF();
+        this.url = in.readUTF();
+        this.body = in.readUTF();
         
         int size = in.readInt();
         for(int i = 0; i < size; i++) {
             String key = in.readUTF();
             String value = in.readUTF();
-            headers.put(key, value);
+            this.headers.put(key, value);
         };
         
         boolean hasLastResponse = in.readBoolean();
-        if(hasLastResponse) lastResponse = (Response) in.readObject();
+        if(hasLastResponse) this.lastResponse = (Response) in.readObject();
     };
 
     public RequestType getType() {
-        return type;
+        return this.type;
     };
 
     public void setType(RequestType type) {
@@ -111,7 +112,7 @@ public class Request extends Node {
     };
 
     public String getUrl() {
-        return url;
+        return this.url;
     };
 
     public void setUrl(String url) {
@@ -119,7 +120,7 @@ public class Request extends Node {
     };
 
     public String getBody() {
-        return body;
+        return this.body;
     };
 
     public void setBody(String body) {
@@ -127,7 +128,7 @@ public class Request extends Node {
     };
 
     public HashMap<String, String> getHeaders() {
-        return headers;
+        return this.headers;
     };
 
     public void setHeaders(HashMap<String, String> headers) {
@@ -135,7 +136,7 @@ public class Request extends Node {
     };
 
     public Response getLastResponse() {
-        return lastResponse;
+        return this.lastResponse;
     };
 
     public void setLastResponse(Response lastResponse) {

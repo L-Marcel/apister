@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane cache="true" maxHeight="200.0" minWidth="400.0" prefWidth="400.0" styleClass="dialog-pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane cache="true" maxHeight="200.0" minWidth="400.0" prefWidth="400.0" styleClass="dialog-pane" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox alignment="CENTER_LEFT" depthTest="DISABLE" layoutX="135.0" layoutY="14.0" maxHeight="200.0" maxWidth="1.7976931348623157E308" minWidth="400.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label styleClass="dialog-title" text="Adicionando novo projeto">
+            <Label fx:id="titleLabel" styleClass="dialog-title" text="Titúlo">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -24,7 +24,7 @@
                   <Insets left="2.0" />
                </padding>
             </Label>
-            <TextField fx:id="textField" maxWidth="300.0" minHeight="30.0" prefHeight="30.0" prefWidth="300.0" promptText="Nome do projeto" styleClass="dialog-input">
+            <TextField fx:id="textField" maxWidth="300.0" minHeight="30.0" prefHeight="30.0" prefWidth="300.0" promptText="Entrada" styleClass="dialog-input">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -32,7 +32,7 @@
                   <Insets bottom="6.0" left="12.0" right="12.0" top="6.0" />
                </padding>
             </TextField>
-            <Label fx:id="errorLabel" styleClass="dialog-error" text="Por favor, informe um nome!" textFill="RED">
+            <Label fx:id="errorLabel" styleClass="dialog-error" text="Erro!" textFill="RED">
                <VBox.margin>
                   <Insets bottom="6.0" />
                </VBox.margin>

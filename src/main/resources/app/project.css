@@ -7,15 +7,56 @@
     -fx-background-color: #171a1f;
 }
 
-.project-tree {
+.tree-view, .tree-cell {
+    background-color: #24292F;
+    -fx-background-color: #24292F;
+    -fx-background-insets: 0px;
+    color: #E2E2E2;
+    -fx-text-fill: #E2E2E2;
+}
+
+.tree-cell:expanded {
     background-color: #2E343B;
     -fx-background-color: #2E343B;
+}
+
+.tree-cell:filled:hover {
+    background-color: #333A42;
+    -fx-background-color: #333A42;
+    cursor: hand;
+    -fx-cursor: hand;
+}
+
+.tree-cell .arrow {
+    background-color: #E2E2E2;
+    -fx-background-color: #E2E2E2;
+    -fx-effect: null;
     -fx-background-insets: 0px;
 }
 
-.split-pane-divider {
+.tree-cell:filled:hover .arrow {
+    background-color: #EF5B25;
+    -fx-background-color: #EF5B25;
+}
+
+.tree-cell:selected {
+    background-color: #E24911;
+    -fx-background-color: #E24911;
+}
+
+.tree-cell:empty {
+    background-color: #24292F;
+    -fx-background-color: #24292F;
+}
+
+.split-pane > .split-pane-divider {
     -fx-background-color: #31373f;
     background-color: #31373f;
+}
+
+.split-pane > .split-pane-divider:pressed {
+    -fx-background-color: #E24911;
+    background-color: #E24911;
 }
 
 .split-pane:horizontal > .split-pane-divider {
@@ -29,7 +70,7 @@
 }
 
 .tab-header-area {
-    -fx-background-insets: 0, 0 0 0 0px;
+    -fx-background-insets: 0px;
     -fx-padding: 0.0em 0.166667em 0.0em 0.0em;
     padding: 0.0em 0.166667em 0.0em 0.0em;
 }
@@ -93,9 +134,21 @@
     -fx-background-insets: 0px;
 }
 
+.column-header-background {
+    background-color: #2E343B;
+    -fx-background-color: #2E343B;
+}
+
 .column-header-background .label {
     color: #E2E2E2;
     -fx-text-fill: #E2E2E2;
+    -fx-font-weight: normal;
+    font-weight: normal;
+}
+
+.filler {
+    background-color: transparent;
+    -fx-background-color: transparent;
 }
 
 .column-header {
@@ -114,27 +167,194 @@
     border-width: 0px 1px 1px 1px;
     -fx-border-color: #24292F;
     border-color: #24292F;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 0px 8px;
+    padding: 0px 8px;
+    color: #E2E2E2;
+    -fx-text-fill: #E2E2E2;
+    -fx-font-weight: normal;
+    font-weight: normal;
+    -fx-effect: none;
 }
 
-.table-cell-pane {
+.text-flow-scroll-pane, .text-flow-scroll-pane .viewport {
+    -fx-background-radius: 0px;
+    -fx-border-radius: 0px;
+    border-radius: 0px;
+    -fx-background-color: transparent;
+    background-color: transparent;
+}
+
+.text-flow {
+    -fx-background-radius: 0px;
+    -fx-font-family: monospace;
+    font-family: monospace;
+    -fx-tab-size: 2;
+    tab-size: 2;
+    -fx-border-radius: 0px;
+    border-radius: 0px;
+    -fx-background-color: transparent;
+    background-color: transparent;
+    -fx-font-weight: normal;
+    font-weight: normal;
+    -fx-effect: none;
+}
+
+.text-flow > *, .code-text {
+    -fx-font-family: monospace;
+    font-family: monospace;
+    -fx-tab-size: 2;
+    tab-size: 2;
+    color: #d1dd2e50;
+    -fx-text-fill: #d1dd2e50;
+}
+
+.top-bar {
+    background-color: #333A42;
+    -fx-background-color: #333A42;
+}
+
+.text-area {
+    background-color: #333A42;
+    -fx-background-color: #333A42;
+    -fx-background-radius: 0px;
+    -fx-border-radius: 0px;
+    border-radius: 0px;
+    -fx-text-fill: transparent;
+    -fx-highlight-text-fill: transparent;
+    -fx-font-family: monospace;
+    font-family: monospace;
+    -fx-tab-size: 2;
+    tab-size: 2;
+    -fx-font-weight: normal;
+    font-weight: normal;
+    -fx-effect: none;
+    -fx-line-spacing: 0px;
+}
+
+.text-area .text {
+    -fx-line-spacing: 0px;
+    -fx-font-family: monospace;
+    font-family: monospace;
+    -fx-tab-size: 2;
+    tab-size: 2;
+    color: transparent;
+    -fx-fill: transparent;
+    fill: transparent;
+}
+
+.text-area .content {
+    -fx-background-radius: 0px;
+    -fx-border-radius: 0px;
+    border-radius: 0px;
     background-color: #171a1f;
     -fx-background-color: #171a1f;
-    -fx-border-width: 0px 1px 1px 1px;
-    border-width: 0px 1px 1px 1px;
-    -fx-border-color: #24292F;
-    border-color: #24292F;
+    -fx-font-weight: normal;
+    font-weight: normal;
+    -fx-font-family: monospace;
+    font-family: monospace;
+    -fx-tab-size: 2;
+    tab-size: 2;
 }
 
-.table-view .scroll-bar:horizontal * {
-    -fx-min-width: 0px;
-    min-width: 0px;
-    -fx-pref-width: 0px;
-    -fx-max-width: 0px;
-    max-width: 0px;
+.text-area > .scroll-pane {
+    -fx-padding: 0px;
+    padding: 0px;
+}
 
-    -fx-min-height: 0px;
-    min-height: 0px;
-    -fx-pref-height: 0px;
-    -fx-max-height: 0px;
-    max-height: 0px;
+.choice-box {
+    -fx-border-width: 0px;
+    border-width: 0px;
+    -fx-border-color: transparent;
+    border-color: transparent;
+    background-color: #2E343B;
+    -fx-background-color: #2E343B;
+    -fx-border-radius: 4px;
+    border-radius: 4px;
+    -fx-background-radius: 6px;
+    -fx-mark-color: #EF5B25;
+}
+
+.choice-box:hover  {
+    background-color: #24292F;
+    -fx-background-color: #24292F;
+    cursor: hand;
+    -fx-cursor: hand;
+}
+
+.choice-box:focused {
+    -fx-border-radius: 4px;
+    border-radius: 4px;
+    -fx-background-radius: 6px;
+    -fx-border-width: 2px;
+    border-width: 2px;
+    -fx-border-color: #E9531D;
+    border-color: #E9531D;
+}
+
+.choice-box > .label {
+    color: #E2E2E2;
+    -fx-text-fill: #E2E2E2;
+}
+
+.choice-box .arrow {
+    background-color: #E2E2E2;
+    -fx-background-color: #E2E2E2;
+    -fx-effect: null;
+    -fx-background-insets: 0px;
+}
+
+.choice-box:hover .arrow {
+    background-color: #EF5B25;
+    -fx-background-color: #EF5B25;
+}
+
+.choice-box:focused .arrow {
+    background-color: #EF5B25;
+    -fx-background-color: #EF5B25;
+}
+
+.blank-box {
+    -fx-background-radius: 0px;
+    -fx-border-radius: 0px;
+    border-radius: 0px;
+    background-color: #171a1f;
+    -fx-background-color: #171a1f;
+}
+
+.blank-box-label {
+    -fx-font-weight: normal;
+    font-weight: normal;
+    color: #E2E2E2;
+    -fx-text-fill: #E2E2E2;
+}
+
+.token-none {
+    color: #E2E2E2;
+    -fx-fill: #E2E2E2;
+    fill: #E2E2E2;
+}
+
+.token-string {
+    color: #fad55d;
+    -fx-fill: #fad55d;
+    fill: #fad55d;
+}
+
+.token-boolean {
+    color: #5dfae0;
+    -fx-fill: #5dfae0;
+    fill: #5dfae0;
+}
+
+.token-number {
+    color: #5de8fa;
+    -fx-fill: #5de8fa;
+    fill: #5de8fa;
+}
+
+.token-key {
+    color: #fa875d;
+    -fx-fill: #fa875d;
+    fill: #fa875d;
 }
