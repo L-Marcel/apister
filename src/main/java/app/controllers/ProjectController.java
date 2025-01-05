@@ -12,6 +12,8 @@ import app.core.RequestType;
 import app.core.Response;
 import app.layout.HeaderHighlighter;
 import app.layout.JsonHighlighter;
+import app.layout.TableCellTextField;
+//import app.layout.TableCellTextField;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -36,6 +38,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -180,20 +183,24 @@ public class ProjectController implements Initializable {
         this.headerTableView.setItems(headersList);
 
         this.keysTableColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getKey()));
-        // this.keysTableColumn.setCellFactory(column -> new TableCellTextField((index, current) -> {
-        //     Pair<String, String> oldPair = headersList.get(index);
-        //     Pair<String, String> newPair = new Pair<>(current, oldPair.getValue());
-        //     headersList.set(index, newPair);
-        //     addNewRow();
-        // }));
+        this.keysTableColumn.setCellFactory(column -> new TableCellTextField((index, current) -> {
+            if(index >= 0 && index < headersList.size()) {
+                Pair<String, String> oldPair = headersList.get(index);
+                Pair<String, String> newPair = new Pair<>(current, oldPair.getValue());
+                headersList.set(index, newPair);
+                addNewRow();
+            };
+        }));
 
         this.valuesTableColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getValue()));
-        // this.valuesTableColumn.setCellFactory(column -> new TableCellTextField((index, current) -> {
-        //     Pair<String, String> oldPair = headersList.get(index);
-        //     Pair<String, String> newPair = new Pair<>(oldPair.getKey(), current);
-        //     headersList.set(index, newPair);
-        //     addNewRow();
-        // }));
+        this.valuesTableColumn.setCellFactory(column -> new TableCellTextField((index, current) -> {
+            if(index >= 0 && index < headersList.size()) {
+                Pair<String, String> oldPair = headersList.get(index);
+                Pair<String, String> newPair = new Pair<>(oldPair.getKey(), current);
+                headersList.set(index, newPair);
+                addNewRow();
+            };
+        }));
 
         // this.headerTableView.sortPolicyProperty().set(table -> {
         //     FXCollections.sort(headersList, (pair1, pair2) -> {
@@ -417,8 +424,8 @@ public class ProjectController implements Initializable {
         if(
             this.headersList.size() == 0 || 
             (
-                !this.headersList.get(this.headersList.size() - 1).getKey().isEmpty() && 
-                !this.headersList.get(this.headersList.size() - 1).getValue().isEmpty()
+                !this.headersList.get(this.headersList.size() - 1).getKey().isBlank() && 
+                !this.headersList.get(this.headersList.size() - 1).getValue().isBlank()
             )
         ) {
             this.headersList.add(new Pair<>("", ""));
