@@ -79,13 +79,14 @@
                                       <tabs>
                                         <Tab text="Cabeçalho">
                                              <content>
-                                                <TableView fx:id="headerTableView" editable="true" fixedCellSize="40.0" prefHeight="200.0">
+                                                <TableView fx:id="headerTableView" cacheShape="false" editable="true" fixedCellSize="50.0" prefHeight="200.0">
                                                   <columns>
-                                                    <TableColumn fx:id="keysTableColumn" minWidth="200.0" prefWidth="-1.0" text="Chave" />
-                                                    <TableColumn fx:id="valuesTableColumn" minWidth="200.0" prefWidth="-1.0" text="Valor" />
+                                                    <TableColumn fx:id="keysTableColumn" minWidth="210.0" prefWidth="-1.0" text="Chave" />
+                                                    <TableColumn fx:id="valuesTableColumn" minWidth="210.0" prefWidth="-1.0" text="Valor" />
                                                   </columns>
                                                 </TableView>
-                                             </content></Tab>
+                                             </content>
+                                        </Tab>
                                         <Tab text="Corpo">
                                              <content>
                                                 <StackPane alignment="TOP_LEFT" styleClass="top-bar">

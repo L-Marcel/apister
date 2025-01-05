@@ -16,6 +16,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
@@ -23,8 +28,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.text.TextFlow;
@@ -125,6 +134,16 @@ public class ProjectController implements Initializable {
         fakeRoot.getChildren().add(p);
         this.treeView.setRoot(fakeRoot);
         this.treeView.setShowRoot(false);
+        treeView.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (newScene != null) {
+                newScene.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+                    if (!treeView.getBoundsInParent().contains(event.getSceneX(), event.getSceneY())) {
+                        treeView.getSelectionModel().clearSelection();
+                    }
+                });
+            }
+        });
+        configContextMenu();
 
         this.rightAnchorPane.widthProperty().addListener((observable, old, current) -> {
             double half = current.doubleValue() / 2.0d;
@@ -142,22 +161,20 @@ public class ProjectController implements Initializable {
         this.headerTableView.setItems(headersList);
 
         this.keysTableColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getKey()));
-        this.keysTableColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        this.keysTableColumn.setOnEditCommit(event -> {
-            Pair<String, String> oldPair = event.getRowValue();
-            Pair<String, String> newPair = new Pair<>(event.getNewValue(), oldPair.getValue());
-            headersList.set(event.getTablePosition().getRow(), newPair);
+        this.keysTableColumn.setCellFactory(column -> new TableCellTextField((index, current) -> {
+            Pair<String, String> oldPair = headersList.get(index);
+            Pair<String, String> newPair = new Pair<>(current, oldPair.getValue());
+            headersList.set(index, newPair);
             addNewRow();
-        });
+        }));
 
         this.valuesTableColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getValue()));
-        this.valuesTableColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        this.valuesTableColumn.setOnEditCommit(event -> {
-            Pair<String, String> oldPair = event.getRowValue();
-            Pair<String, String> newPair = new Pair<>(oldPair.getKey(), event.getNewValue());
-            headersList.set(event.getTablePosition().getRow(), newPair);
+        this.valuesTableColumn.setCellFactory(column -> new TableCellTextField((index, current) -> {
+            Pair<String, String> oldPair = headersList.get(index);
+            Pair<String, String> newPair = new Pair<>(oldPair.getKey(), current);
+            headersList.set(index, newPair);
             addNewRow();
-        });
+        }));
 
         this.headerTableView.sortPolicyProperty().set(table -> {
             FXCollections.sort(headersList, (pair1, pair2) -> {
@@ -172,7 +189,7 @@ public class ProjectController implements Initializable {
             });
             return true;
         });
-
+      
         this.select(req);
     };
 
@@ -183,9 +200,107 @@ public class ProjectController implements Initializable {
             this.request.getHeaders().forEach((key, value) -> 
                 headersList.add(new Pair<>(key, value))
             );
-            this.headersList.add(new Pair<>("",""));
+            addNewRow();
         };
     };
+
+    public void configContextMenu() {
+        ContextMenu contextMenu = new ContextMenu();
+
+        MenuItem addRequest = new MenuItem("Add Request");
+        MenuItem addFolder = new MenuItem("Add Folder");
+        MenuItem renameItem = new MenuItem("Rename");
+        MenuItem deleteItem = new MenuItem("Delete");
+
+        contextMenu.getItems().addAll(addRequest, addFolder, renameItem, deleteItem);
+
+        treeView.setOnMouseClicked(event -> {
+            if (event.getButton() ==  MouseButton.SECONDARY) {
+                TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
+
+                if (selectedItem == null) {
+                    contextMenu.hide();
+                    return;
+                }
+                if (selectedItem instanceof Request) {
+                    addRequest.setVisible(false);
+                    addFolder.setVisible(false);
+                }
+                else {
+                    addRequest.setVisible(true);
+                    addFolder.setVisible(true);
+                }
+                contextMenu.show(treeView, event.getScreenX() + 30.0, event.getScreenY() + 10.0);
+            } else if (event.getButton() == MouseButton.PRIMARY) {
+                TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
+                if(selectedItem instanceof Request) {
+                    this.select((Request) selectedItem);
+                }
+            }
+        });
+
+        treeView.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
+                if(selectedItem instanceof Request){
+                    this.select((Request) selectedItem);
+                }
+            };
+        });
+        
+        addRequest.setOnAction(event -> {
+            TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
+            if (selectedItem instanceof Node) addNewRequest(selectedItem);
+        });
+
+        addFolder.setOnAction(event -> {
+            TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
+            if (selectedItem instanceof Node) addNewFolder(selectedItem);
+        });
+
+        renameItem.setOnAction(event -> {
+            TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                TextField textField = new TextField(selectedItem.getValue());
+                textField.setOnAction(e -> {
+                    selectedItem.setValue(textField.getText());
+                    selectedItem.setGraphic(null);
+                });
+                textField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+                    if (!isNowFocused) {
+                        selectedItem.setValue(textField.getText());
+                        selectedItem.setGraphic(null);
+                    }
+                });
+                selectedItem.setGraphic(textField);
+                textField.requestFocus();
+                textField.selectAll();
+            }
+        });
+
+        deleteItem.setOnAction(event -> {
+            TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
+            if (selectedItem != null && selectedItem.getParent() != null) {
+                selectedItem.getParent().getChildren().remove(selectedItem);
+            }
+        });
+    }
+
+    private void addNewRequest(TreeItem<String> selectedItem) {
+        if (selectedItem != null) {
+            Request newRequest = new Request("New Request");
+            selectedItem.getChildren().add(newRequest);
+            selectedItem.setExpanded(true);
+        }
+    }
+
+    private void addNewFolder(TreeItem<String> selectedItem) {
+        if (selectedItem != null) {
+            Node newNode = new Node("New Folder");
+            selectedItem.getChildren().add(newNode);
+            selectedItem.setExpanded(true);
+        }
+    }
 
     private void addNewRow() {
         if(
