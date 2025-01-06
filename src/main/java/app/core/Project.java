@@ -29,6 +29,36 @@ public class Project extends Storable<Node> {
                 this.store();
             });
 
+            request.headerProperty().addListener((
+                ListChangeListener.Change<? extends HeaderEntry> event
+            ) -> {
+                while(event.next()) {
+                    if(event.wasAdded() || event.wasReplaced()) {
+                        event.getAddedSubList().forEach((child) -> {
+                            child.keyProperty().addListener((keyEvent) -> {
+                                this.store();
+                            });
+
+                            child.valueProperty().addListener((valueEvent) -> {
+                                this.store();
+                            });
+                        });
+                    };
+                };
+
+                this.store();
+            });
+
+            request.headerProperty().forEach((entry) -> {
+                entry.keyProperty().addListener((event) -> {
+                    this.store();
+                });
+
+                entry.valueProperty().addListener((event) -> {
+                    this.store();
+                });
+            });
+
             request.lastResponseProperty().addListener((event) -> {
                 this.store();
             });
@@ -48,6 +78,12 @@ public class Project extends Storable<Node> {
             };
 
             this.store();
+        });
+
+        node.getChildren().forEach((child) -> {
+            if(child instanceof Node) {
+                this.configNode((Node) child);
+            };
         });
     };
 };

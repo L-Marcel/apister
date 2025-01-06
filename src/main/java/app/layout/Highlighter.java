@@ -56,7 +56,7 @@ public abstract class Highlighter {
     protected abstract Text[] computeTexts(String line);
 
     public void setText(StringProperty text) {
-        this.textArea.textProperty().bind(text);
+        this.textArea.textProperty().bindBidirectional(text);
     };
 
     private void computeHeight(double height) {

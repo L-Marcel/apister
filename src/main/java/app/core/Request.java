@@ -15,13 +15,14 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.scene.control.TreeItem;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Request extends Node {
     private RequestType type = RequestType.GET;
     private final StringProperty url;
     private final StringProperty body;
-    private HashMap<String, String> headers;
+    private ObservableList<HeaderEntry> header;
     private final ObjectProperty<Response> lastResponse;
 
     public Request() {
@@ -29,7 +30,7 @@ public class Request extends Node {
         url = new SimpleStringProperty("");
         body = new SimpleStringProperty("");
         lastResponse = new SimpleObjectProperty<Response>(null);
-        headers = new HashMap<String, String>();
+        header = FXCollections.observableArrayList();
     };
 
     public Request(String name) {
@@ -37,21 +38,20 @@ public class Request extends Node {
         url = new SimpleStringProperty("");
         body = new SimpleStringProperty("");
         lastResponse = new SimpleObjectProperty<Response>(null);
-        headers = new HashMap<String, String>();
+        header = FXCollections.observableArrayList();
     };
 
     public Request(
         String name,
         String url,
         String body,
-        Response lastResponse,
-        HashMap<String, String> headers
+        Response lastResponse
     ) {
         super(name);
         this.url = new SimpleStringProperty(url);
         this.body = new SimpleStringProperty(body);
         this.lastResponse = new SimpleObjectProperty<Response>(lastResponse);
-        this.headers = headers;
+        header = FXCollections.observableArrayList();
     };
 
     @Override
@@ -60,11 +60,11 @@ public class Request extends Node {
         out.writeUTF(this.type.name());
         out.writeUTF(this.url.get());
         out.writeUTF(this.body.get());
-        out.writeInt(this.headers.size());
+        out.writeInt(this.header.size());
 
-        for(String key : this.headers.keySet()) {
-            out.writeUTF(key);
-            out.writeUTF(this.headers.get(key));
+        for(HeaderEntry entry : this.header) {
+            out.writeUTF(entry.getKey());
+            out.writeUTF(entry.getValue());
         };
 
         boolean value = (this.lastResponse != null) ? true : false;
@@ -83,7 +83,7 @@ public class Request extends Node {
         for(int i = 0; i < size; i++) {
             String key = in.readUTF();
             String value = in.readUTF();
-            this.headers.put(key, value);
+            this.header.add(new HeaderEntry(key, value));
         };
         
         boolean hasLastResponse = in.readBoolean();
@@ -98,8 +98,14 @@ public class Request extends Node {
             .newBuilder()
             .uri(URI.create(this.url.get()));
 
-        if(this.headers != null) {
-            this.headers.forEach(requestBuilder::header);
+        if(this.header != null) {
+            try {
+                for(HeaderEntry entry : this.header) {
+                    requestBuilder.header(entry.getKey(), entry.getValue());
+                };
+            } catch (Exception e) {
+                e.printStackTrace();
+            };
         };
 
         switch(this.type) {
@@ -143,9 +149,10 @@ public class Request extends Node {
                 name,
                 this.url.get(),
                 this.body.get(),
-                this.lastResponse.get(),
-                this.headers
+                this.lastResponse.get()
             );
+
+            request.headerProperty().setAll(this.header);
             parent.replace(this, request);
             return request;
         };
@@ -169,12 +176,8 @@ public class Request extends Node {
         return this.body;
     };
 
-    public HashMap<String, String> getHeaders() {
-        return this.headers;
-    };
-
-    public void setHeaders(HashMap<String, String> headers) {
-        this.headers = headers;
+    public ObservableList<HeaderEntry> headerProperty() {
+        return this.header;
     };
 
     public ObjectProperty<Response> lastResponseProperty() {

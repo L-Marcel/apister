@@ -1,6 +1,8 @@
 package app.interfaces;
 
+import app.core.HeaderEntry;
+
 @FunctionalInterface
 public interface TableCellTextFieldEditCallback {
-    public void call(int index, String current);
+    public void call(HeaderEntry entry, String current);
 };

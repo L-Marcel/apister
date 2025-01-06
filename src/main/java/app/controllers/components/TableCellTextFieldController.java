@@ -28,6 +28,6 @@ public class TableCellTextFieldController implements Initializable{
     };
 
     private void commitEdit() {
-        cell.callback.call(cell.getTableRow().getIndex(), textField.getText());
+        cell.callback.call(cell.getTableRow().getItem(), textField.getText());
     };
 };
