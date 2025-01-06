@@ -211,6 +211,8 @@
     tab-size: 2;
     color: #d1dd2e50;
     -fx-text-fill: #d1dd2e50;
+    -fx-font-size: 12px;
+    font-size: 12px;
 }
 
 .top-bar {
@@ -219,13 +221,15 @@
 }
 
 .text-area {
+    -fx-font-size: 12px;
+    font-size: 12px;
     background-color: #333A42;
     -fx-background-color: #333A42;
     -fx-background-radius: 0px;
     -fx-border-radius: 0px;
     border-radius: 0px;
-    -fx-text-fill: transparent;
-    -fx-highlight-text-fill: transparent;
+    /* -fx-text-fill: transparent;
+    -fx-highlight-text-fill: transparent; */
     -fx-font-family: monospace;
     font-family: monospace;
     -fx-tab-size: 2;
@@ -242,12 +246,16 @@
     font-family: monospace;
     -fx-tab-size: 2;
     tab-size: 2;
-    color: transparent;
-    -fx-fill: transparent;
-    fill: transparent;
+    -fx-font-size: 12px;
+    font-size: 12px;
+    /* color: transparent; */
+    /* -fx-fill: transparent;
+    fill: transparent; */
 }
 
 .text-area .content {
+    -fx-font-size: 12px;
+    font-size: 12px;
     -fx-background-radius: 0px;
     -fx-border-radius: 0px;
     border-radius: 0px;
@@ -262,8 +270,8 @@
 }
 
 .text-area > .scroll-pane {
-    -fx-padding: 0px;
-    padding: 0px;
+    /* -fx-padding: 0px;
+    padding: 0px; */
 }
 
 .choice-box {

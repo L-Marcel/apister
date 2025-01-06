@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import app.utils.SystemUtils;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
@@ -84,7 +85,25 @@ public abstract class Highlighter {
     };
 
     private void computeLineSpacing(double height, boolean dynamic) {
-        if(dynamic) {
+        if(!SystemUtils.isWindows() && dynamic) {
+            int lines = 1 + this.textArea.getText().length() - this.textArea.getText().replaceAll("\n", "").length();
+            double targetLineHeight = (height - 8d) / lines;
+            double diff = ((targetLineHeight - 11.138297872340425d) * lines) / (lines - 1);
+            System.out.println(diff);
+            //15.138297872340425 -> line height
+            //11.138297872340425 -> text flow line height
+
+            //this.textFlow.setLineSpacing(1.102999687d);
+            // x < 1.102999687d
+
+            //this.textFlow.setLineSpacing(1d);
+            // x > 1d
+
+            //this.textFlow.setLineSpacing(1.1d);
+            // x < 1.1d
+        } else if(!SystemUtils.isWindows()) {
+            this.textFlow.setLineSpacing(1.102999687d);
+        } else if(dynamic) {
             int lines = 1 + this.textArea.getText().length() - this.textArea.getText().replaceAll("\n", "").length();
             double targetLineHeight = (height - 8d) / lines;
             double diff = ((targetLineHeight - 13.59375d) * lines) / (lines - 1);
@@ -96,7 +115,10 @@ public abstract class Highlighter {
 
     private void computeVerticalScroll(double textFlowScroll, double textAreaScrollTop) {
         double max = this.skin.getContentHeight() - this.textArea.getHeight();
-        if(this.isHorizontalScrollVisible()) max += 16d;
+        if(this.isHorizontalScrollVisible()) {
+            max += 16d;
+            if(!SystemUtils.isWindows()) max += 2d;
+        };
 
         if(max > 0) {
             double target = textAreaScrollTop / max;
