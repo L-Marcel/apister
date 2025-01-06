@@ -55,7 +55,11 @@ public abstract class Highlighter {
     protected abstract LinkedHashMap<String, Pattern> initPatterns();
     protected abstract Text[] computeTexts(String line);
 
-    public void setText(StringProperty text) {
+    public void unbindBidirectional(StringProperty text) {
+        this.textArea.textProperty().unbindBidirectional(text);
+    };
+
+    public void bindBidirectional(StringProperty text) {
         this.textArea.textProperty().bindBidirectional(text);
     };
 

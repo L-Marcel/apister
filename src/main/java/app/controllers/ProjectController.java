@@ -15,7 +15,6 @@ import app.utils.ProjectControllerHeaderTableUtils;
 import app.utils.ProjectControllerTreeUtils;
 import app.utils.ProjectControllerUtils;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -27,6 +26,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
@@ -57,8 +57,10 @@ public class ProjectController implements Initializable {
     @FXML private TextArea responseHeaderTextArea;
     @FXML private TextFlow responseHeaderTextFlow;
 
+    @FXML private ChoiceBox<String> requestTypeChoiceBox;
+    @FXML private TextField projectUrlInputBox;
+
     @FXML private TabPane tabPane;
-    @FXML private ChoiceBox<RequestType> requestTypeChoiceBox;
     @FXML private AnchorPane rightAnchorPane;
     @FXML private VBox blankVBox;
     @FXML private TableView<HeaderEntry> headerTableView;
@@ -74,6 +76,24 @@ public class ProjectController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resource) {
+        this.bodyJsonHighlighter = new JsonHighlighter(
+            this.bodyTextFlow, 
+            this.bodyTextArea, 
+            this.bodyTextFlowScrollPane
+        );
+
+        this.responseBodyJsonHighlighter = new JsonHighlighter(
+            this.responseBodyTextFlow, 
+            this.responseBodyTextArea, 
+            this.responseBodyTextFlowScrollPane
+        );
+
+        this.responseHeaderHighlighter = new HeaderHighlighter(
+            this.responseHeaderTextFlow, 
+            this.responseHeaderTextArea, 
+            this.responseHeaderTextFlowScrollPane
+        );
+
         ProjectControllerUtils.configPanes(
             this.tabPane,
             this.rightAnchorPane,
@@ -100,46 +120,92 @@ public class ProjectController implements Initializable {
         ProjectControllerTreeUtils.configTree(
             this.project,
             this.treeView,
-            (Request request) -> this.select(request)
+            (Request request) -> this.select(request),
+            (Request request) -> {
+                if(this.request == request) {
+                    this.unselect();
+                };
+            }
         );
-        
-        this.bodyJsonHighlighter = new JsonHighlighter(this.bodyTextFlow, this.bodyTextArea, this.bodyTextFlowScrollPane);
-        this.responseBodyJsonHighlighter = new JsonHighlighter(this.responseBodyTextFlow, this.responseBodyTextArea, this.responseBodyTextFlowScrollPane);
-        this.responseHeaderHighlighter = new HeaderHighlighter(this.responseHeaderTextFlow, this.responseHeaderTextArea, this.responseHeaderTextFlowScrollPane);
-        // this.responseHeaderHighlighter.setText(   
-        //     "HTTP/1.1 200 OK\n" +
-        //     "Date: Thu, 19 Dec 2024 12:00:00 GMT\n" +
-        //     "Server: Apache/2.4.41 (Ubuntu)\n" +
-        //     "Content-Type: application/json\n" +
-        //     "Content-Length: 348\n" +
-        //     "Connection: keep-alive\n" +
-        //     "Cache-Control: max-age=3600\n" +
-        //     "ETag: \"123456789abcdef\"\n" +
-        //     "Last-Modified: Wed, 18 Dec 2024 10:30:00 GMT"
-        // );
+    };
 
-        this.requestTypeChoiceBox.getItems().addAll(RequestType.values());
-        this.requestTypeChoiceBox.getSelectionModel().select(0);
+    public void unselect() {
+        if(this.request != null) {
+            this.blankVBox.setVisible(true);
+            this.bodyJsonHighlighter.unbindBidirectional(this.request.bodyProperty());
+            ObjectProperty<Response> lastResponse = this.request.lastResponseProperty();
+            
+            if(lastResponse.get() != null) {
+                this.responseBodyJsonHighlighter.unbindBidirectional(
+                    lastResponse.get().messageProperty()
+                );
+        
+                this.responseHeaderHighlighter.unbindBidirectional(
+                    lastResponse.get().headerProperty()
+                );
+            };
+
+            this.projectUrlInputBox.textProperty().unbindBidirectional(this.request.urlProperty());;
+            this.requestTypeChoiceBox.getItems().clear();
+ 
+            this.request = null;
+        };
     };
 
     public void select(Request request) {
+        this.unselect();
         this.blankVBox.setVisible(false);
         this.request = request;
-        this.bodyJsonHighlighter.setText(this.request.bodyProperty());
+        this.bodyJsonHighlighter.bindBidirectional(this.request.bodyProperty());
         ObjectProperty<Response> lastResponse = this.request.lastResponseProperty();
         
-        if(lastResponse.get() != null) {
-            this.responseBodyJsonHighlighter.setText(
-                new SimpleStringProperty(lastResponse.get().getMessage())
+        lastResponse.addListener((event, old, current) -> {
+            this.responseBodyJsonHighlighter.bindBidirectional(
+                current.messageProperty()
             );
     
-            this.responseHeaderHighlighter.setText(
-                new SimpleStringProperty(lastResponse.get().getMessage())
+            this.responseHeaderHighlighter.bindBidirectional(
+                current.headerProperty()
+            );
+        });
+
+        if(lastResponse.get() != null) {
+            this.responseBodyJsonHighlighter.bindBidirectional(
+                lastResponse.get().messageProperty()
+            );
+    
+            this.responseHeaderHighlighter.bindBidirectional(
+                lastResponse.get().headerProperty()
             );
         };
 
+        this.projectUrlInputBox.textProperty().bindBidirectional(this.request.urlProperty());
+
+        this.requestTypeChoiceBox.getItems().clear();
+        for(RequestType type : RequestType.values()) {
+            this.requestTypeChoiceBox.getItems().add(type.toString());
+        };
+        this.requestTypeChoiceBox.getSelectionModel().select(this.request.typeProperty().get().name());
+        this.requestTypeChoiceBox.valueProperty().addListener((event) -> {
+            if(this.requestTypeChoiceBox.getValue() == null) return;
+            this.request.typeProperty().set(RequestType.valueOf(
+                this.requestTypeChoiceBox.getValue()
+            ));
+        });
+
         this.headerTableView.setItems(this.request.headerProperty());
-        ProjectControllerHeaderTableUtils.addEmptyRowIfNeeded(this.headerTableView.getItems());
+        ProjectControllerHeaderTableUtils.cleanupAndAddEmptyRowIfNeeded(this.headerTableView.getItems());
+    };
+
+    @FXML
+    public void submit() {
+        try {
+            if(this.request != null) {
+                this.request.submit();
+            };
+        } catch (Exception e) {
+            e.printStackTrace();
+        };
     };
 
     @FXML 

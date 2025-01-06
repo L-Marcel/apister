@@ -11,6 +11,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 
+import app.utils.RequestUtils;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -19,7 +20,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Request extends Node {
-    private RequestType type = RequestType.GET;
+    private final ObjectProperty<RequestType> type;
     private final StringProperty url;
     private final StringProperty body;
     private ObservableList<HeaderEntry> header;
@@ -27,6 +28,7 @@ public class Request extends Node {
 
     public Request() {
         super();
+        type = new SimpleObjectProperty<RequestType>(RequestType.GET);
         url = new SimpleStringProperty("");
         body = new SimpleStringProperty("");
         lastResponse = new SimpleObjectProperty<Response>(null);
@@ -35,6 +37,7 @@ public class Request extends Node {
 
     public Request(String name) {
         super(name);
+        type = new SimpleObjectProperty<RequestType>(RequestType.GET);
         url = new SimpleStringProperty("");
         body = new SimpleStringProperty("");
         lastResponse = new SimpleObjectProperty<Response>(null);
@@ -48,6 +51,7 @@ public class Request extends Node {
         Response lastResponse
     ) {
         super(name);
+        this.type = new SimpleObjectProperty<RequestType>(RequestType.GET);
         this.url = new SimpleStringProperty(url);
         this.body = new SimpleStringProperty(body);
         this.lastResponse = new SimpleObjectProperty<Response>(lastResponse);
@@ -57,7 +61,7 @@ public class Request extends Node {
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeUTF(this.getValue());
-        out.writeUTF(this.type.name());
+        out.writeUTF(this.type.get().name());
         out.writeUTF(this.url.get());
         out.writeUTF(this.body.get());
         out.writeInt(this.header.size());
@@ -75,7 +79,7 @@ public class Request extends Node {
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         this.setValue(in.readUTF());
-        this.type = RequestType.valueOf(in.readUTF());
+        this.type.set(RequestType.valueOf(in.readUTF()));
         this.url.set(in.readUTF());
         this.body.set(in.readUTF());
         
@@ -90,25 +94,47 @@ public class Request extends Node {
         if(hasLastResponse) this.lastResponse.set((Response) in.readObject());
     };
 
-    public Response request() throws IOException, InterruptedException {
+    public Response submit() throws IOException, InterruptedException {
         Instant requestedAt = Instant.now();
         HttpClient client = HttpClient.newHttpClient();
+        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder();
 
-        HttpRequest.Builder requestBuilder = HttpRequest
-            .newBuilder()
-            .uri(URI.create(this.url.get()));
-
-        if(this.header != null) {
-            try {
-                for(HeaderEntry entry : this.header) {
-                    requestBuilder.header(entry.getKey(), entry.getValue());
-                };
-            } catch (Exception e) {
-                e.printStackTrace();
-            };
+        try {
+            requestBuilder.uri(URI.create(this.url.get()));
+        } catch(IllegalArgumentException e) {
+            this.lastResponse.set(new Response(
+                requestedAt, 
+                this.url.get(),
+                "URL inválida!",
+                "",
+                StatusCode.BAD_REQUEST
+            ));
+    
+            return this.lastResponse.get();
+        } catch(Exception e) {
+            e.printStackTrace();
         };
 
-        switch(this.type) {
+        try {
+            for(HeaderEntry entry : this.header) {
+                if(entry.getKey().isBlank() || entry.getValue().isBlank()) continue;
+                requestBuilder.header(entry.getKey(), entry.getValue());
+            };
+        } catch(IllegalArgumentException e) {
+            this.lastResponse.set(new Response(
+                requestedAt, 
+                this.url.get(),
+                "Cabeçalho inválido!",
+                "",
+                StatusCode.BAD_REQUEST
+            ));
+    
+            return this.lastResponse.get();
+        } catch(Exception e) {
+            e.printStackTrace();
+        };
+
+        switch(this.type.get()) {
             case GET:
                 requestBuilder.GET();
                 break;
@@ -126,15 +152,62 @@ public class Request extends Node {
         };
 
         HttpRequest request = requestBuilder.build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        this.lastResponse.set(new Response(
-            requestedAt, 
-            this.url.get(), 
-            response.body(), 
-            StatusCode.fromCode(response.statusCode()),
-            new HashMap<String, List<String>>(response.headers().map())
-        ));
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            StatusCode statusCode = StatusCode.fromCode(response.statusCode());
+            this.lastResponse.set(new Response(
+                requestedAt, 
+                this.url.get(), 
+                response.body(),
+                RequestUtils.convertHttpHeader(
+                    response.headers(),
+                    statusCode
+                ),
+                statusCode
+            ));
+        } catch(IOException e) {
+            this.lastResponse.set(new Response(
+                requestedAt, 
+                this.url.get(),
+                "Conexão fechada abrutamente!",
+                "",
+                StatusCode.BAD_REQUEST
+            ));
+    
+            return this.lastResponse.get();
+        } catch(InterruptedException e) {
+            this.lastResponse.set(new Response(
+                requestedAt, 
+                this.url.get(),
+                "Operação interrompida!",
+                "",
+                StatusCode.BAD_REQUEST
+            ));
+    
+            return this.lastResponse.get();
+        } catch(IllegalArgumentException e) {
+            this.lastResponse.set(new Response(
+                requestedAt, 
+                this.url.get(),
+                "Erro inesperado ao montar requisição!",
+                "",
+                StatusCode.BAD_REQUEST
+            ));
+    
+            return this.lastResponse.get();
+        } catch(SecurityException e) {
+            this.lastResponse.set(new Response(
+                requestedAt, 
+                this.url.get(),
+                "Requisição bloqueada!",
+                "",
+                StatusCode.NOT_ACCEPTABLE
+            ));
+    
+            return this.lastResponse.get();
+        } catch(Exception e) {
+            e.printStackTrace();
+        };
 
         return this.lastResponse.get();
     };
@@ -160,12 +233,8 @@ public class Request extends Node {
         return this;
     };
 
-    public RequestType getType() {
+    public ObjectProperty<RequestType> typeProperty() {
         return this.type;
-    };
-
-    public void setType(RequestType type) {
-        this.type = type;
     };
 
     public StringProperty urlProperty() {

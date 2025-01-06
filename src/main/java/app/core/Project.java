@@ -59,6 +59,10 @@ public class Project extends Storable<Node> {
                 });
             });
 
+            request.typeProperty().addListener((event) -> {
+                this.store();
+            });
+
             request.lastResponseProperty().addListener((event) -> {
                 this.store();
             });

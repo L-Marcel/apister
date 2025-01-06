@@ -4,6 +4,7 @@ import app.core.Node;
 import app.core.Project;
 import app.core.Request;
 import app.interfaces.TreeSelectCallback;
+import app.interfaces.TreeUnselectCallback;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
@@ -62,7 +63,8 @@ public class ProjectControllerTreeUtils {
     public static void configTree(
         Project project,
         TreeView<String> treeView,
-        TreeSelectCallback select
+        TreeSelectCallback select,
+        TreeUnselectCallback unselect
     ) {
         treeView.getSelectionModel().selectedItemProperty().addListener((event, old, current) -> {
             if(current instanceof Request && select != null) {
@@ -86,7 +88,7 @@ public class ProjectControllerTreeUtils {
         treeView.setOnMouseClicked(event -> {
             if(event.getButton() == MouseButton.SECONDARY) {
                 TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
-
+                
                 if(selectedItem == null) {
                     renameItem.setVisible(false);
                     deleteItem.setVisible(false);
@@ -104,6 +106,7 @@ public class ProjectControllerTreeUtils {
                     addFolder.setVisible(true);
                 };
 
+                if(contextMenu.isShowing()) contextMenu.hide();
                 contextMenu.show(treeView, event.getScreenX() + 30.0, event.getScreenY() + 10.0);
             } else if(event.getButton() == MouseButton.PRIMARY) {
                 TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
@@ -188,9 +191,12 @@ public class ProjectControllerTreeUtils {
                 selectedItem instanceof Node &&
                 selectedItem instanceof Node
             ) {
-                Node prent = (Node) selectedItem.getParent();
+                Node parent = (Node) selectedItem.getParent();
                 Node selectedNode = (Node) selectedItem;
-                prent.remove(selectedNode);
+                parent.remove(selectedNode);
+                if(selectedNode instanceof Request && unselect != null) {
+                    unselect.call((Request) selectedNode);
+                };
             };
         });
 
