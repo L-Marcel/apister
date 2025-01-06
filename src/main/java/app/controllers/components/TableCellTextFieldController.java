@@ -7,7 +7,6 @@ import app.layout.TableCellTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import javafx.util.Pair;
 
 public class TableCellTextFieldController implements Initializable{
     private TableCellTextField cell;
@@ -19,7 +18,7 @@ public class TableCellTextFieldController implements Initializable{
     };
 
     @FXML
-    public void initialize(URL arg0, ResourceBundle arg1) {
+    public void initialize(URL url, ResourceBundle resource) {
         textField.setOnAction(event -> this.commitEdit());
         textField.setText(cell.getItem());
         textField.focusedProperty().addListener((obs, wasFocused, isFocused) -> {

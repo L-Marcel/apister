@@ -14,7 +14,9 @@ import app.layout.JsonHighlighter;
 import app.utils.ProjectControllerHeaderTableUtils;
 import app.utils.ProjectControllerTreeUtils;
 import app.utils.ProjectControllerUtils;
+import javafx.beans.InvalidationListener;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -40,6 +42,9 @@ public class ProjectController implements Initializable {
     private JsonHighlighter bodyJsonHighlighter;
     private JsonHighlighter responseBodyJsonHighlighter;
     private HeaderHighlighter responseHeaderHighlighter;
+
+    private InvalidationListener requestTypeChoiceBoxListener;
+    private ChangeListener<? super Response> lastResponseListener;
 
     @FXML private Button backButton;
     @FXML private Label storingLabel;
@@ -135,6 +140,10 @@ public class ProjectController implements Initializable {
             this.bodyJsonHighlighter.unbindBidirectional(this.request.bodyProperty());
             ObjectProperty<Response> lastResponse = this.request.lastResponseProperty();
             
+            if(lastResponseListener != null) {
+                lastResponse.removeListener(lastResponseListener);
+            };
+
             if(lastResponse.get() != null) {
                 this.responseBodyJsonHighlighter.unbindBidirectional(
                     lastResponse.get().messageProperty()
@@ -147,6 +156,10 @@ public class ProjectController implements Initializable {
 
             this.projectUrlInputBox.textProperty().unbindBidirectional(this.request.urlProperty());;
             this.requestTypeChoiceBox.getItems().clear();
+
+            if(this.requestTypeChoiceBoxListener != null) {
+                this.requestTypeChoiceBox.valueProperty().removeListener(this.requestTypeChoiceBoxListener);
+            };    
  
             this.request = null;
         };
@@ -158,8 +171,8 @@ public class ProjectController implements Initializable {
         this.request = request;
         this.bodyJsonHighlighter.bindBidirectional(this.request.bodyProperty());
         ObjectProperty<Response> lastResponse = this.request.lastResponseProperty();
-        
-        lastResponse.addListener((event, old, current) -> {
+
+        this.lastResponseListener = (event, old, current) -> {
             this.responseBodyJsonHighlighter.bindBidirectional(
                 current.messageProperty()
             );
@@ -167,7 +180,9 @@ public class ProjectController implements Initializable {
             this.responseHeaderHighlighter.bindBidirectional(
                 current.headerProperty()
             );
-        });
+        };
+
+        lastResponse.addListener(this.lastResponseListener);
 
         if(lastResponse.get() != null) {
             this.responseBodyJsonHighlighter.bindBidirectional(
@@ -177,6 +192,9 @@ public class ProjectController implements Initializable {
             this.responseHeaderHighlighter.bindBidirectional(
                 lastResponse.get().headerProperty()
             );
+        } else {
+            this.responseBodyJsonHighlighter.clear();
+            this.responseHeaderHighlighter.clear();
         };
 
         this.projectUrlInputBox.textProperty().bindBidirectional(this.request.urlProperty());
@@ -186,12 +204,15 @@ public class ProjectController implements Initializable {
             this.requestTypeChoiceBox.getItems().add(type.toString());
         };
         this.requestTypeChoiceBox.getSelectionModel().select(this.request.typeProperty().get().name());
-        this.requestTypeChoiceBox.valueProperty().addListener((event) -> {
+
+        this.requestTypeChoiceBoxListener = (event) -> {
             if(this.requestTypeChoiceBox.getValue() == null) return;
             this.request.typeProperty().set(RequestType.valueOf(
                 this.requestTypeChoiceBox.getValue()
             ));
-        });
+        }; 
+        
+        this.requestTypeChoiceBox.valueProperty().addListener(this.requestTypeChoiceBoxListener);
 
         this.headerTableView.setItems(this.request.headerProperty());
         ProjectControllerHeaderTableUtils.cleanupAndAddEmptyRowIfNeeded(this.headerTableView.getItems());

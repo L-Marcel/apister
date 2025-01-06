@@ -19,4 +19,5 @@ module app {
 
     opens app.layout to javafx.fxml;
     exports app.layout;
+    exports app.interfaces;
 }

@@ -9,7 +9,7 @@ import app.interfaces.TableCellTextFieldEditCallback;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.TableCell;
-import javafx.util.Pair;
+
 public class TableCellTextField extends TableCell<HeaderEntry, String> {
     public TableCellTextFieldEditCallback callback;
 

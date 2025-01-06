@@ -9,6 +9,9 @@ import java.util.List;
 import javafx.scene.control.TreeItem;
 
 public class Node extends TreeItem<String> implements Externalizable {
+    private String oldValue = "";
+    private boolean editing = false;
+
     public Node() {};
     public Node(String name) {
         super(name);
@@ -35,6 +38,25 @@ public class Node extends TreeItem<String> implements Externalizable {
             TreeItem<String> child = (TreeItem<String>) in.readObject();
             this.getChildren().add(child);
         };
+    };
+
+    public String getOldValue() {
+        return this.oldValue;
+    };
+
+    public boolean isEditing() {
+        return this.editing;
+    };
+
+    public void stopEdit() {
+        this.editing = false;
+        this.setValue(oldValue);
+    };
+
+    public void startEdit() {
+        this.editing = true;
+        this.oldValue = this.getValue();
+        this.setValue("");
     };
 
     private void sortNodes() {

@@ -7,6 +7,21 @@ import java.util.Map.Entry;
 import app.core.StatusCode;
 
 public class RequestUtils {
+    public static String createHeader(
+        StatusCode statusCode
+    ) {
+        StringBuilder header = new StringBuilder();
+        String status = statusCode.getValue() + 
+            " " + 
+            statusCode.name().replace('_', ' ') + 
+            "\n";
+        
+        header.append(status);
+        header.append("=".repeat(status.length() - 1));
+
+        return header.toString();
+    };
+
     public static String convertHttpHeader(
         HttpHeaders headers,
         StatusCode statusCode
@@ -35,6 +50,6 @@ public class RequestUtils {
             header.append("\n");
         };
 
-        return header.toString();
+        return header.toString().trim();
     };
 };

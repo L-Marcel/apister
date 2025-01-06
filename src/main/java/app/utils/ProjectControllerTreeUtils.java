@@ -5,6 +5,7 @@ import app.core.Project;
 import app.core.Request;
 import app.interfaces.TreeSelectCallback;
 import app.interfaces.TreeUnselectCallback;
+import app.layout.ProjectTreeCell;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
@@ -66,6 +67,8 @@ public class ProjectControllerTreeUtils {
         TreeSelectCallback select,
         TreeUnselectCallback unselect
     ) {
+        treeView.setCellFactory(tree -> new ProjectTreeCell());
+
         treeView.getSelectionModel().selectedItemProperty().addListener((event, old, current) -> {
             if(current instanceof Request && select != null) {
                 select.call((Request) current);
@@ -139,47 +142,10 @@ public class ProjectControllerTreeUtils {
 
         renameItem.setOnAction(event -> {
             TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
+            
             if(selectedItem != null && selectedItem instanceof Node) {
                 Node selectedNode = (Node) selectedItem;
-
-                TextField textField = new TextField(selectedNode.getValue());
-             
-                textField.setStyle(
-                    "-fx-border-radius: 0px;" +
-                    "border-radius: 0px;" +
-                    "-fx-background-radius: 0px;" +
-                    "-fx-border-width: 0px;" +
-                    "border-width: 0px;" + 
-                    "background-color: #ce3802;" +
-                    "-fx-background-color: #ce3802;"
-                );
-
-                textField.setMinWidth(treeView.getWidth());
-                textField.setMinHeight(22);
-
-                String oldValue = selectedNode.getValue();
-                selectedNode.setValue("");
-
-                textField.setOnAction(e -> {
-                    Node updatedNode = selectedNode.rename(textField.getText());
-
-                    treeView.getSelectionModel().select(updatedNode);
-                    if(updatedNode == selectedNode) selectedNode.setValue(oldValue);
-
-                    selectedNode.setGraphic(null);
-                });
-
-                textField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-                    if(!isNowFocused) {
-                        Node updatedNode = selectedNode.rename(textField.getText());
-                        if(updatedNode == selectedNode) selectedNode.setValue(oldValue);
-                        selectedNode.setGraphic(null);
-                    };
-                });
-                
-                selectedNode.setGraphic(textField);
-                textField.requestFocus();
-                textField.selectAll();
+                selectedNode.startEdit();
             };
         });
 

@@ -8,8 +8,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.List;
 
 import app.utils.RequestUtils;
 import javafx.beans.property.ObjectProperty;
@@ -106,7 +104,7 @@ public class Request extends Node {
                 requestedAt, 
                 this.url.get(),
                 "URL inválida!",
-                "",
+                RequestUtils.createHeader(StatusCode.BAD_REQUEST),
                 StatusCode.BAD_REQUEST
             ));
     
@@ -125,7 +123,7 @@ public class Request extends Node {
                 requestedAt, 
                 this.url.get(),
                 "Cabeçalho inválido!",
-                "",
+                RequestUtils.createHeader(StatusCode.BAD_REQUEST),
                 StatusCode.BAD_REQUEST
             ));
     
@@ -170,7 +168,7 @@ public class Request extends Node {
                 requestedAt, 
                 this.url.get(),
                 "Conexão fechada abrutamente!",
-                "",
+                RequestUtils.createHeader(StatusCode.BAD_REQUEST),
                 StatusCode.BAD_REQUEST
             ));
     
@@ -180,7 +178,7 @@ public class Request extends Node {
                 requestedAt, 
                 this.url.get(),
                 "Operação interrompida!",
-                "",
+                RequestUtils.createHeader(StatusCode.BAD_REQUEST),
                 StatusCode.BAD_REQUEST
             ));
     
@@ -190,7 +188,7 @@ public class Request extends Node {
                 requestedAt, 
                 this.url.get(),
                 "Erro inesperado ao montar requisição!",
-                "",
+                RequestUtils.createHeader(StatusCode.BAD_REQUEST),
                 StatusCode.BAD_REQUEST
             ));
     
@@ -200,7 +198,7 @@ public class Request extends Node {
                 requestedAt, 
                 this.url.get(),
                 "Requisição bloqueada!",
-                "",
+                RequestUtils.createHeader(StatusCode.NOT_ACCEPTABLE),
                 StatusCode.NOT_ACCEPTABLE
             ));
     
@@ -231,6 +229,10 @@ public class Request extends Node {
         };
 
         return this;
+    };
+
+    public RequestType getType() {
+        return this.type.get();
     };
 
     public ObjectProperty<RequestType> typeProperty() {
