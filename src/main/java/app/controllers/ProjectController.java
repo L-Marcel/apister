@@ -1,43 +1,40 @@
 package app.controllers;
 
 import java.net.URL;
-import java.util.Comparator;
 import java.util.ResourceBundle;
 
 import app.App;
-import app.core.Node;
+import app.core.HeaderEntry;
 import app.core.Project;
 import app.core.Request;
 import app.core.RequestType;
+import app.core.Response;
 import app.layout.HeaderHighlighter;
 import app.layout.JsonHighlighter;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import app.log.Log;
+import app.utils.ProjectControllerHeaderTableUtils;
+import app.utils.ProjectControllerTreeUtils;
+import app.utils.ProjectControllerUtils;
+import javafx.beans.InvalidationListener;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.TextFlow;
-import javafx.util.Pair;
 
 public class ProjectController implements Initializable {
     private Project project;
@@ -46,9 +43,14 @@ public class ProjectController implements Initializable {
     private JsonHighlighter bodyJsonHighlighter;
     private JsonHighlighter responseBodyJsonHighlighter;
     private HeaderHighlighter responseHeaderHighlighter;
-    
-    private ObservableList<Pair<String, String>> headersList;
 
+    private InvalidationListener requestTypeChoiceBoxListener;
+    private ChangeListener<? super Response> lastResponseListener;
+
+    @FXML private Button backButton;
+    @FXML private Label storingLabel;
+    @FXML private ProgressIndicator storingProgressIndicator;
+    
     @FXML private ScrollPane bodyTextFlowScrollPane;
     @FXML private TextArea bodyTextArea;
     @FXML private TextFlow bodyTextFlow;
@@ -61,12 +63,15 @@ public class ProjectController implements Initializable {
     @FXML private TextArea responseHeaderTextArea;
     @FXML private TextFlow responseHeaderTextFlow;
 
+    @FXML private ChoiceBox<String> requestTypeChoiceBox;
+    @FXML private TextField projectUrlInputBox;
+
     @FXML private TabPane tabPane;
-    @FXML private ChoiceBox<RequestType> requestTypeChoiceBox;
     @FXML private AnchorPane rightAnchorPane;
-    @FXML private TableView<Pair<String, String>> headerTableView;
-    @FXML private TableColumn<Pair<String, String>, String> keysTableColumn;
-    @FXML private TableColumn<Pair<String, String>, String> valuesTableColumn;
+    @FXML private VBox blankVBox;
+    @FXML private TableView<HeaderEntry> headerTableView;
+    @FXML private TableColumn<HeaderEntry, String> keysTableColumn;
+    @FXML private TableColumn<HeaderEntry, String> valuesTableColumn;
     @FXML private AnchorPane responseAnchorPane;
     @FXML private TitledPane responseTitledPane;
     @FXML private TreeView<String> treeView;
@@ -77,238 +82,171 @@ public class ProjectController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resource) {
-        this.bodyJsonHighlighter = new JsonHighlighter(this.bodyTextFlow, this.bodyTextArea, this.bodyTextFlowScrollPane);
-        this.bodyJsonHighlighter.setText(
-            "{\n" +
-            "\t\"name\": \"Marcel\",\n" +
-            "\t\"student\": true,\n" +
-            "\t\"age\": 22\n" +
-            "}"
+        this.bodyJsonHighlighter = new JsonHighlighter(
+            this.bodyTextFlow, 
+            this.bodyTextArea, 
+            this.bodyTextFlowScrollPane
         );
 
-        this.responseBodyJsonHighlighter = new JsonHighlighter(this.responseBodyTextFlow, this.responseBodyTextArea, this.responseBodyTextFlowScrollPane);
-        this.responseBodyJsonHighlighter.setText(
-            "{\n" +
-            "\t\"message\": \"success\",\n" +
-            "\t\"code\": 200,\n" +
-            "}"
+        this.responseBodyJsonHighlighter = new JsonHighlighter(
+            this.responseBodyTextFlow, 
+            this.responseBodyTextArea, 
+            this.responseBodyTextFlowScrollPane
         );
 
-        this.responseHeaderHighlighter = new HeaderHighlighter(this.responseHeaderTextFlow, this.responseHeaderTextArea, this.responseHeaderTextFlowScrollPane);
-        this.responseHeaderHighlighter.setText(   
-            "HTTP/1.1 200 OK\n" +
-            "Date: Thu, 19 Dec 2024 12:00:00 GMT\n" +
-            "Server: Apache/2.4.41 (Ubuntu)\n" +
-            "Content-Type: application/json\n" +
-            "Content-Length: 348\n" +
-            "Connection: keep-alive\n" +
-            "Cache-Control: max-age=3600\n" +
-            "ETag: \"123456789abcdef\"\n" +
-            "Last-Modified: Wed, 18 Dec 2024 10:30:00 GMT"
+        this.responseHeaderHighlighter = new HeaderHighlighter(
+            this.responseHeaderTextFlow, 
+            this.responseHeaderTextArea, 
+            this.responseHeaderTextFlowScrollPane
         );
 
-        this.requestTypeChoiceBox.getItems().addAll(RequestType.values());
-        this.requestTypeChoiceBox.getSelectionModel().select(0);
+        ProjectControllerUtils.configPanes(
+            this.tabPane,
+            this.rightAnchorPane,
+            this.responseAnchorPane,
+            this.responseTitledPane,
+            this.headerTableView,
+            this.keysTableColumn,
+            this.valuesTableColumn
+        );
 
-        this.tabPane.heightProperty().addListener((event, old, current) -> {
-            this.headerTableView.setPrefHeight(current.doubleValue());
-            this.headerTableView.setMaxHeight(current.doubleValue());
-        });
+        ProjectControllerUtils.configLoading(
+            this.project,
+            this.backButton,
+            this.storingLabel,
+            this.storingProgressIndicator
+        );
 
-        this.tabPane.widthProperty().addListener((event, old, current) -> {
-            this.headerTableView.setPrefWidth(current.doubleValue());
-            this.headerTableView.setMaxWidth(current.doubleValue());
-        });
+        ProjectControllerHeaderTableUtils.configHeaderTable(
+            this.headerTableView,
+            this.keysTableColumn, 
+            this.valuesTableColumn
+        );
 
-        Node folder = new Node("tests");
-        Node another = new Node("another");
-        Node anotherOne = new Node("one");
-        another.getChildren().add(anotherOne);
-        Request req = new Request("abc");
-        folder.getChildren().add(req);
-        folder.getChildren().add(new Request("now"));
-        folder.getChildren().add(another);
-        Request p = new Request("final");
-        Node fakeRoot = new Node("root");
-        fakeRoot.getChildren().add(folder);
-        fakeRoot.getChildren().add(p);
-        this.treeView.setRoot(fakeRoot);
-        this.treeView.setShowRoot(false);
-        treeView.sceneProperty().addListener((observable, oldScene, newScene) -> {
-            if (newScene != null) {
-                newScene.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-                    if (!treeView.getBoundsInParent().contains(event.getSceneX(), event.getSceneY())) {
-                        treeView.getSelectionModel().clearSelection();
-                    }
-                });
+        ProjectControllerTreeUtils.configTree(
+            this.project,
+            this.treeView,
+            (Request request) -> this.select(request),
+            (Request request) -> {
+                if(this.request == request) {
+                    this.unselect();
+                };
             }
-        });
-        configContextMenu();
-
-        this.rightAnchorPane.widthProperty().addListener((observable, old, current) -> {
-            double half = current.doubleValue() / 2.0d;
-            this.keysTableColumn.setPrefWidth(half + 0.5);
-            this.valuesTableColumn.setPrefWidth(half + 0.5);
-        });
-
-        this.responseTitledPane.expandedProperty().addListener((event, old, current) -> {
-            if(current) responseAnchorPane.setMaxHeight(AnchorPane.USE_COMPUTED_SIZE);
-            else responseAnchorPane.setMaxHeight(0);
-            headerTableView.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-        });
-
-        this.headersList = FXCollections.observableArrayList();
-        this.headerTableView.setItems(headersList);
-
-        this.keysTableColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getKey()));
-        this.keysTableColumn.setCellFactory(column -> new TableCellTextField((index, current) -> {
-            Pair<String, String> oldPair = headersList.get(index);
-            Pair<String, String> newPair = new Pair<>(current, oldPair.getValue());
-            headersList.set(index, newPair);
-            addNewRow();
-        }));
-
-        this.valuesTableColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getValue()));
-        this.valuesTableColumn.setCellFactory(column -> new TableCellTextField((index, current) -> {
-            Pair<String, String> oldPair = headersList.get(index);
-            Pair<String, String> newPair = new Pair<>(oldPair.getKey(), current);
-            headersList.set(index, newPair);
-            addNewRow();
-        }));
-
-        this.headerTableView.sortPolicyProperty().set(table -> {
-            FXCollections.sort(headersList, (pair1, pair2) -> {
-                boolean isPair1Empty = pair1.getKey().isEmpty() && pair1.getValue().isEmpty();
-                boolean isPair2Empty = pair2.getKey().isEmpty() && pair2.getValue().isEmpty();
-
-                if(isPair1Empty && !isPair2Empty) return 1;
-                if(!isPair1Empty && isPair2Empty) return -1;
-
-                Comparator<Pair<String, String>> comparator = table.getComparator();
-                return comparator == null ? 0 : comparator.compare(pair1, pair2);
-            });
-            return true;
-        });
-      
-        this.select(req);
+        );
     };
 
-    public void select(Node node) {
-        if(node instanceof Request) {
-            this.request = (Request) node;
-            headersList.clear();
-            this.request.getHeaders().forEach((key, value) -> 
-                headersList.add(new Pair<>(key, value))
+    //#region Selection
+    public void unselect() {
+        if(this.request != null) {
+            this.blankVBox.setVisible(true);
+            this.bodyJsonHighlighter.unbindBidirectional(
+                this.request.bodyProperty()
             );
-            addNewRow();
+
+            ObjectProperty<Response> lastResponse = this.request.lastResponseProperty();
+            
+            if(this.lastResponseListener != null) {
+                lastResponse.removeListener(this.lastResponseListener);
+            };
+
+            if(lastResponse.get() != null) {
+                this.responseBodyJsonHighlighter.unbindBidirectional(
+                    lastResponse.get().messageProperty()
+                );
+        
+                this.responseHeaderHighlighter.unbindBidirectional(
+                    lastResponse.get().headerProperty()
+                );
+            };
+
+            this.projectUrlInputBox.textProperty().unbindBidirectional(
+                this.request.urlProperty()
+            );
+
+            this.requestTypeChoiceBox.getItems().clear();
+
+            if(this.requestTypeChoiceBoxListener != null) {
+                this.requestTypeChoiceBox.valueProperty().removeListener(
+                    this.requestTypeChoiceBoxListener
+                );
+            };    
+ 
+            this.request = null;
         };
     };
 
-    public void configContextMenu() {
-        ContextMenu contextMenu = new ContextMenu();
+    public void select(Request request) {
+        this.unselect();
+        this.blankVBox.setVisible(false);
+        this.request = request;
+        this.bodyJsonHighlighter.bindBidirectional(this.request.bodyProperty());
+        ObjectProperty<Response> lastResponse = this.request.lastResponseProperty();
 
-        MenuItem addRequest = new MenuItem("Add Request");
-        MenuItem addFolder = new MenuItem("Add Folder");
-        MenuItem renameItem = new MenuItem("Rename");
-        MenuItem deleteItem = new MenuItem("Delete");
+        this.lastResponseListener = (event, old, current) -> {
+            this.responseBodyJsonHighlighter.bindBidirectional(
+                current.messageProperty()
+            );
+    
+            this.responseHeaderHighlighter.bindBidirectional(
+                current.headerProperty()
+            );
+        };
 
-        contextMenu.getItems().addAll(addRequest, addFolder, renameItem, deleteItem);
+        lastResponse.addListener(this.lastResponseListener);
 
-        treeView.setOnMouseClicked(event -> {
-            if (event.getButton() ==  MouseButton.SECONDARY) {
-                TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
+        if(lastResponse.get() != null) {
+            this.responseBodyJsonHighlighter.bindBidirectional(
+                lastResponse.get().messageProperty()
+            );
+    
+            this.responseHeaderHighlighter.bindBidirectional(
+                lastResponse.get().headerProperty()
+            );
+        } else {
+            this.responseBodyJsonHighlighter.clear();
+            this.responseHeaderHighlighter.clear();
+        };
 
-                if (selectedItem == null) {
-                    contextMenu.hide();
-                    return;
-                }
-                if (selectedItem instanceof Request) {
-                    addRequest.setVisible(false);
-                    addFolder.setVisible(false);
-                }
-                else {
-                    addRequest.setVisible(true);
-                    addFolder.setVisible(true);
-                }
-                contextMenu.show(treeView, event.getScreenX() + 30.0, event.getScreenY() + 10.0);
-            } else if (event.getButton() == MouseButton.PRIMARY) {
-                TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
-                if(selectedItem instanceof Request) {
-                    this.select((Request) selectedItem);
-                }
-            }
-        });
+        this.projectUrlInputBox.textProperty().bindBidirectional(
+            this.request.urlProperty()
+        );
 
-        treeView.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
-            if(event.getCode() == KeyCode.ENTER) {
-                TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
-                if(selectedItem instanceof Request){
-                    this.select((Request) selectedItem);
-                }
-            };
-        });
+        this.requestTypeChoiceBox.getItems().clear();
+        for(RequestType type : RequestType.values()) {
+            this.requestTypeChoiceBox.getItems().add(type.toString());
+        };
+
+        this.requestTypeChoiceBox.getSelectionModel().select(
+            this.request.typeProperty().get().name()
+        );
+
+        this.requestTypeChoiceBoxListener = (event) -> {
+            if(this.requestTypeChoiceBox.getValue() == null) return;
+            this.request.typeProperty().set(RequestType.valueOf(
+                this.requestTypeChoiceBox.getValue()
+            ));
+        }; 
         
-        addRequest.setOnAction(event -> {
-            TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
-            if (selectedItem instanceof Node) addNewRequest(selectedItem);
-        });
+        this.requestTypeChoiceBox.valueProperty().addListener(
+            this.requestTypeChoiceBoxListener
+        );
 
-        addFolder.setOnAction(event -> {
-            TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
-            if (selectedItem instanceof Node) addNewFolder(selectedItem);
-        });
+        this.headerTableView.setItems(this.request.headerProperty());
+        ProjectControllerHeaderTableUtils.cleanupAndAddEmptyRowIfNeeded(
+            this.headerTableView.getItems()
+        );
+    };
+    //#endregion
 
-        renameItem.setOnAction(event -> {
-            TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
-            if (selectedItem != null) {
-                TextField textField = new TextField(selectedItem.getValue());
-                textField.setOnAction(e -> {
-                    selectedItem.setValue(textField.getText());
-                    selectedItem.setGraphic(null);
-                });
-                textField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-                    if (!isNowFocused) {
-                        selectedItem.setValue(textField.getText());
-                        selectedItem.setGraphic(null);
-                    }
-                });
-                selectedItem.setGraphic(textField);
-                textField.requestFocus();
-                textField.selectAll();
-            }
-        });
-
-        deleteItem.setOnAction(event -> {
-            TreeItem<String> selectedItem = treeView.getSelectionModel().getSelectedItem();
-            if (selectedItem != null && selectedItem.getParent() != null) {
-                selectedItem.getParent().getChildren().remove(selectedItem);
-            }
-        });
-    }
-
-    private void addNewRequest(TreeItem<String> selectedItem) {
-        if (selectedItem != null) {
-            Request newRequest = new Request("New Request");
-            selectedItem.getChildren().add(newRequest);
-            selectedItem.setExpanded(true);
-        }
-    }
-
-    private void addNewFolder(TreeItem<String> selectedItem) {
-        if (selectedItem != null) {
-            Node newNode = new Node("New Folder");
-            selectedItem.getChildren().add(newNode);
-            selectedItem.setExpanded(true);
-        }
-    }
-
-    private void addNewRow() {
-        if(
-            this.headersList.size() > 0 && 
-            !this.headersList.get(this.headersList.size() - 1).getKey().isEmpty() && 
-            !this.headersList.get(this.headersList.size() - 1).getValue().isEmpty()
-        ) {
-            this.headersList.add(new Pair<>("", ""));
+    @FXML
+    public void submit() {
+        try {
+            if(this.request != null) {
+                this.request.submit();
+            };
+        } catch (Exception e) {
+            Log.print("Controller", "Can't submit request.");
+            Log.print("Error", e.getMessage());
         };
     };
 
@@ -317,7 +255,9 @@ public class ProjectController implements Initializable {
         try {
             App.setRoot("projects");
         } catch(Exception e) {
-            e.printStackTrace();
+            Log.print("Controller", "Can't back to projects.");
+            Log.print("Error", e.getMessage());
         };
     };
+
 };

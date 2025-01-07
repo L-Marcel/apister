@@ -15,7 +15,14 @@ public class TextFieldDialog extends Dialog<String> {
         super(
             title,
             "components/textFieldDialog", 
-            new TextFieldDialogController(title, prompt, validMessage, "", validator, true)
+            new TextFieldDialogController(
+                title, 
+                prompt, 
+                validMessage, 
+                "", 
+                validator, 
+                true
+            )
         );
     };
 
@@ -29,7 +36,14 @@ public class TextFieldDialog extends Dialog<String> {
         super(
             title,
             "components/textFieldDialog", 
-            new TextFieldDialogController(title, prompt, validMessage, initial, validator, true)
+            new TextFieldDialogController(
+                title, 
+                prompt, 
+                validMessage, 
+                initial, 
+                validator, 
+                true
+            )
         );
     };
 };

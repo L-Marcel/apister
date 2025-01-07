@@ -6,10 +6,10 @@ import app.storage.Storage;
 public class ShutdownHook extends Thread {
     @Override
     public void run() {
-        System.out.println("\nEncerrando aplicação...");
-        System.out.println("Sincronizando os dados salvos...");
+        Log.print("Finishing process...");
+        Log.print("Syncronizing data...");
         Storage.getInstance().finish();
+        Log.print("Data syncronized!");
         Log.finish();
-        System.out.println("Dados sincronizados com sucesso!");
     };
 };

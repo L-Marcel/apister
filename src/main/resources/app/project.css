@@ -34,19 +34,14 @@
     -fx-background-insets: 0px;
 }
 
-.tree-cell:filled:hover .arrow {
-    background-color: #EF5B25;
-    -fx-background-color: #EF5B25;
-}
-
-.tree-cell:selected {
-    background-color: #E24911;
-    -fx-background-color: #E24911;
-}
-
 .tree-cell:empty {
     background-color: #24292F;
     -fx-background-color: #24292F;
+}
+
+.tree-cell:filled:selected {
+    background-color: #E24911;
+    -fx-background-color: #E24911;
 }
 
 .split-pane > .split-pane-divider {
@@ -81,6 +76,15 @@
 }
 
 .tab-label {
+    color: #E2E2E2;
+    -fx-text-fill: #E2E2E2;
+}
+
+.progress-indicator:indeterminate {
+    -fx-progress-color: #EF5B25;
+}
+
+.loading-label {
     color: #E2E2E2;
     -fx-text-fill: #E2E2E2;
 }
@@ -207,6 +211,8 @@
     tab-size: 2;
     color: #d1dd2e50;
     -fx-text-fill: #d1dd2e50;
+    -fx-font-size: 12px;
+    font-size: 12px;
 }
 
 .top-bar {
@@ -215,6 +221,8 @@
 }
 
 .text-area {
+    -fx-font-size: 12px;
+    font-size: 12px;
     background-color: #333A42;
     -fx-background-color: #333A42;
     -fx-background-radius: 0px;
@@ -238,12 +246,16 @@
     font-family: monospace;
     -fx-tab-size: 2;
     tab-size: 2;
+    -fx-font-size: 12px;
+    font-size: 12px;
     color: transparent;
     -fx-fill: transparent;
     fill: transparent;
 }
 
 .text-area .content {
+    -fx-font-size: 12px;
+    font-size: 12px;
     -fx-background-radius: 0px;
     -fx-border-radius: 0px;
     border-radius: 0px;
@@ -258,8 +270,8 @@
 }
 
 .text-area > .scroll-pane {
-    -fx-padding: 0px;
-    padding: 0px;
+    /* -fx-padding: 0px;
+    padding: 0px; */
 }
 
 .choice-box {
@@ -357,4 +369,39 @@
     color: #fa875d;
     -fx-fill: #fa875d;
     fill: #fa875d;
+}
+
+.rename-request-text-field {
+    -fx-border-radius: 0px;
+    border-radius: 0px;
+    -fx-background-radius: 0px;
+    -fx-border-width: 0px;
+    border-width: 0px; 
+    background-color: #ce3802;
+    -fx-background-color: #ce3802;
+};
+
+.request-tag {
+    -fx-padding: 0px 8px 0px 0px;
+    padding: 0px 8px 0px 0px;
+}
+
+.get-tag {
+    -fx-text-fill: #3bff65;
+}
+
+.post-tag {
+    -fx-text-fill: #ffdb3b;
+}
+
+.put-tag {
+    -fx-text-fill: #3bf8ff;
+}
+
+.delete-tag {
+    -fx-text-fill: #ff3b3b;
+}
+
+.tree-cell:selected .request-tag {
+    -fx-text-fill: #E2E2E2;
 }

@@ -35,7 +35,7 @@ public class TextFieldDialogController extends DialogController<String> {
         this.initial = initial;
         this.validator = validator;
         this.trim = trim;
-        if(trim) this.initial = this.initial.trim();
+        if(this.trim) this.initial = this.initial.trim();
     };
 
     @FXML
@@ -54,12 +54,12 @@ public class TextFieldDialogController extends DialogController<String> {
 
     public boolean validate(String candidate) {
         try {
-            if(trim) candidate = candidate.trim();
-            if(validator != null) validator.validate(candidate);
-            clearError();
+            if(this.trim) candidate = candidate.trim();
+            if(this.validator != null) this.validator.validate(candidate);
+            this.clearError();
             return true;
         } catch(InvalidInput e) {
-            showError(e.getMessage());
+            this.showError(e.getMessage());
         };
 
         return false;

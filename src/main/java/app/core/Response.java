@@ -1,40 +1,70 @@
 package app.core;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.List;
 
-public class Response implements Serializable {
-    private String message;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
+public class Response implements Externalizable {
+    private StringProperty message;
+    private StringProperty header;
     private String url;
     private StatusCode statusCode;
-    private HashMap<String, List<String>> headers;
     private Instant requestedAt;
     private Instant receivedAt;
     
-    public Response() {};
+    public Response() {
+        this.message = new SimpleStringProperty("");
+        this.header = new SimpleStringProperty("");
+    };
+
     public Response(
         Instant requestedAt,
         String url, 
         String message,
-        StatusCode statusCode,
-        HashMap<String, List<String>> headers
+        String header,
+        StatusCode statusCode
     ) {
         this.requestedAt = requestedAt;
         this.url = url;
-        this.message = message;
+        this.message = new SimpleStringProperty(message);
+        this.header = new SimpleStringProperty(header);
         this.statusCode = statusCode;
-        this.headers = headers;
         this.receivedAt = Instant.now();
     };
 
-    public String getMessage() {
+    //#region Externalizable
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeUTF(this.message.get());
+        out.writeUTF(this.header.get());
+        out.writeUTF(this.url);
+        out.writeUTF(this.statusCode.name());
+        out.writeObject(this.requestedAt);
+        out.writeObject(this.receivedAt);
+    };
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        this.message.set(in.readUTF());
+        this.header.set(in.readUTF());
+        this.url = in.readUTF();
+        this.statusCode = StatusCode.valueOf(in.readUTF());
+        this.requestedAt = (Instant) in.readObject();
+        this.receivedAt = (Instant) in.readObject();
+    };
+    //#endregion
+    //#region Getters and setters
+    public StringProperty messageProperty() {
         return this.message;
     };
 
-    public void setMessage(String message) {
-        this.message = message;
+    public StringProperty headerProperty() {
+        return this.header;
     };
 
     public String getUrl() {
@@ -53,14 +83,6 @@ public class Response implements Serializable {
         this.statusCode = statusCode;
     };
 
-    public HashMap<String, List<String>> getHeaders() {
-        return this.headers;
-    };
-
-    public void setHeaders(HashMap<String, List<String>> headers) {
-        this.headers = headers;
-    };
-
     public Instant getRequestedAt() {
         return this.requestedAt;
     };
@@ -76,4 +98,5 @@ public class Response implements Serializable {
     public void setReceivedAt(Instant receivedAt) {
         this.receivedAt = receivedAt;
     };
+    //#endregion
 };

@@ -42,10 +42,14 @@ public class ProjectCellController implements Initializable {
     public void open() {
         try {
             String name = this.cell.getItem();
-            Log.print("Openning project \"" + name + "\"...");
+            Log.print(
+                "Controller",
+                "Openning project \"" + name + "\"..."
+            );
             App.setRoot("project", new ProjectController(name));
         } catch(Exception e) {
-            e.printStackTrace();
+            Log.print("Controller", "Can't open a project.");
+            Log.print("Error", e.getMessage());
         };
     };
 
@@ -68,13 +72,18 @@ public class ProjectCellController implements Initializable {
             if(newName != null) {
                 File old = new File("data/project_" + name + ".dat");
                 File current = new File("data/project_" + newName + ".dat");
-                Log.print("Renaming project from \"" + name + "\" to \"" + newName + "\"...");
+                Log.print(
+                    "Controller",
+                    "Renaming project from \"" + name + "\" to \"" + 
+                    newName + "\"..."
+                );
                 if(old.renameTo(current)) {
                     Projects.getInstance().replace(name, newName);
                 };
             };
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.print("Controller", "Can't rename a project.");
+            Log.print("Error", e.getMessage());
         };
     };
 
@@ -90,11 +99,15 @@ public class ProjectCellController implements Initializable {
             if(dialog.showAndGet().booleanValue()) {
                 Projects projects = Projects.getInstance();
                 File file = new File("data/project_" + name + ".dat");
-                Log.print("Removing project \"" + name + "\"...");
+                Log.print(
+                    "Controller",
+                    "Removing project \"" + name + "\"..."
+                );
                 if(file.delete()) projects.remove(name);
             };
         } catch(Exception e) {
-            e.printStackTrace();
+            Log.print("Controller", "Can't remove a project.");
+            Log.print("Error", e.getMessage());
         };
     };
 
@@ -104,12 +117,21 @@ public class ProjectCellController implements Initializable {
             String name = this.cell.getItem();
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Exportar projeto");
-            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Apister Project", "*.apis"));
+            fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter(
+                    "Apister Project", 
+                    "*.apis"
+                )
+            );
             fileChooser.setInitialFileName(name + ".apis");
             File file = fileChooser.showSaveDialog(null);
             if(file == null) return;
             
-            Log.print("Exporting project \"" + name + "\" to \"" + file.getAbsolutePath() + "\"...");
+            Log.print(
+                "Controller",
+                "Exporting project \"" + name + "\" to \"" + 
+                file.getAbsolutePath() + "\"..."
+            );
             FileOutputStream fileOut = new FileOutputStream(file);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOut);
             Project project = new Project(name);
@@ -118,7 +140,8 @@ public class ProjectCellController implements Initializable {
             objectOutputStream.close();
             fileOut.close();
         } catch(Exception e) {
-            e.printStackTrace();
+            Log.print("Controller", "Can't export a project.");
+            Log.print("Error", e.getMessage());
         };
     };
 };

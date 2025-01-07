@@ -24,8 +24,8 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         scene = new Scene(load("projects"), 640, 480);
         App.applyCss("projects");
-        stage.setMinHeight(480);
-        stage.setMinWidth(640);
+        stage.setMinHeight(600);
+        stage.setMinWidth(800);
         stage.setScene(scene);
         stage.show();
     };
@@ -34,18 +34,20 @@ public class App extends Application {
         return App.scene;
     };
 
+    //#region Root
     public static void setRoot(String page) throws IOException {
-        Log.print("Navigating to " + page);
+        Log.print("Navigating to " + page + "...");
         App.scene.setRoot(load(page));
         App.applyCss(page);
     };
 
     public static void setRoot(String page, Object controller) throws IOException {
-        Log.print("Navigating to " + page);
+        Log.print("Navigating to " + page + "...");
         App.scene.setRoot(load(page, controller));
         App.applyCss(page);
     };
-
+    //#endregion
+    //#region Style
     private static void applyCss(String page) {
         App.scene.getStylesheets().clear();
         App.scene.getStylesheets().addAll(
@@ -61,7 +63,8 @@ public class App extends Application {
             App.class.getResource(page + ".css").toExternalForm()
         );
     };
-
+    //#endregion
+    //#region Load
     public static Parent load(String page, Object controller) throws IOException {
         FXMLLoader loader = new FXMLLoader(App.class.getResource(page + ".fxml"));
         loader.setController(controller);
@@ -72,4 +75,5 @@ public class App extends Application {
         FXMLLoader loader = new FXMLLoader(App.class.getResource(page + ".fxml"));
         return loader.load();
     };
+    //#endregion
 };
