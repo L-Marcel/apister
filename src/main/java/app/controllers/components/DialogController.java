@@ -15,13 +15,18 @@ public abstract class DialogController<R> implements Initializable {
     private R defaultValue;
     private R closeValue;
 
-    @FXML
-    private Label titleLabel;
+    @FXML private Label titleLabel;
 
     public DialogController(String title, R defaultValue, R closeValue) {
         this.title = title;
         this.defaultValue = defaultValue;
         this.closeValue = closeValue;
+    };
+
+    @Override
+    public void initialize(URL url, ResourceBundle resource) {
+        this.titleLabel.setText(this.title);
+        Platform.runLater(() -> this.focus());
     };
 
     public abstract void cancel();
@@ -41,11 +46,5 @@ public abstract class DialogController<R> implements Initializable {
     public void setDialog(Dialog<R> dialog) {
         this.dialog = dialog;
         this.dialog.setResult(defaultValue);
-    };
-
-    @Override
-    public void initialize(URL url, ResourceBundle resource) {
-        this.titleLabel.setText(this.title);
-        Platform.runLater(() -> this.focus());
     };
 };

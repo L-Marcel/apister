@@ -21,7 +21,8 @@ public class HeaderEntry implements Externalizable {
         this.key = new SimpleStringProperty(key);
         this.value = new SimpleStringProperty(value);
     };
-
+    
+    //#region Externalizable
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeUTF(this.getKey());
@@ -33,9 +34,10 @@ public class HeaderEntry implements Externalizable {
         this.setKey(in.readUTF());
         this.setValue(in.readUTF());
     };
-
+    //#endregion
+    //#region Getters and setters
     public String getKey() {
-        return key.get();
+        return this.key.get();
     };
 
     public void setKey(String key) {
@@ -43,11 +45,11 @@ public class HeaderEntry implements Externalizable {
     };
 
     public StringProperty keyProperty() {
-        return key;
+        return this.key;
     };
 
     public String getValue() {
-        return value.get();
+        return this.value.get();
     };
 
     public void setValue(String value) {
@@ -55,6 +57,7 @@ public class HeaderEntry implements Externalizable {
     };
 
     public StringProperty valueProperty() {
-        return value;
+        return this.value;
     };
+    //#endregion
 };

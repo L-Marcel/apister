@@ -42,12 +42,16 @@ public class ProjectsController implements Initializable {
 
             String name = dialog.showAndGet();
             if(name != null) {
-                Log.print("Adding project \"" + name + "\"...");
+                Log.print(
+                    "Controller",
+                    "Adding project \"" + name + "\"..."
+                );
                 new Project(name);
                 Projects.getInstance().add(name);
             };
         } catch(IOException e) {
-            e.printStackTrace();
+            Log.print("Controller", "Can't add a project.");
+            Log.print("Error", e.getMessage());
         };
     };
 
@@ -57,7 +61,12 @@ public class ProjectsController implements Initializable {
             Projects projects = Projects.getInstance();
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Importe um projeto");
-            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Apister Project", "*.apis"));
+            fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter(
+                    "Apister Project", 
+                    "*.apis"
+                )
+            );
             File file = fileChooser.showOpenDialog(null);
             if(file == null) return;
 
@@ -78,12 +87,17 @@ public class ProjectsController implements Initializable {
 
             name = dialog.showAndGet();
             if(name != null) {
-                Log.print("Importing project \"" + name + "\" from \"" + file.getAbsolutePath() + "\"...");
+                Log.print(
+                    "Controller",
+                    "Importing project \"" + name + "\" from \"" + 
+                    file.getAbsolutePath() + "\"..."
+                );
                 new Project(name ,node);
                 projects.add(name);
             };
         } catch(Exception e) {
-            e.printStackTrace();
+            Log.print("Controller", "Can't import a project.");
+            Log.print("Error", e.getMessage());
         };
     };
 };

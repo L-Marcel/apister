@@ -12,7 +12,9 @@ public class CustomTextAreaSkin extends TextAreaSkin {
         super(textArea);
 
         Parent content = this.getContent();
-        Path caretPath = (Path) this.getContent().getChildrenUnmodifiable().get(content.getChildrenUnmodifiable().size() - 1);
+        Path caretPath = (Path) this.getContent()
+            .getChildrenUnmodifiable()
+            .get(content.getChildrenUnmodifiable().size() - 1);
 
         caretPath.fillProperty().unbind();
         caretPath.fillProperty().set(Color.valueOf("#E2E2E2"));

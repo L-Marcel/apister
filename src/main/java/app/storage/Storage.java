@@ -28,7 +28,10 @@ public class Storage extends Thread {
         setPriority(3);
         try {
             Files.createDirectories(Paths.get("data"));
-        } catch(Exception e) {};
+        } catch(Exception e) {
+            Log.print("Storage", "Can't create data directory.");
+            Log.print("Error", e.getMessage());
+        };
         this.start();
     };
     
@@ -37,7 +40,6 @@ public class Storage extends Thread {
         return Storage.instance;
     };
     //#endregion
-
     //#region Tasks
     public void inspect() {
         if(this.semaphore.availablePermits() == 0) {
@@ -53,7 +55,6 @@ public class Storage extends Thread {
         return this.tasks.containsKey(name) && this.tasks.get(name) > 0;
     };
     //#endregion
-
     //#region Core
     protected synchronized void store(String name, Serializable data) {
         try {
@@ -66,6 +67,7 @@ public class Storage extends Thread {
             };
         } catch(Exception e) {
             Log.print("Storage", "Task request failed.");
+            Log.print("Error", e.getMessage());
         };
     };
 
@@ -103,20 +105,20 @@ public class Storage extends Thread {
                     this.tasks.put(name, 0);
                     if(storable instanceof List<?>) {
                         List<?> list = (List<?>) storable;
-                        Log.print("Storage", "Task finished, " + list.size() + " " + name + " were stored in a list.");
+                        Log.print("Storage", "Task finished, " + list.size() + " instances from \"" + name + "\" were stored in a list.");
                     } else if(storable instanceof Map<?, ?>) {
                         Map<?, ?> map = (Map<?, ?>) storable;
-                        Log.print("Storage", "Task finished, " + map.size() + " " + name + " were stored on a map.");
+                        Log.print("Storage", "Task finished, " + map.size() + " instances from \"" + name + "\" were stored on a map.");
                     } else if(storable instanceof Set<?>) {
                         Set<?> set = (Set<?>) storable;
-                        Log.print("Storage", "Task finished, " + set.size() + " " + name + " were stored in a set.");
+                        Log.print("Storage", "Task finished, " + set.size() + " instances from \"" + name + "\" were stored in a set.");
                     } else if(storable instanceof Queue<?>) {
                         Queue<?> queue = (Queue<?>) storable;
-                        Log.print("Storage", "Task finished, " + queue.size() + " " + name + " were stored in a queue.");
+                        Log.print("Storage", "Task finished, " + queue.size() + " instances from \"" + name + "\" were stored in a queue.");
                     } else if(name.endsWith("s")) {
-                        Log.print("Storage", "Task finished, " + name + " were stored.");
+                        Log.print("Storage", "Task finished, \"" + name + "\" were stored.");
                     } else {
-                        Log.print("Storage", "Task finished, " + name + " was stored.");
+                        Log.print("Storage", "Task finished, \"" + name + "\" was stored.");
                     };
                 };
             } catch(Exception e) {
@@ -129,7 +131,6 @@ public class Storage extends Thread {
         Log.print("Storage", "Finished.");
     };
     //#endregion
-
     //#region Control
     public void finish() {
         try {

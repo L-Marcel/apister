@@ -8,7 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
-public class TableCellTextFieldController implements Initializable{
+public class TableCellTextFieldController implements Initializable {
     private TableCellTextField cell;
     
     @FXML private TextField textField;  
@@ -19,14 +19,20 @@ public class TableCellTextFieldController implements Initializable{
 
     @FXML
     public void initialize(URL url, ResourceBundle resource) {
-        textField.setOnAction(event -> this.commitEdit());
-        textField.setText(cell.getItem());
-        textField.focusedProperty().addListener((obs, wasFocused, isFocused) -> {
-            if(!isFocused && cell.getItem() != textField.getText()) this.commitEdit();
-        });
+        this.textField.setOnAction(event -> this.commitEdit());
+        this.textField.setText(this.cell.getItem());
+        this.textField.focusedProperty().addListener(
+            (obs, wasFocused, isFocused) -> {
+                if(!isFocused && this.cell.getItem() != this.textField.getText()) 
+                    this.commitEdit();
+            }
+        );
     };
 
     private void commitEdit() {
-        cell.callback.call(cell.getTableRow().getItem(), textField.getText());
+        this.cell.callback.call(
+            this.cell.getTableRow().getItem(), 
+            this.textField.getText()
+        );
     };
 };

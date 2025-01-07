@@ -9,6 +9,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Instant;
 
+import app.log.Log;
 import app.utils.RequestUtils;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -56,6 +57,7 @@ public class Request extends Node {
         header = FXCollections.observableArrayList();
     };
 
+    //#region Externalizable
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeUTF(this.getValue());
@@ -91,12 +93,14 @@ public class Request extends Node {
         boolean hasLastResponse = in.readBoolean();
         if(hasLastResponse) this.lastResponse.set((Response) in.readObject());
     };
+    //#endregion
 
     public Response submit() throws IOException, InterruptedException {
         Instant requestedAt = Instant.now();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder();
 
+        //#region URI
         try {
             requestBuilder.uri(URI.create(this.url.get()));
         } catch(IllegalArgumentException e) {
@@ -107,12 +111,14 @@ public class Request extends Node {
                 RequestUtils.createHeader(StatusCode.BAD_REQUEST),
                 StatusCode.BAD_REQUEST
             ));
-    
+            
             return this.lastResponse.get();
         } catch(Exception e) {
-            e.printStackTrace();
+            Log.print("Main", "Can't create URI.");
+            Log.print("Error", e.getMessage());
         };
-
+        //#endregion
+        //#region Header
         try {
             for(HeaderEntry entry : this.header) {
                 if(entry.getKey().isBlank() || entry.getValue().isBlank()) continue;
@@ -129,18 +135,24 @@ public class Request extends Node {
     
             return this.lastResponse.get();
         } catch(Exception e) {
-            e.printStackTrace();
+            Log.print("Main", "Can't create header.");
+            Log.print("Error", e.getMessage());
         };
-
+        //#endregion
+        //#region Type
         switch(this.type.get()) {
             case GET:
                 requestBuilder.GET();
                 break;
             case POST:
-                requestBuilder.POST(HttpRequest.BodyPublishers.ofString(this.body.get()));
+                requestBuilder.POST(
+                    HttpRequest.BodyPublishers.ofString(this.body.get())
+                );
                 break;
             case PUT:
-                requestBuilder.PUT(HttpRequest.BodyPublishers.ofString(this.body.get()));
+                requestBuilder.PUT(
+                    HttpRequest.BodyPublishers.ofString(this.body.get())
+                );
                 break;
             case DELETE:
                 requestBuilder.DELETE();
@@ -148,7 +160,8 @@ public class Request extends Node {
             default:
                 break;
         };
-
+        //#endregion
+        //#region Sending
         HttpRequest request = requestBuilder.build();
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -204,17 +217,20 @@ public class Request extends Node {
     
             return this.lastResponse.get();
         } catch(Exception e) {
-            e.printStackTrace();
+            Log.print("Main", "Can't send request.");
+            Log.print("Error", e.getMessage());
         };
+        //#endregion
 
         return this.lastResponse.get();
     };
 
+    //#region Edit
     public Node rename(String name) {
         if(!(this.getParent() instanceof Node)) return this;
 
         Node parent = (Node) this.getParent();
-        if(parent != null && !parent.childExists(name) && !name.isBlank()) {
+        if(parent != null && !parent.exists(name) && !name.isBlank()) {
             parent.getChildren().remove(this);
             Request request = new Request(
                 name,
@@ -230,7 +246,8 @@ public class Request extends Node {
 
         return this;
     };
-
+    //#endregion
+    //#region Getters and setters
     public RequestType getType() {
         return this.type.get();
     };
@@ -254,4 +271,5 @@ public class Request extends Node {
     public ObjectProperty<Response> lastResponseProperty() {
         return this.lastResponse;
     };
+    //#endregion
 };

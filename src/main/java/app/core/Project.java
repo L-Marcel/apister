@@ -18,6 +18,7 @@ public class Project extends Storable<Node> {
     };
 
     private void configNode(Node node) {
+        //#region Request
         if(node instanceof Request) {
             Request request = (Request) node;
 
@@ -67,7 +68,8 @@ public class Project extends Storable<Node> {
                 this.store();
             });
         };
-
+        //#endregion
+        //#region Node
         node.getChildren().addListener((
             ListChangeListener.Change<? extends TreeItem<String>> event
         ) -> {
@@ -89,5 +91,6 @@ public class Project extends Storable<Node> {
                 this.configNode((Node) child);
             };
         });
+        //#endregion
     };
 };

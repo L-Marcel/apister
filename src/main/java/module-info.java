@@ -4,6 +4,7 @@ module app {
     requires transitive javafx.graphics;
     requires java.net.http;
     requires javafx.base;
+    requires io.github.kamilszewc.javaansitextcolorizer;
 
     opens app to javafx.fxml;
     exports app;

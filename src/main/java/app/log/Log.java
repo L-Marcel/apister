@@ -1,11 +1,10 @@
 package app.log;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Semaphore;
+
+import io.github.kamilszewc.javaansitextcolorizer.Colorizer;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -14,21 +13,13 @@ public class Log extends Thread {
     private Semaphore semaphore = new Semaphore(0);
     private boolean running = true;
     private ConcurrentLinkedQueue<String> queue = new ConcurrentLinkedQueue<String>();;
-    private FileWriter writer;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss");
 
     //#region Singleton
     private Log() {
         super();
         setPriority(MIN_PRIORITY);
-        try {
-            Files.createDirectories(Paths.get("data"));
-            File file = new File("data/debug.log");
-            file.createNewFile();
-            file.setWritable(true);
-            this.writer = new FileWriter(file);
-            this.start();
-        } catch(Exception e) {};
+        this.start();
     };
 
     public static Log getInstance() {
@@ -52,7 +43,10 @@ public class Log extends Thread {
     };
 
     private void put(String sender, String message) {
-        this.queue.add("[" + this.formatter.format(LocalDateTime.now()) + "]:[" + sender + "] " + message);
+        this.queue.add(
+            "[" + this.applyDataTimeColor(this.formatter.format(LocalDateTime.now())) + "]:[" + 
+            this.applySenderColor(sender) + "] " + message
+        );
         this.inspect();
     };
 
@@ -66,15 +60,34 @@ public class Log extends Thread {
 
                 while(!queue.isEmpty()) {
                     String log = queue.poll();
-                    this.writer.write(log + "\n");
+                    System.out.println(log);
                 };
-
-                this.writer.flush();
             } catch(Exception e) {};
         };
     };
     //#endregion
+    //#region Colors
+    private String applyDataTimeColor(String dataTime) {
+        return Colorizer.color(dataTime, Colorizer.Color.YELLOW_BRIGHT);
+    };
 
+    private String applySenderColor(String sender) {
+        switch(sender) {
+            case "Error":
+                return Colorizer.color(sender, Colorizer.Color.RED_BRIGHT);
+            case "Controller":
+                return Colorizer.color(sender, Colorizer.Color.MAGENTA_BRIGHT);
+            case "Main":
+                return Colorizer.color(sender, Colorizer.Color.GREEN_BRIGHT);
+            case "Storage":
+                return Colorizer.color(sender, Colorizer.Color.BLUE_BRIGHT);
+            case "Storable":
+                return Colorizer.color(sender, Colorizer.Color.CYAN_BRIGHT);
+            default:
+                return sender;
+        }
+    };
+    //#endregion
     //#region Control
     public static void finish() {
         try {
@@ -90,8 +103,7 @@ public class Log extends Thread {
     public void start() {
         try {
             super.start();
-        } catch(IllegalThreadStateException e) {
-        };
+        } catch(IllegalThreadStateException e) {};
     };
     //#endregion
 };

@@ -6,6 +6,7 @@ import app.App;
 import app.controllers.components.TableCellTextFieldController;
 import app.core.HeaderEntry;
 import app.interfaces.TableCellTextFieldEditCallback;
+import app.log.Log;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.TableCell;
@@ -30,11 +31,15 @@ public class TableCellTextField extends TableCell<HeaderEntry, String> {
         } else {
             try {
                 TableCellTextFieldController cellController = new TableCellTextFieldController(this);
-                Parent cell = App.load("components/tableCellTextField", cellController);
+                Parent cell = App.load(
+                    "components/tableCellTextField", 
+                    cellController
+                );
                 this.setGraphic(cell);
             } catch(IOException e) {
                 this.setGraphic(null);
-                e.printStackTrace();
+                Log.print("Can't load table cell.");
+                Log.print("Error", e.getMessage());
             };
         };
     };

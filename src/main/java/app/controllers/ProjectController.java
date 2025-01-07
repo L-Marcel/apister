@@ -11,6 +11,7 @@ import app.core.RequestType;
 import app.core.Response;
 import app.layout.HeaderHighlighter;
 import app.layout.JsonHighlighter;
+import app.log.Log;
 import app.utils.ProjectControllerHeaderTableUtils;
 import app.utils.ProjectControllerTreeUtils;
 import app.utils.ProjectControllerUtils;
@@ -134,14 +135,18 @@ public class ProjectController implements Initializable {
         );
     };
 
+    //#region Selection
     public void unselect() {
         if(this.request != null) {
             this.blankVBox.setVisible(true);
-            this.bodyJsonHighlighter.unbindBidirectional(this.request.bodyProperty());
+            this.bodyJsonHighlighter.unbindBidirectional(
+                this.request.bodyProperty()
+            );
+
             ObjectProperty<Response> lastResponse = this.request.lastResponseProperty();
             
-            if(lastResponseListener != null) {
-                lastResponse.removeListener(lastResponseListener);
+            if(this.lastResponseListener != null) {
+                lastResponse.removeListener(this.lastResponseListener);
             };
 
             if(lastResponse.get() != null) {
@@ -154,11 +159,16 @@ public class ProjectController implements Initializable {
                 );
             };
 
-            this.projectUrlInputBox.textProperty().unbindBidirectional(this.request.urlProperty());;
+            this.projectUrlInputBox.textProperty().unbindBidirectional(
+                this.request.urlProperty()
+            );
+
             this.requestTypeChoiceBox.getItems().clear();
 
             if(this.requestTypeChoiceBoxListener != null) {
-                this.requestTypeChoiceBox.valueProperty().removeListener(this.requestTypeChoiceBoxListener);
+                this.requestTypeChoiceBox.valueProperty().removeListener(
+                    this.requestTypeChoiceBoxListener
+                );
             };    
  
             this.request = null;
@@ -197,13 +207,18 @@ public class ProjectController implements Initializable {
             this.responseHeaderHighlighter.clear();
         };
 
-        this.projectUrlInputBox.textProperty().bindBidirectional(this.request.urlProperty());
+        this.projectUrlInputBox.textProperty().bindBidirectional(
+            this.request.urlProperty()
+        );
 
         this.requestTypeChoiceBox.getItems().clear();
         for(RequestType type : RequestType.values()) {
             this.requestTypeChoiceBox.getItems().add(type.toString());
         };
-        this.requestTypeChoiceBox.getSelectionModel().select(this.request.typeProperty().get().name());
+
+        this.requestTypeChoiceBox.getSelectionModel().select(
+            this.request.typeProperty().get().name()
+        );
 
         this.requestTypeChoiceBoxListener = (event) -> {
             if(this.requestTypeChoiceBox.getValue() == null) return;
@@ -212,11 +227,16 @@ public class ProjectController implements Initializable {
             ));
         }; 
         
-        this.requestTypeChoiceBox.valueProperty().addListener(this.requestTypeChoiceBoxListener);
+        this.requestTypeChoiceBox.valueProperty().addListener(
+            this.requestTypeChoiceBoxListener
+        );
 
         this.headerTableView.setItems(this.request.headerProperty());
-        ProjectControllerHeaderTableUtils.cleanupAndAddEmptyRowIfNeeded(this.headerTableView.getItems());
+        ProjectControllerHeaderTableUtils.cleanupAndAddEmptyRowIfNeeded(
+            this.headerTableView.getItems()
+        );
     };
+    //#endregion
 
     @FXML
     public void submit() {
@@ -225,7 +245,8 @@ public class ProjectController implements Initializable {
                 this.request.submit();
             };
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.print("Controller", "Can't submit request.");
+            Log.print("Error", e.getMessage());
         };
     };
 
@@ -234,7 +255,9 @@ public class ProjectController implements Initializable {
         try {
             App.setRoot("projects");
         } catch(Exception e) {
-            e.printStackTrace();
+            Log.print("Controller", "Can't back to projects.");
+            Log.print("Error", e.getMessage());
         };
     };
+
 };

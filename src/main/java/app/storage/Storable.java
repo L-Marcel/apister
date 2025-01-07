@@ -26,19 +26,20 @@ public abstract class Storable<T extends Serializable> implements Serializable {
             FileInputStream input = new FileInputStream("data/" + this.name + ".dat");  
             ObjectInputStream object = new ObjectInputStream(input);
             this.instances = (T) object.readObject();
-            Log.print("Storable", "Loaded: " + this.name + ".");
+            Log.print("Storable", "Loaded \"" + this.name + "\".");
             object.close();         
         } catch(FileNotFoundException e) {
-            Log.print("Storable", "Creating: " + this.name + ".");
+            Log.print("Storable", "Creating \"" + this.name + "\".");
             this.instances = initial;
         } catch(Exception e) {
-            Log.print("Storable", "Failed on load " + this.name + ".");
+            Log.print("Storable", "Can't load \"" + this.name + "\".");
             Log.print("Error", e.getMessage());
-            Log.print("Storable", "Creating " + this.name + " database.");
+            Log.print("Storable", "Creating \"" + this.name + "\" database.");
             this.instances = initial;
         };
     };
 
+    //#region Store
     public void setOnRequestStoring(StoringCallback requestStoringCallback) {
         this.requestStoringCallback = requestStoringCallback;
     };
@@ -66,6 +67,7 @@ public abstract class Storable<T extends Serializable> implements Serializable {
 
         storage.store(this.name, this.instances);
     };
+    //#endregion
 
     public T get() {
         return this.instances;

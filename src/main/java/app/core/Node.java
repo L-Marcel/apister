@@ -17,6 +17,7 @@ public class Node extends TreeItem<String> implements Externalizable {
         super(name);
     };
 
+    //#region Externalizable
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeUTF(this.getValue());
@@ -39,7 +40,8 @@ public class Node extends TreeItem<String> implements Externalizable {
             this.getChildren().add(child);
         };
     };
-
+    //#endregion
+    //#region Edit
     public String getOldValue() {
         return this.oldValue;
     };
@@ -59,6 +61,21 @@ public class Node extends TreeItem<String> implements Externalizable {
         this.setValue("");
     };
 
+    public Node rename(String name) {
+        if(!(this.getParent() instanceof Node)) return this;
+
+        Node parent = (Node) this.getParent();
+        if(parent != null && !parent.exists(name) && !name.isBlank()) {
+            Node node = new Node(name);
+            node.getChildren().setAll(this.getChildren());
+            parent.replace(this, node);
+            return node;
+        };
+
+        return this;
+    };
+    //#endregion
+    //#region Nodes
     private void sortNodes() {
         this.getChildren().sort((a, b) -> {
             return a.getValue().compareTo(b.getValue());
@@ -81,25 +98,12 @@ public class Node extends TreeItem<String> implements Externalizable {
         this.sortNodes();
     };
 
-    public Node rename(String name) {
-        if(!(this.getParent() instanceof Node)) return this;
-
-        Node parent = (Node) this.getParent();
-        if(parent != null && !parent.childExists(name) && !name.isBlank()) {
-            Node node = new Node(name);
-            node.getChildren().setAll(this.getChildren());
-            parent.replace(this, node);
-            return node;
-        };
-
-        return this;
-    };
-
-    public boolean childExists(String name) {
+    public boolean exists(String name) {
         for(TreeItem<String> child : this.getChildren()) {
             if(child.getValue().equals(name)) return true;
         };
         
         return false;
     };
+    //#endregion
 };

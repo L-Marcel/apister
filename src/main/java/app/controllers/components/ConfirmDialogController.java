@@ -18,6 +18,12 @@ public class ConfirmDialogController extends DialogController<Boolean> {
         this.warning = warning;
     };
 
+    @Override
+    public void initialize(URL url, ResourceBundle resource) {
+        this.warningLabel.setText(this.warning);
+        super.initialize(url, resource);
+    };
+
     @FXML
     public void confirm() {
         this.close(true);
@@ -31,11 +37,5 @@ public class ConfirmDialogController extends DialogController<Boolean> {
     @Override
     public void focus() {
         this.cancelButton.requestFocus();
-    };
-
-    @Override
-    public void initialize(URL url, ResourceBundle resource) {
-        this.warningLabel.setText(this.warning);
-        super.initialize(url, resource);
     };
 };

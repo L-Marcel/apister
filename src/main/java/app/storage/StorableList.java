@@ -24,15 +24,15 @@ public abstract class StorableList<T extends Serializable> implements Serializab
             ObjectInputStream object = new ObjectInputStream(input);
             LinkedList<T> list = (LinkedList<T>) object.readObject();
             this.instances = FXCollections.observableList(list);
-            Log.print("Storable", "Loadded " + this.instances.size() + " " + this.name + ".");
+            Log.print("Storable", "Loadded " + this.instances.size() + " instances from \"" + this.name + "\".");
             object.close();         
         } catch(FileNotFoundException e) {
-            Log.print("Storable", "Creating " + this.name + " database.");
+            Log.print("Storable", "Creating \"" + this.name + "\" database.");
             this.instances = FXCollections.observableList(new LinkedList<T>());
         } catch(Exception e) {
-            Log.print("Storable", "Failed on load " + this.name + ".");
+            Log.print("Storable", "Can't load \"" + this.name + "\".");
             Log.print("Error", e.getMessage());
-            Log.print("Storable", "Creating " + this.name + " database.");
+            Log.print("Storable", "Creating \"" + this.name + "\" database.");
             this.instances = FXCollections.observableList(new LinkedList<T>());
         };
     };
@@ -41,6 +41,7 @@ public abstract class StorableList<T extends Serializable> implements Serializab
         storage.store(this.name, new LinkedList<T>(this.instances));
     };
 
+    //#region Items
     public ObservableList<T> get() {
         return this.instances;
     };
@@ -60,4 +61,5 @@ public abstract class StorableList<T extends Serializable> implements Serializab
         instances.set(index, updated);
         this.store();
     };
+    //#endregion
 };

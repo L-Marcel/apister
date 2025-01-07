@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import app.App;
 import app.controllers.components.ProjectCellController;
+import app.log.Log;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.ListCell;
@@ -24,7 +25,10 @@ public class ProjectCell extends ListCell<String> {
             this.setText(null);
             try {
                 ProjectCellController projectCellController = new ProjectCellController(this);
-                Parent cell = App.load("components/projectCell", projectCellController);
+                Parent cell = App.load(
+                    "components/projectCell", 
+                    projectCellController
+                );
 
                 this.setGraphic(cell);
 
@@ -36,7 +40,8 @@ public class ProjectCell extends ListCell<String> {
             } catch(IOException e) {
                 this.setGraphic(null);
                 this.getStyleClass().add("project-cell");
-                e.printStackTrace();
+                Log.print("Can't load project cell.");
+                Log.print("Error", e.getMessage());
             };
         };
     };

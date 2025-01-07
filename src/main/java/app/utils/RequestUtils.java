@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import app.core.StatusCode;
 
 public class RequestUtils {
+    //#region Header
     public static String createHeader(
         StatusCode statusCode
     ) {
@@ -52,4 +53,5 @@ public class RequestUtils {
 
         return header.toString().trim();
     };
+    //#endregion
 };

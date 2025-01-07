@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum StatusCode {
+    //#region Values
     CONTINUE(100),
     SWITCHING_PROTOCOLS(101),
     PROCESSING(102),
@@ -66,7 +67,8 @@ public enum StatusCode {
     LOOP_DETECTED(508),
     NOT_EXTENDED(510),
     NETWORK_AUTHENTICATION_REQUIRED(511);
-  
+    //#endregion
+    
     private final int value;
     private static Map<Integer, StatusCode> map = new HashMap<Integer, StatusCode>();
 

@@ -1,6 +1,7 @@
 package app.storage;
 
 import app.interfaces.StoringCallback;
+import app.log.Log;
 
 public class StorableLoading extends Thread {
     private Storage storage = Storage.getInstance();
@@ -21,7 +22,8 @@ public class StorableLoading extends Thread {
             try {
                 Thread.sleep(1000);
             } catch(Exception e) {
-                e.printStackTrace();
+                Log.print("Main", "Can't wait storage.");
+                Log.print("Error", e.getMessage());
             };
         };
 

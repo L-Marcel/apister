@@ -14,12 +14,13 @@ public class ProjectTreeCell extends TreeCell<String> {
         super.updateItem(item, empty);
 
         if(!empty) {
-            setText(item);
+            this.setText(item);
 
             if(this.getTreeItem() instanceof Node) {
                 Node node = (Node) this.getTreeItem();
 
                 if(node.isEditing()) {
+                    //#region Editing
                     TextField textField = new TextField(node.getOldValue());
 
                     textField.getStyleClass().add("rename-request-text-field");
@@ -28,25 +29,28 @@ public class ProjectTreeCell extends TreeCell<String> {
     
                     textField.setOnAction(e -> {
                         Node updatedNode = node.rename(textField.getText());
-    
                         this.getTreeView().getSelectionModel().select(updatedNode);
                         if(updatedNode == node) node.stopEdit();
                     });
     
-                    textField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-                        if(!isNowFocused) {
-                            Node updatedNode = node.rename(textField.getText());
-                            if(updatedNode == node) node.stopEdit();
-                        };
-                    });
+                    textField.focusedProperty().addListener(
+                        (obs, wasFocused, isNowFocused) -> {
+                            if(!isNowFocused) {
+                                Node updatedNode = node.rename(textField.getText());
+                                if(updatedNode == node) node.stopEdit();
+                            };
+                        }
+                    );
 
-                    setText("");
-                    setGraphic(textField);
+                    this.setText("");
+                    this.setGraphic(textField);
                     Platform.runLater(() -> {
                         textField.requestFocus();
                         textField.selectAll();
                     });
+                    //#endregion
                 } else if(node instanceof Request) {
+                    //#region Request
                     Request request = (Request) this.getTreeItem();
                     Label label = new Label();
     
@@ -56,20 +60,23 @@ public class ProjectTreeCell extends TreeCell<String> {
                     label.textProperty().addListener((event, old, current) -> {
                         label.getStyleClass().clear();
                         label.getStyleClass().add("request-tag");
-                        label.getStyleClass().add(getTypeClassName(RequestType.valueOf(current)));
+                        label.getStyleClass().add(
+                            getTypeClassName(RequestType.valueOf(current))
+                        );
                     });
                     
-                    setGraphic(label);
+                    this.setGraphic(label);
+                    //#endregion
                 };
             };
         } else {
-            setText(null);
-            setGraphic(null);
+            this.setText(null);
+            this.setGraphic(null);
         };
     };
 
     private String getTypeClassName(RequestType type) {
-        switch (type) {
+        switch(type) {
             case GET:
                 return "get-tag";
             case POST:

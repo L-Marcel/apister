@@ -37,7 +37,8 @@ public class Response implements Externalizable {
         this.receivedAt = Instant.now();
     };
 
-        @Override
+    //#region Externalizable
+    @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeUTF(this.message.get());
         out.writeUTF(this.header.get());
@@ -56,7 +57,8 @@ public class Response implements Externalizable {
         this.requestedAt = (Instant) in.readObject();
         this.receivedAt = (Instant) in.readObject();
     };
-
+    //#endregion
+    //#region Getters and setters
     public StringProperty messageProperty() {
         return this.message;
     };
@@ -96,4 +98,5 @@ public class Response implements Externalizable {
     public void setReceivedAt(Instant receivedAt) {
         this.receivedAt = receivedAt;
     };
+    //#endregion
 };

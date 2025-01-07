@@ -15,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 
 public class ProjectControllerUtils {
+    //#region Config
     public static void configLoading(
         Project project,
         Button backButton,
@@ -65,16 +66,22 @@ public class ProjectControllerUtils {
             headerTableView.setMaxWidth(current.doubleValue());
         });
 
-        rightAnchorPane.widthProperty().addListener((observable, old, current) -> {
-            double half = current.doubleValue() / 2.0d;
-            keysTableColumn.setPrefWidth(half + 0.5);
-            valuesTableColumn.setPrefWidth(half + 0.5);
-        });
+        rightAnchorPane.widthProperty().addListener(
+            (observable, old, current) -> {
+                double half = current.doubleValue() / 2.0d;
+                keysTableColumn.setPrefWidth(half + 0.5);
+                valuesTableColumn.setPrefWidth(half + 0.5);
+            }
+        );
 
-        responseTitledPane.expandedProperty().addListener((event, old, current) -> {
-            if(current) responseAnchorPane.setMaxHeight(AnchorPane.USE_COMPUTED_SIZE);
-            else responseAnchorPane.setMaxHeight(0);
-            headerTableView.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-        });
+        responseTitledPane.expandedProperty().addListener(
+            (event, old, current) -> {
+                if(current) 
+                    responseAnchorPane.setMaxHeight(AnchorPane.USE_COMPUTED_SIZE);
+                else responseAnchorPane.setMaxHeight(0);
+                headerTableView.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+            }
+        );
     };
+    //#endregion
 };
