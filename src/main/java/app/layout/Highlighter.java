@@ -88,19 +88,8 @@ public abstract class Highlighter {
         if(!SystemUtils.isWindows() && dynamic) {
             int lines = 1 + this.textArea.getText().length() - this.textArea.getText().replaceAll("\n", "").length();
             double targetLineHeight = (height - 8d) / lines;
-            double diff = ((targetLineHeight - 11.138297872340425d) * lines) / (lines - 1);
-            System.out.println(diff);
-            //15.138297872340425 -> line height
-            //11.138297872340425 -> text flow line height
-
-            //this.textFlow.setLineSpacing(1.102999687d);
-            // x < 1.102999687d
-
-            //this.textFlow.setLineSpacing(1d);
-            // x > 1d
-
-            //this.textFlow.setLineSpacing(1.1d);
-            // x < 1.1d
+            double diff = ((targetLineHeight - 13.96875d) * lines) / (lines - 1);
+            this.textFlow.setLineSpacing(diff);
         } else if(!SystemUtils.isWindows()) {
             this.textFlow.setLineSpacing(1.102999687d);
         } else if(dynamic) {

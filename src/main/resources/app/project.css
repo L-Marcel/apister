@@ -228,8 +228,8 @@
     -fx-background-radius: 0px;
     -fx-border-radius: 0px;
     border-radius: 0px;
-    /* -fx-text-fill: transparent;
-    -fx-highlight-text-fill: transparent; */
+    -fx-text-fill: transparent;
+    -fx-highlight-text-fill: transparent;
     -fx-font-family: monospace;
     font-family: monospace;
     -fx-tab-size: 2;
@@ -248,9 +248,9 @@
     tab-size: 2;
     -fx-font-size: 12px;
     font-size: 12px;
-    /* color: transparent; */
-    /* -fx-fill: transparent;
-    fill: transparent; */
+    color: transparent;
+    -fx-fill: transparent;
+    fill: transparent;
 }
 
 .text-area .content {
