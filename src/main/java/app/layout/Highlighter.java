@@ -37,7 +37,7 @@ public abstract class Highlighter {
         this.scrollPane = scrollPane;
         this.skin = new CustomTextAreaSkin(this.textArea);
         this.textArea.setSkin(this.skin);
-        this.textFlow.setTabSize(2);
+        this.textFlow.setTabSize(8);
         
         //#region Listeners
         this.skin.getContent().layoutBoundsProperty().addListener(

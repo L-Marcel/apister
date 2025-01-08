@@ -240,6 +240,7 @@ public class Request extends Node {
             );
 
             request.headerProperty().setAll(this.header);
+            request.typeProperty().setValue(this.getType());
             parent.replace(this, request);
             return request;
         };

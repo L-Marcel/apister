@@ -1,3 +1,8 @@
+* { 
+    -fx-tab-size: 8; 
+    tab-size: 8;
+}
+
 .text-field {
     -fx-border-width: 0px;
     border-width: 0px;

@@ -193,8 +193,8 @@
     -fx-background-radius: 0px;
     -fx-font-family: monospace;
     font-family: monospace;
-    -fx-tab-size: 2;
-    tab-size: 2;
+    -fx-tab-size: 8;
+    tab-size: 8;
     -fx-border-radius: 0px;
     border-radius: 0px;
     -fx-background-color: transparent;
@@ -207,8 +207,8 @@
 .text-flow > *, .code-text {
     -fx-font-family: monospace;
     font-family: monospace;
-    -fx-tab-size: 2;
-    tab-size: 2;
+    -fx-tab-size: 8;
+    tab-size: 8;
     color: #d1dd2e50;
     -fx-text-fill: #d1dd2e50;
     -fx-font-size: 12px;
@@ -232,8 +232,8 @@
     -fx-highlight-text-fill: transparent;
     -fx-font-family: monospace;
     font-family: monospace;
-    -fx-tab-size: 2;
-    tab-size: 2;
+    -fx-tab-size: 8;
+    tab-size: 8;
     -fx-font-weight: normal;
     font-weight: normal;
     -fx-effect: none;
@@ -244,8 +244,8 @@
     -fx-line-spacing: 0px;
     -fx-font-family: monospace;
     font-family: monospace;
-    -fx-tab-size: 2;
-    tab-size: 2;
+    -fx-tab-size: 8;
+    tab-size: 8;
     -fx-font-size: 12px;
     font-size: 12px;
     color: transparent;
@@ -265,13 +265,8 @@
     font-weight: normal;
     -fx-font-family: monospace;
     font-family: monospace;
-    -fx-tab-size: 2;
-    tab-size: 2;
-}
-
-.text-area > .scroll-pane {
-    /* -fx-padding: 0px;
-    padding: 0px; */
+    -fx-tab-size: 8;
+    tab-size: 8;
 }
 
 .choice-box {

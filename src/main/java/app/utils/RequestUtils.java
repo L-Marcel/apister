@@ -29,17 +29,16 @@ public class RequestUtils {
     ) {
         StringBuilder header = new StringBuilder();
 
+        String status = statusCode.getValue() + 
+            " " + 
+            statusCode.name().replace('_', ' ') + 
+            "\n";
+        
+        header.append(status);
+        header.append("=".repeat(status.length() - 1) + "\n");
+
         for(Entry<String, List<String>> entry : headers.map().entrySet()) {
-            if(entry.getKey().equals(":status")) {
-                String status = statusCode.getValue() + 
-                    " " + 
-                    statusCode.name().replace('_', ' ') + 
-                    "\n";
-                
-                header.append(status);
-                header.append("=".repeat(status.length() - 1) + "\n");
-                continue;
-            };
+            if(entry.getKey().equals(":status")) continue;
 
             header.append(entry.getKey() + ": ");
 
